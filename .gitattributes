@@ -1,0 +1,4 @@
+*.gd text eol=lf
+*.md text eol=lf
+*.gif binary
+*.png binary
