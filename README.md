@@ -6,6 +6,7 @@ Godot 4 scripts from the Cordatix devlogs, for PS1-style (PSX) horror and limina
 
 | Tutorial | What it does | Written for | Try it free with |
 |---|---|---|---|
+| [Make a Hallway That Loops for an Anomaly Game](looping-hallway/) | One hallway between two stairwells built alike: walk on and you are in it again, a floor lower | [Liminal PSX Anomalies](https://cordatix.itch.io/liminal-psx-anomalies) | [Liminal PSX Anomalies Free Sampler](https://cordatix.itch.io/liminal-psx-anomalies-free) |
 | [Hide in a Locker](hide-in-a-locker/) | Hide the player in a locker; a chasing creature loses them, and can search the lockers | [Haunted PSX Spaces](https://cordatix.itch.io/haunted-psx-spaces) | a locker scene of your own (see its README) |
 | [Make Something Move Only When the Player Looks Away](move-only-when-unseen/) | Something that changes only while nobody looks at it | [Silent Dread](https://cordatix.itch.io/silent-dread) | [Silent Dread Free Sampler](https://cordatix.itch.io/silent-dread-free) |
 | [Make Doors Open Away from the Player](doors-that-open-away/) | A door that swings away from the player, from either side | [Liminal PSX Office Kit](https://cordatix.itch.io/liminal-psx-office-kit) | [Liminal PSX Office Kit - Free Sampler](https://cordatix.itch.io/liminal-psx-office-kit-free) |
