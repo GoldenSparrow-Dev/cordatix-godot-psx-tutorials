@@ -6,6 +6,7 @@ Godot 4 scripts from the Cordatix devlogs, for PS1-style (PSX) horror and limina
 
 | Tutorial | What it does | Written for | Try it free with |
 |---|---|---|---|
+| [Start an Anomaly Loop Behind a Menu](anomaly-loop-behind-a-menu/) | The loop waits behind your title menu: nothing happens before Start, and the floor behind the menu is the one the run starts on | [Liminal PSX Anomalies](https://cordatix.itch.io/liminal-psx-anomalies) | [Liminal PSX Anomalies Free Sampler](https://cordatix.itch.io/liminal-psx-anomalies-free) |
 | [Draw Anomalies Without Repeats](anomalies-without-repeats/) | Which anomaly a level shows: none twice before all have come, the obvious ones early, the subtle ones late | [Liminal PSX Parking Anomalies](https://cordatix.itch.io/liminal-psx-parking-anomalies) | [Liminal PSX Parking Anomalies Free Sampler](https://cordatix.itch.io/liminal-psx-parking-anomalies-free) |
 | [Make a Hallway That Loops for an Anomaly Game](looping-hallway/) | One hallway between two stairwells built alike: walk on and you are in it again, a floor lower | [Liminal PSX Anomalies](https://cordatix.itch.io/liminal-psx-anomalies) | [Liminal PSX Anomalies Free Sampler](https://cordatix.itch.io/liminal-psx-anomalies-free) |
 | [Hide in a Locker](hide-in-a-locker/) | Hide the player in a locker; a chasing creature loses them, and can search the lockers | [Haunted PSX Spaces](https://cordatix.itch.io/haunted-psx-spaces) | a locker scene of your own (see its README) |
