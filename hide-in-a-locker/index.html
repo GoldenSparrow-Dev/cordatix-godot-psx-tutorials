@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cordatix: How to Hide in a Locker in Godot 4</title>
+<meta name="description" content="Cordatix Godot 4 PSX tutorial: Hide the player in a locker; a chasing creature loses them, and can search the lockers.">
+<link rel="canonical" href="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/hide-in-a-locker/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Cordatix">
+<meta property="og:title" content="Cordatix: How to Hide in a Locker in Godot 4">
+<meta property="og:description" content="Cordatix Godot 4 PSX tutorial: Hide the player in a locker; a chasing creature loses them, and can search the lockers.">
+<meta property="og:url" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/hide-in-a-locker/">
+<meta property="og:image" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/hide-in-a-locker/thumb.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../site.css">
+<link rel="icon" href="../favicon.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "author": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}, "description": "Hide the player in a locker; a chasing creature loses them, and can search the lockers", "headline": "How to Hide in a Locker in Godot 4", "image": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/hide-in-a-locker/thumb.png", "inLanguage": "en", "isAccessibleForFree": true, "isBasedOn": "https://cordatix.itch.io/haunted-psx-spaces/devlog/1722819/how-to-hide-in-a-locker-in-godot-4-haunted-psx-spaces", "license": "https://opensource.org/licenses/MIT", "mainEntityOfPage": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/hide-in-a-locker/", "programmingLanguage": "GDScript", "publisher": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}}</script>
+</head>
+<body>
+<header class="top"><a class="brand" href="../">CORDATIX</a><nav><a href="../">Tutorials</a> <a href="../samplers.html">Free samplers</a> <a href="../packs.html">Packs</a> <a href="https://cordatix.itch.io">Store on itch.io</a></nav></header>
+<main>
+<p class="crumbs"><a href="../">Tutorials</a> › Hide in a Locker</p>
+<h1>How to Hide in a Locker in Godot 4</h1>
+<p class="lede">Hide the player in a locker; a chasing creature loses them, and can search the lockers.</p>
+<figure><img src="school_hallway.gif" width="480" height="270" alt="Walking down the school hallway of the Haunted PSX Spaces demo, past its lockers"></figure>
+<p>A level script that lets the player hide in a locker and makes a chasing creature lose them. When the door shuts on the player, the creature drops its target and the camera moves to the locker&#x27;s peek point behind the vents; when the player steps out, both go back. A creature that searches the room can ask whether anyone is inside, pull the door open and give chase.</p>
+<p class="muted">Script: <a href="locker_hiding.gd">locker_hiding.gd</a> (MIT) · Godot 4.3 or newer · <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials/tree/main/hide-in-a-locker">its folder on GitHub</a></p>
+<figure><img src="hiding.png" width="1280" height="359" alt="A hiding locker in the classroom, and the view from inside it through the vents"></figure>
+<h2>How to use it</h2>
+<ol>
+<li>Put your lockers in the group <code>lockers</code>.</li>
+<li>Add <code>locker_hiding.gd</code> to the level&#x27;s root Node3D and set <code>creature</code> and <code>camera</code> in the Inspector.</li>
+<li>When your creature reaches a locker, call <code>search(locker, player)</code>.</li>
+</ol>
+<h2>What it needs</h2>
+<ul class="lines">
+<li>A locker scene with the signals <code>player_hidden(body)</code> and <code>player_left(body)</code> and the methods <code>peek_point()</code> (a Node3D at eye height behind the vents), <code>is_occupied()</code> and <code>interact(by)</code>. The hiding lockers of Haunted PSX Spaces (<code>scenes/hiding_locker__&lt;theme&gt;.tscn</code>) have them; a locker of your own works if it has the same.</li>
+<li>A creature with a <code>target</code> property: the script sets it to <code>null</code> or to the player.</li>
+</ul>
+<h2>Try it free</h2>
+<p>The lockers come with Haunted PSX Spaces. The Haunted PSX Free Sampler has free room pieces to build the room around them.</p>
+<h2>How it was tested</h2>
+<p>In Godot 4.3 and 4.7.2, with a stand-in locker that has the signals and methods above: when the player hides, the creature loses its target and the camera moves to the peek point; when the player steps out, the camera is back at the player&#x27;s eyes and the creature is after them; <code>search()</code> opens an occupied locker and sets the creature on the player, and leaves an empty one shut.</p>
+<h2>The code</h2>
+<pre><code>extends Node3D
+## How to Hide in a Locker in Godot 4
+## Cordatix Godot 4 PSX tutorials, MIT licensed: https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials
+## The devlog: https://cordatix.itch.io/haunted-psx-spaces/devlog/1722819/how-to-hide-in-a-locker-in-godot-4-haunted-psx-spaces
+
+## The chasing creature (any node with a `target` property) and the player&#x27;s camera.
+@export var creature: Node3D
+@export var camera: Camera3D
+
+var _eye: Transform3D
+
+
+func _ready() -&gt; void:
+	for locker in get_tree().get_nodes_in_group(&quot;lockers&quot;):
+		locker.player_hidden.connect(_on_hidden.bind(locker))
+		locker.player_left.connect(_on_left)
+
+
+## Shut in: the creature loses the player, and the camera looks out through the vents.
+func _on_hidden(_body: Node3D, locker: Node3D) -&gt; void:
+	creature.set(&quot;target&quot;, null)
+	_eye = camera.transform
+	camera.global_transform = locker.peek_point().global_transform
+
+
+## Out again: the camera goes back to the player&#x27;s eyes, and the creature is after the player.
+func _on_left(body: Node3D) -&gt; void:
+	camera.transform = _eye
+	creature.set(&quot;target&quot;, body)
+
+
+## A creature that searches a room can open the lockers someone hides in: is_occupied() says so.
+func search(locker: Node3D, player: Node3D) -&gt; void:
+	if locker.is_occupied():
+		locker.interact(creature)
+		creature.set(&quot;target&quot;, player)
+</code></pre>
+<h2>The devlog and the pack</h2>
+<p>The step-by-step walkthrough is the devlog <a href="https://cordatix.itch.io/haunted-psx-spaces/devlog/1722819/how-to-hide-in-a-locker-in-godot-4-haunted-psx-spaces">How to Hide in a Locker in Godot 4 (Haunted PSX Spaces)</a> on itch.io, written for <a href="https://cordatix.itch.io/haunted-psx-spaces">Haunted PSX Spaces</a>, a PS1-style asset pack by <a href="https://cordatix.itch.io">Cordatix</a> for Godot 4, Unity, Unreal and Blender.</p>
+</main>
+<footer><p>Cordatix: PS1-style asset packs for Godot 4, Unity, Unreal and Blender, on <a href="https://cordatix.itch.io">itch.io</a>. The tutorials' code on <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials">GitHub</a>, MIT licensed; the pictures show Cordatix asset packs and are not covered by the MIT license.</p></footer>
+</body>
+</html>

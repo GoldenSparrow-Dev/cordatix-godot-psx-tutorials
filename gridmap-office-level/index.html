@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cordatix: How to Build a Liminal Office Level with GridMap in Godot 4</title>
+<meta name="description" content="Cordatix Godot 4 PSX tutorial: Paint a level from 2 m pieces with GridMap, with lights and doors. A tested script, MIT licensed, with a GIF.">
+<link rel="canonical" href="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/gridmap-office-level/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Cordatix">
+<meta property="og:title" content="Cordatix: How to Build a Liminal Office Level with GridMap in Godot 4">
+<meta property="og:description" content="Cordatix Godot 4 PSX tutorial: Paint a level from 2 m pieces with GridMap, with lights and doors. A tested script, MIT licensed, with a GIF.">
+<meta property="og:url" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/gridmap-office-level/">
+<meta property="og:image" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/gridmap-office-level/thumb.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../site.css">
+<link rel="icon" href="../favicon.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "author": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}, "description": "Paint a level from 2 m pieces with GridMap, with lights and doors", "headline": "How to Build a Liminal Office Level with GridMap in Godot 4", "image": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/gridmap-office-level/thumb.png", "inLanguage": "en", "isAccessibleForFree": true, "isBasedOn": "https://cordatix.itch.io/liminal-psx-office-kit/devlog/1716386/how-to-build-a-liminal-office-level-with-gridmap-in-godot-4-liminal-psx-office-kit", "license": "https://opensource.org/licenses/MIT", "mainEntityOfPage": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/gridmap-office-level/", "programmingLanguage": "GDScript", "publisher": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}}</script>
+</head>
+<body>
+<header class="top"><a class="brand" href="../">CORDATIX</a><nav><a href="../">Tutorials</a> <a href="../samplers.html">Free samplers</a> <a href="../packs.html">Packs</a> <a href="https://cordatix.itch.io">Store on itch.io</a></nav></header>
+<main>
+<p class="crumbs"><a href="../">Tutorials</a> › Build a Liminal Office Level with GridMap</p>
+<h1>How to Build a Liminal Office Level with GridMap in Godot 4</h1>
+<p class="lede">Paint a level from 2 m pieces with GridMap, with lights and doors.</p>
+<figure><img src="office_level.gif" width="480" height="270" alt="Walking down an office corridor built with GridMap in Godot 4, PSX shader on"></figure>
+<p>Paint a level from 2 m kit pieces with GridMap: 2 x 4 x 2 m cells with Center Y off, one GridMap per layer (floors, ceilings and one per wall direction), a light for every lit piece from the library&#x27;s metadata, and door scenes in the doorways.</p>
+<p class="muted">Script: <a href="gridmap_office.gd">gridmap_office.gd</a> (MIT) · Godot 4.3 or newer · <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials/tree/main/gridmap-office-level">its folder on GitHub</a></p>
+<h2>How to use it</h2>
+<ol>
+<li>Add <code>gridmap_office.gd</code> to a Node3D and call <code>build_room(Vector2i(4, 3))</code>: a room of 4 x 3 cells with rows of ceiling lights and a doorway.</li>
+<li><code>add_lights(grid)</code> gives every lit piece its light; <code>add_door(cell, rot_deg)</code> puts a door scene in a doorway&#x27;s cell.</li>
+<li><code>LIB</code> is the path of the MeshLibrary.</li>
+</ol>
+<h2>What it needs</h2>
+<ul class="lines">
+<li>A MeshLibrary of 2 x 2 m pieces with their origin on the floor; for <code>add_lights</code>, the light table in its <code>cordatix_lights</code> metadata.</li>
+</ul>
+<h2>Try it free</h2>
+<p>The <a href="https://cordatix.itch.io/liminal-psx-office-kit-free">Liminal PSX Office Kit - Free Sampler</a> has 8 pieces in a MeshLibrary at the path the script uses, with the light table, and the wooden door.</p>
+<h2>How it was tested</h2>
+<p>Checked with <code>godot --headless --check-only</code> in Godot 4.3 and 4.7.2.</p>
+<h2>The code</h2>
+<pre><code>extends Node3D
+## How to Build a Liminal Office Level with GridMap in Godot 4
+## Cordatix Godot 4 PSX tutorials, MIT licensed: https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials
+## The devlog: https://cordatix.itch.io/liminal-psx-office-kit/devlog/1716386/how-to-build-a-liminal-office-level-with-gridmap-in-godot-4-liminal-psx-office-kit
+
+const LIB := &quot;res://cordatix/liminal_psx_office_kit/liminal_psx_office_kit.meshlib.tres&quot;
+const NORTH := 0.0
+const WEST := 90.0
+const SOUTH := 180.0
+const EAST := 270.0
+
+
+func make_grid(layer_name: String) -&gt; GridMap:
+	var grid := GridMap.new()
+	grid.name = layer_name
+	grid.mesh_library = load(LIB)
+	grid.cell_size = Vector3(2.0, 4.0, 2.0)   # 2 m cells, 4 m storeys
+	grid.cell_center_y = false                # piece origins sit on the floor
+	add_child(grid)
+	return grid
+
+
+func place(grid: GridMap, cell: Vector3i, item_name: String, rot_deg := 0.0) -&gt; void:
+	var id := grid.mesh_library.find_item_by_name(item_name)
+	var basis := Basis(Vector3.UP, deg_to_rad(rot_deg))
+	grid.set_cell_item(cell, id, grid.get_orthogonal_index_from_basis(basis))
+
+
+func build_room(size: Vector2i) -&gt; void:
+	var floors := make_grid(&quot;Floors&quot;)
+	var ceilings := make_grid(&quot;Ceilings&quot;)
+	var walls := {}
+	for rot in [NORTH, WEST, SOUTH, EAST]:
+		walls[rot] = make_grid(&quot;Walls%d&quot; % int(rot))
+	for x in size.x:
+		for z in size.y:
+			var c := Vector3i(x, 0, z)
+			place(floors, c, &quot;floor&quot;)
+			place(ceilings, c, &quot;ceiling_light&quot; if x % 2 == 0 else &quot;ceiling&quot;)  # rows of lamps along z
+			if z == 0:
+				place(walls[NORTH], c, &quot;wall&quot;, NORTH)
+			if z == size.y - 1:
+				place(walls[SOUTH], c, &quot;wall_doorway&quot; if x == 0 else &quot;wall&quot;, SOUTH)
+			if x == 0:
+				place(walls[WEST], c, &quot;wall&quot;, WEST)
+			if x == size.x - 1:
+				place(walls[EAST], c, &quot;wall&quot;, EAST)
+
+
+func add_lights(grid: GridMap) -&gt; void:
+	var table: Dictionary = grid.mesh_library.get_meta(&quot;cordatix_lights&quot;, {})
+	for cell in grid.get_used_cells():
+		var item_name := grid.mesh_library.get_item_name(grid.get_cell_item(cell))
+		if table.has(item_name):
+			var p: Array = table[item_name][&quot;pos&quot;]
+			var light := OmniLight3D.new()
+			light.position = grid.map_to_local(cell) + grid.get_cell_item_basis(cell) * Vector3(p[0], p[1], p[2])
+			light.light_energy = table[item_name][&quot;energy&quot;]
+			light.omni_range = table[item_name][&quot;range&quot;]
+			grid.add_child(light)
+
+
+func add_door(cell: Vector3i, rot_deg: float) -&gt; Node3D:
+	var door: Node3D = load(&quot;res://cordatix/liminal_psx_office_kit/pieces/door_wood.tscn&quot;).instantiate()
+	door.position = Vector3(cell.x * 2 + 1, cell.y * 4, cell.z * 2 + 1)
+	door.rotation_degrees.y = rot_deg
+	add_child(door)
+	return door
+</code></pre>
+<h2>The devlog and the pack</h2>
+<p>The step-by-step walkthrough is the devlog <a href="https://cordatix.itch.io/liminal-psx-office-kit/devlog/1716386/how-to-build-a-liminal-office-level-with-gridmap-in-godot-4-liminal-psx-office-kit">How to Build a Liminal Office Level with GridMap in Godot 4 (Liminal PSX Office Kit)</a> on itch.io, written for <a href="https://cordatix.itch.io/liminal-psx-office-kit">Liminal PSX Office Kit</a>, a PS1-style asset pack by <a href="https://cordatix.itch.io">Cordatix</a> for Godot 4, Unity, Unreal and Blender.</p>
+</main>
+<footer><p>Cordatix: PS1-style asset packs for Godot 4, Unity, Unreal and Blender, on <a href="https://cordatix.itch.io">itch.io</a>. The tutorials' code on <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials">GitHub</a>, MIT licensed; the pictures show Cordatix asset packs and are not covered by the MIT license.</p></footer>
+</body>
+</html>

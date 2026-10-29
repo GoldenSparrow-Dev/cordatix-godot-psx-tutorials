@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cordatix: How to Make Something Move Only When the Player Looks Away in Godot 4</title>
+<meta name="description" content="Cordatix Godot 4 PSX tutorial: Something that changes only while nobody looks at it. A tested script, MIT licensed, with a GIF.">
+<link rel="canonical" href="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/move-only-when-unseen/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Cordatix">
+<meta property="og:title" content="Cordatix: How to Make Something Move Only When the Player Looks Away in Godot 4">
+<meta property="og:description" content="Cordatix Godot 4 PSX tutorial: Something that changes only while nobody looks at it. A tested script, MIT licensed, with a GIF.">
+<meta property="og:url" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/move-only-when-unseen/">
+<meta property="og:image" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/move-only-when-unseen/thumb.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../site.css">
+<link rel="icon" href="../favicon.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "author": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}, "description": "Something that changes only while nobody looks at it", "headline": "How to Make Something Move Only When the Player Looks Away in Godot 4", "image": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/move-only-when-unseen/thumb.png", "inLanguage": "en", "isAccessibleForFree": true, "isBasedOn": "https://cordatix.itch.io/silent-dread/devlog/1726836/how-to-make-something-move-only-when-the-player-looks-away-in-godot-4-silent-dread", "license": "https://opensource.org/licenses/MIT", "mainEntityOfPage": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/move-only-when-unseen/", "programmingLanguage": "GDScript", "publisher": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}}</script>
+</head>
+<body>
+<header class="top"><a class="brand" href="../">CORDATIX</a><nav><a href="../">Tutorials</a> <a href="../samplers.html">Free samplers</a> <a href="../packs.html">Packs</a> <a href="https://cordatix.itch.io">Store on itch.io</a></nav></header>
+<main>
+<p class="crumbs"><a href="../">Tutorials</a> › Make Something Move Only When the Player Looks Away</p>
+<h1>How to Make Something Move Only When the Player Looks Away in Godot 4</h1>
+<p class="lede">Something that changes only while nobody looks at it.</p>
+<figure><img src="hanging_coat.gif" width="480" height="360" alt="Hanging Coat Illusion: look away and look back, and the coat on its stand is someone standing, then a step nearer, then gone"></figure>
+<p>A thing that moves only while nobody looks at it: the player turns round, turns back, and it is nearer, or different, or gone. One script on a Node3D whose children are its states: the first shows, and each time the player has seen it and looks away, the next takes its place. It counts as seen when any of a few points on it is on screen, or just past the edge, with no wall in between.</p>
+<p class="muted">Script: <a href="look_away_steps.gd">look_away_steps.gd</a> (MIT) · Godot 4.3 or newer · <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials/tree/main/move-only-when-unseen">its folder on GitHub</a></p>
+<h2>How to use it</h2>
+<ol>
+<li>Put the states under one Node3D, one child each, in order (for example a coat hanging, a coat worn, a coat nearer, the stand bare).</li>
+<li>Add <code>look_away_steps.gd</code> to that Node3D. <code>unseen_delay</code> is how long it must be out of sight before it moves on; <code>points</code> are the spots on it the camera checks.</li>
+<li>Give walls collision on layer 1, and the player&#x27;s body and the thing&#x27;s own collision another layer, so only walls block the view.</li>
+</ol>
+<h2>What it needs</h2>
+<ul class="lines">
+<li>A model&#x27;s states as separate meshes or scenes; nothing else.</li>
+</ul>
+<h2>Try it free</h2>
+<p>The <a href="https://cordatix.itch.io/silent-dread-free">Silent Dread Free Sampler</a> has Hanging Coat Illusion: its OBJ folder has the four poses (hanging, leaning, closer, gone) to put under the node.</p>
+<h2>How it was tested</h2>
+<p>In Godot 4.3 and 4.7.2: it never changes while the camera sees it (in view, half behind a wall, glimpsed at the screen&#x27;s edge), moves one step per look away and only after its delay, counts a wall in the way as not seen, and stops at its last state.</p>
+<h2>The code</h2>
+<pre><code>extends Node3D
+## How to Make Something Move Only When the Player Looks Away in Godot 4
+## Cordatix Godot 4 PSX tutorials, MIT licensed: https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials
+## The devlog: https://cordatix.itch.io/silent-dread/devlog/1726836/how-to-make-something-move-only-when-the-player-looks-away-in-godot-4-silent-dread
+## Moves on to its next state only while nobody sees it. Put the states under it as children (Hanging, Leaning,
+## Closer, Gone): the first one shows, and each time the player has seen it and looks away for unseen_delay seconds,
+## the next one takes its place. Walls have collision on layer 1; the player&#x27;s body and the thing&#x27;s own on another.
+
+## Seconds out of sight before it moves on.
+@export var unseen_delay := 0.75
+## How far past the screen&#x27;s edges still counts as in view (a share of the screen): the corner of the eye.
+@export var margin := 0.08
+## Points on the thing, in its own space: if the camera can see any of them, it is seen.
+@export var points := PackedVector3Array([Vector3(0, 0.2, 0), Vector3(0, 1.0, 0), Vector3(0, 1.7, 0),
+	Vector3(0.3, 1.0, 0), Vector3(-0.3, 1.0, 0)])
+
+var step := 0
+var _unseen_for := 0.0
+var _seen_this_state := false               # a change the player never saw would be wasted
+
+
+func _ready() -&gt; void:
+	for i in get_child_count():
+		get_child(i).visible = i == 0
+
+
+func seen() -&gt; bool:
+	var cam := get_viewport().get_camera_3d()
+	if cam == null:
+		return true                                   # nobody can tell, so nothing may change
+	var size := get_viewport().get_visible_rect().size
+	var space := get_world_3d().direct_space_state
+	for p in points:
+		var w := global_transform * p
+		if cam.is_position_behind(w):
+			continue
+		var s := cam.unproject_position(w)
+		if s.x &lt; -size.x * margin or s.y &lt; -size.y * margin \
+				or s.x &gt; size.x * (1.0 + margin) or s.y &gt; size.y * (1.0 + margin):
+			continue                                  # off screen
+		var hit := space.intersect_ray(PhysicsRayQueryParameters3D.create(cam.global_position, w, 1))
+		if hit.is_empty():
+			return true                               # on screen, and nothing in the way
+	return false
+
+
+func _physics_process(delta: float) -&gt; void:
+	if seen():
+		_seen_this_state = true
+		_unseen_for = 0.0
+		return
+	_unseen_for += delta
+	if _seen_this_state and _unseen_for &gt;= unseen_delay and step &lt; get_child_count() - 1:
+		get_child(step).visible = false
+		step += 1
+		get_child(step).visible = true
+		_seen_this_state = false
+</code></pre>
+<h2>The devlog and the pack</h2>
+<p>The step-by-step walkthrough is the devlog <a href="https://cordatix.itch.io/silent-dread/devlog/1726836/how-to-make-something-move-only-when-the-player-looks-away-in-godot-4-silent-dread">How to Make Something Move Only When the Player Looks Away in Godot 4 (Silent Dread)</a> on itch.io, written for <a href="https://cordatix.itch.io/silent-dread">Silent Dread</a>, a PS1-style asset pack by <a href="https://cordatix.itch.io">Cordatix</a> for Godot 4, Unity, Unreal and Blender.</p>
+</main>
+<footer><p>Cordatix: PS1-style asset packs for Godot 4, Unity, Unreal and Blender, on <a href="https://cordatix.itch.io">itch.io</a>. The tutorials' code on <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials">GitHub</a>, MIT licensed; the pictures show Cordatix asset packs and are not covered by the MIT license.</p></footer>
+</body>
+</html>

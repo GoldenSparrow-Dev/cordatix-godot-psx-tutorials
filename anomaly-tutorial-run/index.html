@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cordatix: How to Script a Tutorial Run for an Anomaly Game in Godot 4</title>
+<meta name="description" content="Cordatix Godot 4 PSX tutorial: The first levels of a run set in advance, each with a hint for the player, then the draw takes over.">
+<link rel="canonical" href="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/anomaly-tutorial-run/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Cordatix">
+<meta property="og:title" content="Cordatix: How to Script a Tutorial Run for an Anomaly Game in Godot 4">
+<meta property="og:description" content="Cordatix Godot 4 PSX tutorial: The first levels of a run set in advance, each with a hint for the player, then the draw takes over.">
+<meta property="og:url" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/anomaly-tutorial-run/">
+<meta property="og:image" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/anomaly-tutorial-run/thumb.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../site.css">
+<link rel="icon" href="../favicon.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "author": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}, "description": "The first levels of a run set in advance, each with a hint for the player, then the draw takes over", "headline": "How to Script a Tutorial Run for an Anomaly Game in Godot 4", "image": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/anomaly-tutorial-run/thumb.png", "inLanguage": "en", "isAccessibleForFree": true, "isBasedOn": "https://cordatix.itch.io/liminal-psx-parking-anomalies/devlog/1733191/how-to-script-a-tutorial-run-for-an-anomaly-game-in-godot-4-liminal-psx-parking-anomalies-11", "license": "https://opensource.org/licenses/MIT", "mainEntityOfPage": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/anomaly-tutorial-run/", "programmingLanguage": "GDScript", "publisher": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}}</script>
+</head>
+<body>
+<header class="top"><a class="brand" href="../">CORDATIX</a><nav><a href="../">Tutorials</a> <a href="../samplers.html">Free samplers</a> <a href="../packs.html">Packs</a> <a href="https://cordatix.itch.io">Store on itch.io</a></nav></header>
+<main>
+<p class="crumbs"><a href="../">Tutorials</a> › Script a Tutorial Run for an Anomaly Game</p>
+<h1>How to Script a Tutorial Run for an Anomaly Game in Godot 4</h1>
+<p class="lede">The first levels of a run set in advance, each with a hint for the player, then the draw takes over.</p>
+<figure><img src="tutorial_run.gif" width="400" height="225" alt="A tutorial of your own game, the devlog&#x27;s example, on the free sampler&#x27;s car park in Godot 4 with the PSX look: level 2, a scripted one, its hint in a band at the foot of the view, a shopping trolley in leg A&#x27;s aisle; the player turns back to the stairs they came by, the move, and level 1&#x27;s hint"></figure>
+<p>An anomaly game teaches its rule on its first levels: one to learn, one with something plainly wrong, one clean again. This script holds those levels as steps, each an anomaly&#x27;s id (&quot;&quot; for a clean level) and a hint, and hands them to the loop&#x27;s <code>queue()</code> on each run&#x27;s first level. It works out the step from the number of the level the player is on, so whatever begins a new run (a wrong choice, a catch, your menu&#x27;s Start) begins the tutorial from the top, and a Continue picks it up on the level it loads. A wrong choice or a catch says what was missed; once the last scripted level is left the right way, the tutorial is done and every level is drawn.</p>
+<p class="muted">Script: <a href="anomaly_tutorial.gd">anomaly_tutorial.gd</a> (MIT) · Godot 4.3 or newer · <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials/tree/main/anomaly-tutorial-run">its folder on GitHub</a></p>
+<h2>How to use it</h2>
+<ol>
+<li>Add <code>anomaly_tutorial.gd</code> to a Node in your level and set <code>loop</code> to your loop&#x27;s node: it needs <code>queue(ids)</code>, <code>start_floor</code> and the signals <code>entered_floor(number, anomaly)</code> and <code>chosen(correct, anomaly)</code>, with <code>caught(anomaly)</code> if your loop has one.</li>
+<li>Set <code>steps</code> to your scripted levels, <code>[[anomaly id, hint], ...]</code> (&quot;&quot; for a clean level), and <code>first_hint</code> to the hint on the run&#x27;s first level, which is always clean.</li>
+<li>Connect <code>hint</code> to a <code>Label</code> (&quot;&quot; hides it), and <code>passed</code> to your save: keep <code>done</code> there, and set it back from the save in your level&#x27;s <code>_ready</code>, before the player is on the run&#x27;s first level.</li>
+<li>A restart from your game&#x27;s own key or menu makes no choice: hide the hint there yourself; the run&#x27;s first level then brings the first one.</li>
+</ol>
+<h2>What it needs</h2>
+<ul class="lines">
+<li>A loop with <code>queue()</code>, <code>start_floor</code> and the signals above (the pack&#x27;s loop has them, and so can yours), and anomalies with an <code>id</code> and, for the hint after a miss, a <code>description</code>.</li>
+</ul>
+<h2>Try it free</h2>
+<p>The <a href="https://cordatix.itch.io/liminal-psx-parking-anomalies-free">Liminal PSX Parking Anomalies Free Sampler</a> has the looping car park and the pack&#x27;s loop game (version 1.1), with five anomalies on a run of three levels: the tutorial runs on its loop as it is, and an anomaly it queues counts in the draw.</p>
+<h2>How it was tested</h2>
+<p>In Godot 4.3 and 4.7.2, on a stand-in loop and on the free sampler&#x27;s own loop: the run&#x27;s first level shows the first hint and queues the steps; they come in order, each hint with its level and gone with its choice; a wrong choice or a catch says what was missed and starts the tutorial over; a new run begun mid-tutorial starts it over, and a Continue picks it up on the level it loads; with <code>done</code> set from a save nothing is queued or said; a step that does not fit the run never shows, and the run ends at the way out; on the pack&#x27;s loop a scripted anomaly counts as shown in the draw.</p>
+<h2>The code</h2>
+<pre><code>extends Node
+## How to Script a Tutorial Run for an Anomaly Game in Godot 4
+## Cordatix Godot 4 PSX tutorials, MIT licensed: https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials
+## The devlog: https://cordatix.itch.io/liminal-psx-parking-anomalies/devlog/1733191/how-to-script-a-tutorial-run-for-an-anomaly-game-in-godot-4-liminal-psx-parking-anomalies-11
+## A tutorial run: an anomaly game&#x27;s first levels set in advance, each with a hint for the player, then the draw. It
+## scripts any loop that has queue(ids) (the levels to come after the run&#x27;s first, which is always clean; &quot;&quot; for a
+## clean level), start_floor (the run&#x27;s first level, the levels counting down from it) and the signals
+## entered_floor(number, anomaly) (the player is on a level) and chosen(correct, anomaly); caught(anomaly) too, if it
+## has one. It works out the step from the level&#x27;s number, so a new run (after a wrong choice, after a catch, from your
+## menu&#x27;s Start) begins the tutorial from the top, and a Continue picks it up on the level it loads. Set `steps` and
+## `done` any time before the player is on the run&#x27;s first level (in your level&#x27;s _ready, from your save). Once the
+## player has passed it, every level is drawn.
+
+## Show it on screen (&quot;&quot; hides it).
+signal hint(text: String)
+## The player has passed the tutorial: keep `done` in your save, so it does not come again.
+signal passed
+
+## The loop it scripts.
+@export var loop: Node
+## The hint on the run&#x27;s first level, which is always clean.
+@export_multiline var first_hint := &quot;Learn this level. If all is well, walk on to the far stairs.&quot;
+## The levels after the first, in order: [anomaly id (&quot;&quot; for a clean level), its hint].
+@export var steps: Array = []
+## Shown with the first hint again after a wrong choice or a catch; %s is what the player missed.
+@export var missed_hint := &quot;Not quite: %s From the top.&quot;
+## The tutorial is over (set it from your save before the run reaches its first level).
+@export var done := false
+
+var _step := -1                   # the step of the level the player is on: 0 the run&#x27;s first, k the step k
+var _missed := &quot;&quot;                 # what a wrong choice or a catch missed, said on the next level
+
+
+func _ready() -&gt; void:
+	loop.entered_floor.connect(_on_entered_floor)
+	loop.chosen.connect(_on_chosen)
+	if loop.has_signal(&quot;caught&quot;):
+		loop.caught.connect(_on_caught)
+
+
+## The player is on a level: its step from its number. On a run&#x27;s first level the steps are queued, again for every
+## new run, so the tutorial starts over from the top.
+func _on_entered_floor(number: int, _anomaly) -&gt; void:
+	if done:
+		return
+	_step = loop.start_floor - number
+	if _step == 0:
+		var room: int = loop.start_floor - (loop.goal_floor if &quot;goal_floor&quot; in loop else 0) - 1
+		if steps.size() &gt; room:
+			push_warning(&quot;Tutorial: %d steps, but a run has %d levels after its first&quot; % [steps.size(), room])
+		var ids := []
+		for s in steps:
+			ids.append(s[0])
+		loop.queue(ids)
+	if _step &lt; 0 or _step &gt; steps.size():
+		return                    # not one of its levels: a run that is not the tutorial&#x27;s
+	var text: String = first_hint if _step == 0 else steps[_step - 1][1]
+	if _missed != &quot;&quot;:
+		text = _missed + &quot;\n&quot; + text
+		_missed = &quot;&quot;
+	hint.emit(text)
+
+
+func _on_chosen(correct: bool, anomaly) -&gt; void:
+	if done or _step &lt; 0 or _step &gt; steps.size():
+		return
+	hint.emit(&quot;&quot;)                 # the level&#x27;s hint goes with the choice; the next level brings its own
+	if not correct:
+		_missed = missed_hint % _what(anomaly)
+	elif _step == steps.size():   # the last scripted level, left the right way
+		done = true
+		passed.emit()
+
+
+## A catch says what caught the player: a danger&#x27;s description is its rule.
+func _on_caught(anomaly) -&gt; void:
+	if not done:
+		hint.emit(&quot;&quot;)
+		_missed = missed_hint % _what(anomaly)
+
+
+## What a wrong choice or a catch missed: the anomaly&#x27;s own description, or that the level was clean.
+func _what(anomaly) -&gt; String:
+	if anomaly == null:
+		return &quot;nothing was wrong on that level.&quot;
+	var d := str(anomaly.get(&quot;description&quot;)) if &quot;description&quot; in anomaly else &quot;&quot;
+	if d == &quot;&quot;:
+		return &quot;something there was not as it should be.&quot;
+	return d[0].to_lower() + d.substr(1)
+</code></pre>
+<h2>The devlog and the pack</h2>
+<p>The step-by-step walkthrough is the devlog <a href="https://cordatix.itch.io/liminal-psx-parking-anomalies/devlog/1733191/how-to-script-a-tutorial-run-for-an-anomaly-game-in-godot-4-liminal-psx-parking-anomalies-11">How to Script a Tutorial Run for an Anomaly Game in Godot 4 (Liminal PSX Parking Anomalies)</a> on itch.io, written for <a href="https://cordatix.itch.io/liminal-psx-parking-anomalies">Liminal PSX Parking Anomalies</a>, a PS1-style asset pack by <a href="https://cordatix.itch.io">Cordatix</a> for Godot 4, Unity, Unreal and Blender.</p>
+</main>
+<footer><p>Cordatix: PS1-style asset packs for Godot 4, Unity, Unreal and Blender, on <a href="https://cordatix.itch.io">itch.io</a>. The tutorials' code on <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials">GitHub</a>, MIT licensed; the pictures show Cordatix asset packs and are not covered by the MIT license.</p></footer>
+</body>
+</html>

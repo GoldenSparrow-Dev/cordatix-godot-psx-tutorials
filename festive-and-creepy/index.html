@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cordatix: How to Switch a Room Between Festive and Creepy in Godot 4</title>
+<meta name="description" content="Cordatix Godot 4 PSX tutorial: One key turns a Halloween party into its abandoned aftermath. A tested script, MIT licensed, with a GIF.">
+<link rel="canonical" href="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/festive-and-creepy/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Cordatix">
+<meta property="og:title" content="Cordatix: How to Switch a Room Between Festive and Creepy in Godot 4">
+<meta property="og:description" content="Cordatix Godot 4 PSX tutorial: One key turns a Halloween party into its abandoned aftermath. A tested script, MIT licensed, with a GIF.">
+<meta property="og:url" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/festive-and-creepy/">
+<meta property="og:image" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/festive-and-creepy/thumb.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../site.css">
+<link rel="icon" href="../favicon.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "author": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}, "description": "One key turns a Halloween party into its abandoned aftermath", "headline": "How to Switch a Room Between Festive and Creepy in Godot 4", "image": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/festive-and-creepy/thumb.png", "inLanguage": "en", "isAccessibleForFree": true, "isBasedOn": "https://cordatix.itch.io/haunted-psx-halloween-takeover/devlog/1718867/how-to-switch-a-room-between-festive-and-creepy-in-godot-4-haunted-psx-halloween-takeover", "license": "https://opensource.org/licenses/MIT", "mainEntityOfPage": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/festive-and-creepy/", "programmingLanguage": "GDScript", "publisher": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}}</script>
+</head>
+<body>
+<header class="top"><a class="brand" href="../">CORDATIX</a><nav><a href="../">Tutorials</a> <a href="../samplers.html">Free samplers</a> <a href="../packs.html">Packs</a> <a href="https://cordatix.itch.io">Store on itch.io</a></nav></header>
+<main>
+<p class="crumbs"><a href="../">Tutorials</a> › Switch a Room Between Festive and Creepy</p>
+<h1>How to Switch a Room Between Festive and Creepy in Godot 4</h1>
+<p class="lede">One key turns a Halloween party into its abandoned aftermath.</p>
+<figure><img src="festive_house.gif" width="480" height="270" alt="Walking through a house dressed for Halloween in Godot 4, PSX shader on"></figure>
+<p>Build a Halloween party and what is left when it is over in one scene, and switch between them with one call: each setup is placed twice, each copy in its side&#x27;s group, and the hidden side is out of sight, physics and processing. Plus swapping one item for its other state, and a flicker that stays within three bright flashes a second.</p>
+<p class="muted">Script: <a href="festive_creepy.gd">festive_creepy.gd</a> (MIT) · Godot 4.3 or newer · <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials/tree/main/festive-and-creepy">its folder on GitHub</a></p>
+<h2>How to use it</h2>
+<ol>
+<li><code>place_setup(name, position, turn)</code> puts both sides of a setup in the level; <code>show_side(0)</code> shows the festive side, <code>show_side(1)</code> the creepy one.</li>
+<li><code>creepy_of(variant)</code> gives an item&#x27;s other state from the pack&#x27;s data.</li>
+<li><code>make_flicker(lamp, pattern)</code> makes any light flicker (&quot;candle&quot;, &quot;bulb&quot; or &quot;fluorescent&quot;).</li>
+</ol>
+<h2>What it needs</h2>
+<ul class="lines">
+<li>Setups as two scenes each, <code>&lt;name&gt;__festive.tscn</code> and <code>&lt;name&gt;__creepy.tscn</code>; for <code>creepy_of</code>, the pack&#x27;s <code>data/props.json</code>; for <code>make_flicker</code>, the series&#x27; <code>flicker_light.gd</code>.</li>
+</ul>
+<h2>Try it free</h2>
+<p>The <a href="https://cordatix.itch.io/haunted-psx-free-sampler">Haunted PSX Free Sampler</a> has a small setup on both sides (<code>halloween_wall</code>), 4 decorations, their data and the flicker script.</p>
+<h2>How it was tested</h2>
+<p>Checked with <code>godot --headless --check-only</code> in Godot 4.3 and 4.7.2.</p>
+<h2>The code</h2>
+<pre><code>extends Node3D
+## How to Switch a Room Between Festive and Creepy in Godot 4
+## Cordatix Godot 4 PSX tutorials, MIT licensed: https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials
+## The devlog: https://cordatix.itch.io/haunted-psx-halloween-takeover/devlog/1718867/how-to-switch-a-room-between-festive-and-creepy-in-godot-4-haunted-psx-halloween-takeover
+
+const PACK := &quot;res://cordatix/haunted_psx_halloween_takeover/&quot;
+const SIDES := [&quot;festive&quot;, &quot;creepy&quot;]
+
+var side := 0
+
+
+## Place a ready-made setup once per side, each copy in a group named after its side.
+func place_setup(setup_name: String, at: Vector3, turn_deg := 0.0) -&gt; void:
+	for s in SIDES:
+		var node: Node3D = load(PACK + &quot;setups/&quot; + setup_name + &quot;__&quot; + s + &quot;.tscn&quot;).instantiate()
+		node.position = at
+		node.rotation_degrees.y = turn_deg
+		node.add_to_group(&quot;cordatix_side_&quot; + s)
+		add_child(node)
+	show_side(side)
+
+
+## Show one side and switch the other off entirely: hidden, and out of physics and processing, so two
+## candy bowls never share one place and the hidden side&#x27;s lights do not flicker.
+func show_side(i: int) -&gt; void:
+	side = i
+	for k in SIDES.size():
+		for n in get_tree().get_nodes_in_group(&quot;cordatix_side_&quot; + SIDES[k]):
+			(n as Node3D).visible = k == i
+			n.process_mode = Node.PROCESS_MODE_INHERIT if k == i else Node.PROCESS_MODE_DISABLED
+
+
+## The creepy pair of one variant, from the pack&#x27;s data: swap a single item in place.
+func creepy_of(variant: String) -&gt; String:
+	var data: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(PACK + &quot;data/props.json&quot;))
+	for p in data[&quot;props&quot;]:
+		if p[&quot;pairs&quot;].has(variant):
+			return p[&quot;pairs&quot;][variant]
+	return variant
+
+
+## Make any lamp flicker with the shared script. Its default patterns (candle, bulb, fluorescent) stay within
+## 3 bright flashes a second; &quot;harsh&quot; can go past it, use it only with a warning. set_flicker(false) holds the
+## light steady (offer it in your options menu).
+func make_flicker(lamp: Light3D, pattern := &quot;bulb&quot;) -&gt; Node:
+	var f: Node = load(&quot;res://cordatix/shared/scripts/flicker_light.gd&quot;).new()
+	f.name = &quot;Flicker&quot;
+	f.set(&quot;mode&quot;, pattern)
+	f.set(&quot;light&quot;, NodePath(&quot;..&quot;))
+	f.set(&quot;glow&quot;, NodePath(&quot;&quot;))
+	lamp.add_child(f)
+	return f
+</code></pre>
+<h2>The devlog and the pack</h2>
+<p>The step-by-step walkthrough is the devlog <a href="https://cordatix.itch.io/haunted-psx-halloween-takeover/devlog/1718867/how-to-switch-a-room-between-festive-and-creepy-in-godot-4-haunted-psx-halloween-takeover">How to Switch a Room Between Festive and Creepy in Godot 4 (Haunted PSX Halloween Takeover)</a> on itch.io, written for <a href="https://cordatix.itch.io/haunted-psx-halloween-takeover">Haunted PSX Halloween Takeover</a>, a PS1-style asset pack by <a href="https://cordatix.itch.io">Cordatix</a> for Godot 4, Unity, Unreal and Blender.</p>
+</main>
+<footer><p>Cordatix: PS1-style asset packs for Godot 4, Unity, Unreal and Blender, on <a href="https://cordatix.itch.io">itch.io</a>. The tutorials' code on <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials">GitHub</a>, MIT licensed; the pictures show Cordatix asset packs and are not covered by the MIT license.</p></footer>
+</body>
+</html>

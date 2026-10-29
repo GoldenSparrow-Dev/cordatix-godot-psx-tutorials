@@ -36,3 +36,7 @@ The code is MIT licensed: see [LICENSE](LICENSE). The GIFs and pictures show Cor
 ## Cordatix
 
 PS1-style asset packs for Godot 4, Unity, Unreal and Blender, each with a free sampler: [cordatix.itch.io](https://cordatix.itch.io). A new pack's Godot tutorial joins this repository when its devlog is published.
+
+## The website
+
+The same tutorials as a website, with the free samplers and the packs: https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/

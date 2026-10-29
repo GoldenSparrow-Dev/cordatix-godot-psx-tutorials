@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cordatix: How to Make a Hallway That Loops for an Anomaly Game in Godot 4</title>
+<meta name="description" content="Cordatix Godot 4 PSX tutorial: One hallway between two stairwells built alike: walk on and you are in it again, a floor lower.">
+<link rel="canonical" href="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/looping-hallway/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Cordatix">
+<meta property="og:title" content="Cordatix: How to Make a Hallway That Loops for an Anomaly Game in Godot 4">
+<meta property="og:description" content="Cordatix Godot 4 PSX tutorial: One hallway between two stairwells built alike: walk on and you are in it again, a floor lower.">
+<meta property="og:url" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/looping-hallway/">
+<meta property="og:image" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/looping-hallway/thumb.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../site.css">
+<link rel="icon" href="../favicon.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "author": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}, "description": "One hallway between two stairwells built alike: walk on and you are in it again, a floor lower", "headline": "How to Make a Hallway That Loops for an Anomaly Game in Godot 4", "image": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/looping-hallway/thumb.png", "inLanguage": "en", "isAccessibleForFree": true, "isBasedOn": "https://cordatix.itch.io/liminal-psx-anomalies/devlog/1729533/how-to-make-a-hallway-that-loops-for-an-anomaly-game-in-godot-4-liminal-psx-anomalies", "license": "https://opensource.org/licenses/MIT", "mainEntityOfPage": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/looping-hallway/", "programmingLanguage": "GDScript", "publisher": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}}</script>
+</head>
+<body>
+<header class="top"><a class="brand" href="../">CORDATIX</a><nav><a href="../">Tutorials</a> <a href="../samplers.html">Free samplers</a> <a href="../packs.html">Packs</a> <a href="https://cordatix.itch.io">Store on itch.io</a></nav></header>
+<main>
+<p class="crumbs"><a href="../">Tutorials</a> › Make a Hallway That Loops for an Anomaly Game</p>
+<h1>How to Make a Hallway That Loops for an Anomaly Game in Godot 4</h1>
+<p class="lede">One hallway between two stairwells built alike: walk on and you are in it again, a floor lower.</p>
+<figure><img src="looping_hallway.gif" width="400" height="225" alt="The free sampler&#x27;s loop in Godot 4 with the PSX look: down the stairs onto floor 3, along the corridor, on down the far stairs and onto the same corridor, floor 2"></figure>
+<p>The loop of an anomaly game: one hallway between two stairwells built alike. A flight down either stairwell, out of sight of the hallway, the player is moved to the same place a storey back in the stairwell they came in by, with the same view and speed, so they walk down into the same hallway again. The script says which way they went, and counts a choice only after they have stood in the hallway.</p>
+<p class="muted">Script: <a href="looping_hallway.gd">looping_hallway.gd</a> (MIT) · Godot 4.3 or newer · <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials/tree/main/looping-hallway">its folder on GitHub</a></p>
+<h2>How to use it</h2>
+<ol>
+<li>Build the hallway between two stairwells that look alike from inside, each a stack of the same storey, <code>storey</code> metres apart.</li>
+<li>Put a Node3D marker in each at the same spot (the middle of its door, its +Z into the stairwell): <code>back</code> in the one the player comes in by, <code>on</code> in the far one. The two only have to look alike, not stand alike.</li>
+<li>Add <code>looping_hallway.gd</code> to a Node in the level and set <code>player</code>, <code>back</code> and <code>on</code> in the Inspector. <code>inside</code> is the stairwell&#x27;s floor in its marker&#x27;s frame; <code>cross_depth</code> is how far below (or above) the hallway&#x27;s floor the move happens.</li>
+<li>Connect <code>chosen(went_on)</code> to dress the next floor: in an anomaly game, going on is right when nothing was wrong, going back is right when something was.</li>
+</ol>
+<h2>What it needs</h2>
+<ul class="lines">
+<li>A CharacterBody3D player, and two stairwells that look the same wherever the player can see during the move.</li>
+</ul>
+<h2>Try it free</h2>
+<p>The <a href="https://cordatix.itch.io/liminal-psx-anomalies-free">Liminal PSX Anomalies Free Sampler</a> has the hotel floor, its two stairwells and the pack&#x27;s full loop game with five anomalies, on a run of three floors (it also waits for both stairwell doors to shut, dresses each floor and writes the floor number on the sign and every door).</p>
+<h2>How it was tested</h2>
+<p>In Godot 4.3 and 4.7.2, on two markers that face different ways and a capsule player: going on down the far stairwell lands the player a storey up in the near one, at the same place, facing the same way and at the same speed in it, and says <code>chosen(true)</code>; back down the near one says <code>chosen(false)</code>; climbing moves them a storey down; a player who has not stood in the hallway, or is short of the depth, is not moved.</p>
+<h2>The code</h2>
+<pre><code>extends Node
+## How to Make a Hallway That Loops for an Anomaly Game in Godot 4
+## Cordatix Godot 4 PSX tutorials, MIT licensed: https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials
+## The devlog: https://cordatix.itch.io/liminal-psx-anomalies/devlog/1729533/how-to-make-a-hallway-that-loops-for-an-anomaly-game-in-godot-4-liminal-psx-anomalies
+## A hallway that loops: when the player is a flight down (or up) either stairwell, out of sight of the hallway,
+## they are moved to the same place a storey back in the stairwell they came in by, so they walk down into the same
+## hallway again. Build the two stairwells alike, their storeys `storey` metres apart; `back` and `on` mark the same
+## spot in each (the middle of the stairwell&#x27;s door, its +Z into the stairwell).
+
+signal chosen(went_on: bool)
+
+@export var player: CharacterBody3D
+## A marker in the stairwell the player came in by, and the same spot in the far one.
+@export var back: Node3D
+@export var on: Node3D
+## The height between two storeys, and how far below (or above) the hallway&#x27;s floor the move happens.
+@export var storey := 4.0
+@export var cross_depth := 1.75
+## The inside of a stairwell in its marker&#x27;s frame (x, z).
+@export var inside := Rect2(-1.9, 0.1, 3.8, 5.8)
+
+var armed := false                    # only a player who has stood in the hallway can choose
+
+
+func _physics_process(_delta: float) -&gt; void:
+	if player == null:
+		return
+	if not armed and _in_hallway(player.global_position):
+		armed = true
+	if not armed:
+		return
+	for s in [back, on]:
+		var p: Vector3 = s.global_transform.affine_inverse() * player.global_position
+		if inside.has_point(Vector2(p.x, p.z)) and absf(p.y) &gt;= cross_depth:
+			_move(s, p.y &lt; 0.0)
+			return
+
+
+func _in_hallway(at: Vector3) -&gt; bool:
+	for s in [back, on]:
+		var p: Vector3 = s.global_transform.affine_inverse() * at
+		if inside.has_point(Vector2(p.x, p.z)) or absf(p.y) &gt; 0.5:
+			return false
+	return true
+
+
+## The move: from the stairwell s to the same place in `back`, a storey up (down, if they climbed). The player keeps
+## their place in the stairwell, their view and their speed.
+
+
+func _move(s: Node3D, down: bool) -&gt; void:
+	var lift := Transform3D(Basis(), Vector3(0.0, storey if down else -storey, 0.0))
+	var t := back.global_transform * lift * s.global_transform.affine_inverse()
+	player.global_transform = t * player.global_transform
+	player.velocity = t.basis * player.velocity
+	player.reset_physics_interpolation()
+	armed = false
+	chosen.emit(s == on)
+</code></pre>
+<h2>The devlog and the pack</h2>
+<p>The step-by-step walkthrough is the devlog <a href="https://cordatix.itch.io/liminal-psx-anomalies/devlog/1729533/how-to-make-a-hallway-that-loops-for-an-anomaly-game-in-godot-4-liminal-psx-anomalies">How to Make a Hallway That Loops for an Anomaly Game in Godot 4 (Liminal PSX Anomalies)</a> on itch.io, written for <a href="https://cordatix.itch.io/liminal-psx-anomalies">Liminal PSX Anomalies</a>, a PS1-style asset pack by <a href="https://cordatix.itch.io">Cordatix</a> for Godot 4, Unity, Unreal and Blender.</p>
+</main>
+<footer><p>Cordatix: PS1-style asset packs for Godot 4, Unity, Unreal and Blender, on <a href="https://cordatix.itch.io">itch.io</a>. The tutorials' code on <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials">GitHub</a>, MIT licensed; the pictures show Cordatix asset packs and are not covered by the MIT license.</p></footer>
+</body>
+</html>

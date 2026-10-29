@@ -2,3 +2,8 @@
 *.md text eol=lf
 *.gif binary
 *.png binary
+*.html text eol=lf
+*.css text eol=lf
+*.xml text eol=lf
+*.txt text eol=lf
+*.ttf binary

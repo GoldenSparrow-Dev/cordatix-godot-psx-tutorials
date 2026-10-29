@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cordatix: How to Make Doors Open Away from the Player in Godot 4</title>
+<meta name="description" content="Cordatix Godot 4 PSX tutorial: A door that swings away from the player, from either side. A tested script, MIT licensed, with a GIF.">
+<link rel="canonical" href="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/doors-that-open-away/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Cordatix">
+<meta property="og:title" content="Cordatix: How to Make Doors Open Away from the Player in Godot 4">
+<meta property="og:description" content="Cordatix Godot 4 PSX tutorial: A door that swings away from the player, from either side. A tested script, MIT licensed, with a GIF.">
+<meta property="og:url" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/doors-that-open-away/">
+<meta property="og:image" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/doors-that-open-away/thumb.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../site.css">
+<link rel="icon" href="../favicon.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "author": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}, "description": "A door that swings away from the player, from either side", "headline": "How to Make Doors Open Away from the Player in Godot 4", "image": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/doors-that-open-away/thumb.png", "inLanguage": "en", "isAccessibleForFree": true, "isBasedOn": "https://cordatix.itch.io/liminal-psx-office-kit/devlog/1723528/how-to-make-doors-open-away-from-the-player-in-godot-4-liminal-psx-office-kit-11", "license": "https://opensource.org/licenses/MIT", "mainEntityOfPage": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/doors-that-open-away/", "programmingLanguage": "GDScript", "publisher": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}}</script>
+</head>
+<body>
+<header class="top"><a class="brand" href="../">CORDATIX</a><nav><a href="../">Tutorials</a> <a href="../samplers.html">Free samplers</a> <a href="../packs.html">Packs</a> <a href="https://cordatix.itch.io">Store on itch.io</a></nav></header>
+<main>
+<p class="crumbs"><a href="../">Tutorials</a> › Make Doors Open Away from the Player</p>
+<h1>How to Make Doors Open Away from the Player in Godot 4</h1>
+<p class="lede">A door that swings away from the player, from either side.</p>
+<figure><img src="office_door.gif" width="480" height="270" alt="An office door with the PSX look on: coming down the corridor it swings away into the office, and coming back from the office it swings away into the corridor"></figure>
+<p>A door that swings open away from whoever comes near, from either side. It opens at the same distance from both sides, measured from the doorway&#x27;s middle, and if the player turns back as it closes, it swings back through the frame out of their way.</p>
+<p class="muted">Script: <a href="door_open_away.gd">door_open_away.gd</a> (MIT) · Godot 4.3 or newer · <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials/tree/main/doors-that-open-away">its folder on GitHub</a></p>
+<h2>How to use it</h2>
+<ol>
+<li>Give the door scene a child named <code>Hinge</code> at the leaf&#x27;s edge in the doorway, an AnimatableBody3D, and put the leaf&#x27;s mesh and collision under it: its collision then swings with it and pushes bodies aside.</li>
+<li>Add <code>door_open_away.gd</code> to the door&#x27;s Node3D. <code>open_degrees</code> is the side it opens to by itself, <code>open_distance</code> is measured from the doorway&#x27;s middle.</li>
+<li>Put the player in the group <code>player</code>.</li>
+</ol>
+<h2>What it needs</h2>
+<ul class="lines">
+<li>A door scene built that way; nothing else.</li>
+</ul>
+<h2>Try it free</h2>
+<p>The <a href="https://cordatix.itch.io/liminal-psx-office-kit-free">Liminal PSX Office Kit - Free Sampler</a> has a wooden office door and a doorway wall to try it on (its own <code>door.gd</code> does the same with more options).</p>
+<h2>How it was tested</h2>
+<p>In Godot 4.3 and 4.7.2, on the free sampler&#x27;s door: walking and running through it from both sides, and turning back 0 to 0.3 s after it starts to close; each time it opens away from the runner and the leaf never touches them.</p>
+<h2>The code</h2>
+<pre><code>extends Node3D
+## How to Make Doors Open Away from the Player in Godot 4
+## Cordatix Godot 4 PSX tutorials, MIT licensed: https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials
+## The devlog: https://cordatix.itch.io/liminal-psx-office-kit/devlog/1723528/how-to-make-doors-open-away-from-the-player-in-godot-4-liminal-psx-office-kit-11
+## A door that swings open away from whoever comes near, a cut-down version of the Liminal PSX Office Kit 1.1&#x27;s
+## door.gd. The scene: this script on the door&#x27;s Node3D, a &quot;Hinge&quot; child (an AnimatableBody3D, so its collision
+## swings too) at the leaf&#x27;s edge in the doorway, and the leaf&#x27;s mesh and collision under the Hinge.
+
+@export var open_degrees := -95.0     # the side the door opens to by itself
+@export var speed_deg := 240.0
+@export var open_distance := 3.5      # from the doorway&#x27;s middle
+
+var is_open := false
+var _angle := 0.0
+var _swing := 0.0
+@onready var _hinge: Node3D = $Hinge
+
+
+func _physics_process(delta: float) -&gt; void:
+	var player := _nearest_player()
+	if player != null and not is_open:
+		_swing_away_from(player)          # each time the door starts to open
+	is_open = player != null
+	var target := _swing if is_open else 0.0
+	_angle = move_toward(_angle, target, speed_deg * delta)
+	_hinge.rotation_degrees.y = _angle
+
+
+func _swing_away_from(player: Node3D) -&gt; void:
+	# the leaf runs from its hinge towards the door&#x27;s middle, so at open_degrees it swings to this side
+	var leaf_side := signf(_hinge.position.x * sin(deg_to_rad(open_degrees)))
+	# and the player is on this side of the doorway, in the door&#x27;s own frame
+	var player_side := signf(to_local(player.global_position).z - _hinge.position.z)
+	var away := -open_degrees if player_side == leaf_side else open_degrees
+	# still on the player&#x27;s side as they come back: back through the frame to the far side,
+	# unless the leaf is more than 60 degrees open; then it finishes there, nearly out of their way
+	if absf(_angle) &gt; 60.0 and signf(_angle) != signf(away):
+		return
+	_swing = away
+
+
+func _nearest_player() -&gt; Node3D:
+	# measured from the doorway&#x27;s middle, so the door opens at the same distance from both sides
+	var doorway := to_global(Vector3(0.0, 0.0, _hinge.position.z))
+	var best: Node3D = null
+	var best_d := open_distance
+	for body in get_tree().get_nodes_in_group(&quot;player&quot;):
+		if body is Node3D:
+			var d := (body as Node3D).global_position.distance_to(doorway)
+			if d &lt; best_d:
+				best_d = d
+				best = body
+	return best
+</code></pre>
+<h2>The devlog and the pack</h2>
+<p>The step-by-step walkthrough is the devlog <a href="https://cordatix.itch.io/liminal-psx-office-kit/devlog/1723528/how-to-make-doors-open-away-from-the-player-in-godot-4-liminal-psx-office-kit-11">How to Make Doors Open Away from the Player in Godot 4 (Liminal PSX Office Kit)</a> on itch.io, written for <a href="https://cordatix.itch.io/liminal-psx-office-kit">Liminal PSX Office Kit</a>, a PS1-style asset pack by <a href="https://cordatix.itch.io">Cordatix</a> for Godot 4, Unity, Unreal and Blender.</p>
+</main>
+<footer><p>Cordatix: PS1-style asset packs for Godot 4, Unity, Unreal and Blender, on <a href="https://cordatix.itch.io">itch.io</a>. The tutorials' code on <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials">GitHub</a>, MIT licensed; the pictures show Cordatix asset packs and are not covered by the MIT license.</p></footer>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cordatix: How to Make a Monster Step Out of a Wall in Godot 4</title>
+<meta name="description" content="Cordatix Godot 4 PSX tutorial: A monster that waits flat on a wall, steps out, and slips back unseen. A tested script, MIT licensed, with a GIF.">
+<link rel="canonical" href="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/monster-out-of-a-wall/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Cordatix">
+<meta property="og:title" content="Cordatix: How to Make a Monster Step Out of a Wall in Godot 4">
+<meta property="og:description" content="Cordatix Godot 4 PSX tutorial: A monster that waits flat on a wall, steps out, and slips back unseen. A tested script, MIT licensed, with a GIF.">
+<meta property="og:url" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/monster-out-of-a-wall/">
+<meta property="og:image" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/monster-out-of-a-wall/thumb.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../site.css">
+<link rel="icon" href="../favicon.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "author": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}, "description": "A monster that waits flat on a wall, steps out, and slips back unseen", "headline": "How to Make a Monster Step Out of a Wall in Godot 4", "image": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/monster-out-of-a-wall/thumb.png", "inLanguage": "en", "isAccessibleForFree": true, "isBasedOn": "https://cordatix.itch.io/haunted-psx-monsters/devlog/1724922/how-to-make-a-monster-step-out-of-a-wall-in-godot-4-haunted-psx-monsters", "license": "https://opensource.org/licenses/MIT", "mainEntityOfPage": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/monster-out-of-a-wall/", "programmingLanguage": "GDScript", "publisher": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}}</script>
+</head>
+<body>
+<header class="top"><a class="brand" href="../">CORDATIX</a><nav><a href="../">Tutorials</a> <a href="../samplers.html">Free samplers</a> <a href="../packs.html">Packs</a> <a href="https://cordatix.itch.io">Store on itch.io</a></nav></header>
+<main>
+<p class="crumbs"><a href="../">Tutorials</a> › Make a Monster Step Out of a Wall</p>
+<h1>How to Make a Monster Step Out of a Wall in Godot 4</h1>
+<p class="lede">A monster that waits flat on a wall, steps out, and slips back unseen.</p>
+<figure><img src="papered.gif" width="480" height="360" alt="Papered, a figure of peeling wallpaper, peels off the wall of the free sampler&#x27;s room and steps out"></figure>
+<p>A monster that waits pressed flat on a wall, steps out of it when the player comes near, and slips back in once the camera sees neither the monster nor its place on the wall. It comes out again only after the player has walked away and come back.</p>
+<p class="muted">Script: <a href="wall_ambush.gd">wall_ambush.gd</a> (MIT) · Godot 4.3 or newer · <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials/tree/main/monster-out-of-a-wall">its folder on GitHub</a></p>
+<h2>How to use it</h2>
+<ol>
+<li>Make the monster a CharacterBody3D with its model under it, turned to face the body&#x27;s -Z. The model&#x27;s AnimationPlayer needs an <code>Emerge</code> clip that starts pressed flat on a wall, and an <code>Idle</code> clip.</li>
+<li>Add <code>wall_ambush.gd</code> to the CharacterBody3D and stand it with its back to the wall, its origin a few centimetres from the wall&#x27;s face. <code>trigger_range</code> is how near the player must come; <code>step_out</code> is how far the Emerge clip carries the body out of the wall.</li>
+<li>Put the player in the group <code>player</code>.</li>
+</ol>
+<h2>What it needs</h2>
+<ul class="lines">
+<li>A rigged monster with those two clips; nothing else.</li>
+</ul>
+<h2>Try it free</h2>
+<p>The <a href="https://cordatix.itch.io/haunted-psx-free-sampler">Haunted PSX Free Sampler</a> has Papered, a figure of peeling wallpaper, with all ten of its clips: try the script with it right away.</p>
+<h2>How it was tested</h2>
+<p>In Godot 4.3 and 4.7.2, with Papered from the free sampler: it waits on its wall, steps out along its facing when the player comes near, plays Idle once out, and slips back when the camera looks away from it and its place.</p>
+<h2>The code</h2>
+<pre><code>extends CharacterBody3D
+## How to Make a Monster Step Out of a Wall in Godot 4
+## Cordatix Godot 4 PSX tutorials, MIT licensed: https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials
+## The devlog: https://cordatix.itch.io/haunted-psx-monsters/devlog/1724922/how-to-make-a-monster-step-out-of-a-wall-in-godot-4-haunted-psx-monsters
+
+## How close the player must come, and how far the Emerge clip carries the body out of the wall.
+@export var trigger_range := 2.5
+@export var step_out := 0.32
+
+@onready var anim: AnimationPlayer = find_child(&quot;AnimationPlayer&quot;, true, false)
+var waiting := true
+var emerging := false
+var armed := true          # back in the wall, it waits for the player to leave before it can step out again
+var _home: Transform3D
+
+
+func _ready() -&gt; void:
+	_home = global_transform
+	hide_in_wall()
+
+
+## Pressed flat on the wall: Emerge&#x27;s first frame, held. The clip plays and seeks before it pauses (a paused
+## player&#x27;s seek would leave the skeleton as it was).
+func hide_in_wall() -&gt; void:
+	global_transform = _home
+	waiting = true
+	emerging = false
+	anim.play(&quot;Emerge&quot;)
+	anim.seek(0.0, true)
+	anim.pause()
+
+
+## Near enough, it steps out: Emerge plays on, and the body moves out along its facing at the clip&#x27;s pace, with no
+## collisions (its capsule starts inside the wall).
+func _physics_process(delta: float) -&gt; void:
+	var player := get_tree().get_first_node_in_group(&quot;player&quot;) as Node3D
+	if waiting:
+		var near := player != null and global_position.distance_to(player.global_position) &lt; trigger_range
+		if near and armed:
+			waiting = false
+			emerging = true
+			anim.play(&quot;Emerge&quot;)
+		elif not near:
+			armed = true
+		return
+	if emerging:
+		var length := anim.get_animation(&quot;Emerge&quot;).length
+		global_position += -global_transform.basis.z * step_out / length * delta
+		if not anim.is_playing():
+			emerging = false
+			anim.play(&quot;Idle&quot;)
+
+
+## Once the player looks away from it and from its place on the wall, it slips back in.
+func _process(_delta: float) -&gt; void:
+	if waiting or emerging:
+		return
+	var cam := get_viewport().get_camera_3d()
+	if cam and not cam.is_position_in_frustum(global_position + Vector3.UP) \
+			and not cam.is_position_in_frustum(_home.origin + Vector3.UP):
+		hide_in_wall()
+		armed = false
+</code></pre>
+<h2>The devlog and the pack</h2>
+<p>The step-by-step walkthrough is the devlog <a href="https://cordatix.itch.io/haunted-psx-monsters/devlog/1724922/how-to-make-a-monster-step-out-of-a-wall-in-godot-4-haunted-psx-monsters">How to Make a Monster Step Out of a Wall in Godot 4 (Haunted PSX Monsters)</a> on itch.io, written for <a href="https://cordatix.itch.io/haunted-psx-monsters">Haunted PSX Monsters</a>, a PS1-style asset pack by <a href="https://cordatix.itch.io">Cordatix</a> for Godot 4, Unity, Unreal and Blender.</p>
+</main>
+<footer><p>Cordatix: PS1-style asset packs for Godot 4, Unity, Unreal and Blender, on <a href="https://cordatix.itch.io">itch.io</a>. The tutorials' code on <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials">GitHub</a>, MIT licensed; the pictures show Cordatix asset packs and are not covered by the MIT license.</p></footer>
+</body>
+</html>

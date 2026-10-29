@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cordatix: How to Start an Anomaly Loop Behind a Menu in Godot 4</title>
+<meta name="description" content="Cordatix Godot 4 PSX tutorial: The loop waits behind your title menu: nothing happens before Start, and the floor behind the menu is the one the run starts on.">
+<link rel="canonical" href="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/anomaly-loop-behind-a-menu/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Cordatix">
+<meta property="og:title" content="Cordatix: How to Start an Anomaly Loop Behind a Menu in Godot 4">
+<meta property="og:description" content="Cordatix Godot 4 PSX tutorial: The loop waits behind your title menu: nothing happens before Start, and the floor behind the menu is the one the run starts on.">
+<meta property="og:url" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/anomaly-loop-behind-a-menu/">
+<meta property="og:image" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/anomaly-loop-behind-a-menu/thumb.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../site.css">
+<link rel="icon" href="../favicon.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "author": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}, "description": "The loop waits behind your title menu: nothing happens before Start, and the floor behind the menu is the one the run starts on", "headline": "How to Start an Anomaly Loop Behind a Menu in Godot 4", "image": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/anomaly-loop-behind-a-menu/thumb.png", "inLanguage": "en", "isAccessibleForFree": true, "isBasedOn": "https://cordatix.itch.io/liminal-psx-anomalies/devlog/1732551/how-to-start-an-anomaly-loop-behind-a-menu-in-godot-4-liminal-psx-anomalies-11", "license": "https://opensource.org/licenses/MIT", "mainEntityOfPage": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/anomaly-loop-behind-a-menu/", "programmingLanguage": "GDScript", "publisher": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}}</script>
+</head>
+<body>
+<header class="top"><a class="brand" href="../">CORDATIX</a><nav><a href="../">Tutorials</a> <a href="../samplers.html">Free samplers</a> <a href="../packs.html">Packs</a> <a href="https://cordatix.itch.io">Store on itch.io</a></nav></header>
+<main>
+<p class="crumbs"><a href="../">Tutorials</a> › Start an Anomaly Loop Behind a Menu</p>
+<h1>How to Start an Anomaly Loop Behind a Menu in Godot 4</h1>
+<p class="lede">The loop waits behind your title menu: nothing happens before Start, and the floor behind the menu is the one the run starts on.</p>
+<figure><img src="loop_behind_menu.gif" width="400" height="225" alt="A title menu of your own game (Start and Continue) over the free sampler&#x27;s clean hotel floor, floor 3, in Godot 4 with the PSX look; Start is pressed, the view dips to dark, and the run begins on the stairwell&#x27;s landing"></figure>
+<p>An anomaly game opens on its title menu with the level already in the scene behind it. This loop does nothing until a run has begun: no floor is entered, no choice made, nobody moved, and the level shows the floor the run will start on, clean. Start begins the run, Continue loads a save, and either may be called before the loop is ready (from a node above it in the tree): the call waits and runs once it is.</p>
+<p class="muted">Script: <a href="anomaly_loop_menu.gd">anomaly_loop_menu.gd</a> (MIT) · Godot 4.3 or newer · <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials/tree/main/anomaly-loop-behind-a-menu">its folder on GitHub</a></p>
+<h2>How to use it</h2>
+<ol>
+<li>Add <code>anomaly_loop_menu.gd</code> to a Node in your level and set <code>level</code> to your level&#x27;s node: it needs <code>show_floor(number, anomaly)</code> (dress the floor quietly) and <code>player_on_floor()</code>.</li>
+<li>Leave <code>start_on_ready</code> off for a game with a menu. Your menu&#x27;s Start calls <code>start_run()</code>; its Continue reads the dictionary <code>get_save()</code> gave (JSON in a file) and calls <code>load_save(data)</code>.</li>
+<li>Connect <code>floor_started</code> and <code>entered_floor</code>: neither comes before a run has begun.</li>
+<li>For a game without a menu, turn <code>start_on_ready</code> on: the run begins at the end of the first frame, and a save loaded in the scene&#x27;s own <code>_ready</code> still wins.</li>
+</ol>
+<h2>What it needs</h2>
+<ul class="lines">
+<li>A level node with <code>show_floor()</code> and <code>player_on_floor()</code>; the rest of your loop (the stairwells, the move, the choice) goes in <code>_physics_process</code> after the guard.</li>
+</ul>
+<h2>Try it free</h2>
+<p>The <a href="https://cordatix.itch.io/liminal-psx-anomalies-free">Liminal PSX Anomalies Free Sampler</a> has the hotel floor and the pack&#x27;s loop game, which also does nothing before a run has begun (from version 1.1), with five anomalies on a run of three floors.</p>
+<h2>How it was tested</h2>
+<p>In Godot 4.3 and 4.7.2, on a stand-in level and menu: the start floor shows clean before a run; nothing is entered before one; Start begins the run once; a save goes through JSON and back; a Continue called from a node above the Loop waits for it; <code>start_on_ready</code> alone begins a run, and a save loaded in the scene&#x27;s <code>_ready</code> wins over it.</p>
+<h2>The code</h2>
+<pre><code>extends Node
+## How to Start an Anomaly Loop Behind a Menu in Godot 4
+## Cordatix Godot 4 PSX tutorials, MIT licensed: https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials
+## The devlog: https://cordatix.itch.io/liminal-psx-anomalies/devlog/1732551/how-to-start-an-anomaly-loop-behind-a-menu-in-godot-4-liminal-psx-anomalies-11
+## A loop game&#x27;s run, held behind its title menu. Until a run has begun the loop does nothing (no floor entered, no
+## choice, no move) and the level shows the floor the run will start on, clean, so the menu has the right floor
+## behind it. Your menu&#x27;s Start calls start_run(), its Continue load_save(); called before the loop is ready (from a
+## node above it in the tree, whose _ready comes first) they wait and run once it is.
+
+signal floor_started(number: int)
+signal entered_floor(number: int)
+
+## Your level: show_floor(number, anomaly) dresses it quietly; player_on_floor() says the player stands on it.
+@export var level: Node
+@export var start_floor := 7
+## Begin a run as the scene starts (a game without a menu); a load_save() in the scene&#x27;s own _ready wins.
+@export var start_on_ready := false
+
+var floor_number := 0
+var anomaly := &quot;&quot;
+var begun := false                    # nothing happens before a run has begun
+var _set_up := false
+var _early: Array[Callable] = []      # calls made before the loop was set up, in their order
+var _entered := false
+
+
+func _ready() -&gt; void:
+	# ready before the level (above it, or first among its siblings): set up at the end of the frame, once it is
+	if level.is_node_ready():
+		_setup()
+	else:
+		_setup.call_deferred()
+
+
+func _setup() -&gt; void:
+	floor_number = start_floor
+	level.show_floor(start_floor, &quot;&quot;)          # the start floor, clean and quiet: the floor behind the menu
+	_set_up = true
+	var early := _early
+	_early = []
+	for c in early:
+		c.call()
+	if start_on_ready:
+		_start_on_ready.call_deferred()
+
+
+func _start_on_ready() -&gt; void:
+	if not begun:
+		start_run()
+
+
+func start_run() -&gt; void:
+	if not _set_up:
+		_early.append(start_run)
+		return
+	begun = true
+	_dress(start_floor, &quot;&quot;)
+
+
+func load_save(data: Dictionary) -&gt; void:
+	if not _set_up:
+		_early.append(load_save.bind(data))
+		return
+	begun = true
+	floor_number = int(data[&quot;floor&quot;])
+	anomaly = str(data[&quot;anomaly&quot;])
+	level.show_floor(floor_number, anomaly)    # quiet: a floor loaded is not a new floor
+	_entered = false
+
+
+func get_save() -&gt; Dictionary:
+	return {&quot;floor&quot;: floor_number, &quot;anomaly&quot;: anomaly}
+
+
+func _dress(number: int, id: String) -&gt; void:
+	floor_number = number
+	anomaly = id
+	level.show_floor(number, id)
+	_entered = false
+	floor_started.emit(number)
+
+
+func _physics_process(_delta: float) -&gt; void:
+	if not begun:
+		return                                 # the menu&#x27;s floor: a walk behind it chooses nothing
+	if not _entered and level.player_on_floor():
+		_entered = true
+		entered_floor.emit(floor_number)
+	# then the rest of your loop: arm on the floor, watch both stairwells, move the player, choose and dress
+</code></pre>
+<h2>The devlog and the pack</h2>
+<p>The step-by-step walkthrough is the devlog <a href="https://cordatix.itch.io/liminal-psx-anomalies/devlog/1732551/how-to-start-an-anomaly-loop-behind-a-menu-in-godot-4-liminal-psx-anomalies-11">How to Start an Anomaly Loop Behind a Menu in Godot 4 (Liminal PSX Anomalies)</a> on itch.io, written for <a href="https://cordatix.itch.io/liminal-psx-anomalies">Liminal PSX Anomalies</a>, a PS1-style asset pack by <a href="https://cordatix.itch.io">Cordatix</a> for Godot 4, Unity, Unreal and Blender.</p>
+</main>
+<footer><p>Cordatix: PS1-style asset packs for Godot 4, Unity, Unreal and Blender, on <a href="https://cordatix.itch.io">itch.io</a>. The tutorials' code on <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials">GitHub</a>, MIT licensed; the pictures show Cordatix asset packs and are not covered by the MIT license.</p></footer>
+</body>
+</html>

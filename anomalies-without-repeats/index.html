@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cordatix: How to Draw Anomalies Without Repeats in Godot 4</title>
+<meta name="description" content="Cordatix Godot 4 PSX tutorial: Which anomaly a level shows: none twice before all have come, the obvious ones early, the subtle ones late.">
+<link rel="canonical" href="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/anomalies-without-repeats/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Cordatix">
+<meta property="og:title" content="Cordatix: How to Draw Anomalies Without Repeats in Godot 4">
+<meta property="og:description" content="Cordatix Godot 4 PSX tutorial: Which anomaly a level shows: none twice before all have come, the obvious ones early, the subtle ones late.">
+<meta property="og:url" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/anomalies-without-repeats/">
+<meta property="og:image" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/anomalies-without-repeats/thumb.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../site.css">
+<link rel="icon" href="../favicon.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "author": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}, "description": "Which anomaly a level shows: none twice before all have come, the obvious ones early, the subtle ones late", "headline": "How to Draw Anomalies Without Repeats in Godot 4", "image": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/anomalies-without-repeats/thumb.png", "inLanguage": "en", "isAccessibleForFree": true, "isBasedOn": "https://cordatix.itch.io/liminal-psx-parking-anomalies/devlog/1731759/how-to-draw-anomalies-without-repeats-in-godot-4-liminal-psx-parking-anomalies", "license": "https://opensource.org/licenses/MIT", "mainEntityOfPage": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/anomalies-without-repeats/", "programmingLanguage": "GDScript", "publisher": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}}</script>
+</head>
+<body>
+<header class="top"><a class="brand" href="../">CORDATIX</a><nav><a href="../">Tutorials</a> <a href="../samplers.html">Free samplers</a> <a href="../packs.html">Packs</a> <a href="https://cordatix.itch.io">Store on itch.io</a></nav></header>
+<main>
+<p class="crumbs"><a href="../">Tutorials</a> › Draw Anomalies Without Repeats</p>
+<h1>How to Draw Anomalies Without Repeats in Godot 4</h1>
+<p class="lede">Which anomaly a level shows: none twice before all have come, the obvious ones early, the subtle ones late.</p>
+<figure><img src="car_park_loop.gif" width="400" height="225" alt="The free sampler&#x27;s loop in Godot 4 with the PSX look: onto level 3, across the car park, down the far stairs and out onto level 2, the same level"></figure>
+<p>The draw of an anomaly game: which anomaly, if any, a level shows. No anomaly comes twice before every one has come once (a bag that refills only when it is empty, and never with the anomaly just shown), each is picked by its weight, and a ramp makes the obvious ones likelier early in a run and the subtle ones deeper down. The run&#x27;s first level is always clean, so the player learns the level before anything on it changes.</p>
+<p class="muted">Script: <a href="anomaly_draw.gd">anomaly_draw.gd</a> (MIT) · Godot 4.3 or newer · <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials/tree/main/anomalies-without-repeats">its folder on GitHub</a></p>
+<h2>How to use it</h2>
+<ol>
+<li>Copy <code>anomaly_draw.gd</code> into your project and make a draw for your loop: <code>const Draw = preload(&quot;res://anomaly_draw.gd&quot;)</code>, then <code>var draw = Draw.new()</code>.</li>
+<li>Fill <code>draw.anomalies</code> with your anomalies: anything with an <code>id</code>, a <code>tier</code> (&quot;S&quot; subtle, &quot;N&quot; noticeable, &quot;O&quot; obvious) and a <code>weight</code>, such as your anomaly nodes, or the script&#x27;s own class: <code>Draw.Anomaly.new(&quot;tyre&quot;, &quot;S&quot;, 1.0)</code>.</li>
+<li>Set <code>start_level</code> and <code>goal_level</code> to your run (it counts down from the start level to the way out) and <code>clean_chance</code>; seed <code>draw.rng</code> for a run that repeats.</li>
+<li>Call <code>start_run()</code> when a run starts, and <code>draw(level)</code> for each level: it gives the anomaly to show there, or <code>null</code> for a clean level.</li>
+</ol>
+<h2>What it needs</h2>
+<ul class="lines">
+<li>Only your anomalies, each with an <code>id</code>, a <code>tier</code> and a <code>weight</code>: the draw is plain GDScript, with no scene or file of a pack.</li>
+</ul>
+<h2>Try it free</h2>
+<p>The <a href="https://cordatix.itch.io/liminal-psx-parking-anomalies-free">Liminal PSX Parking Anomalies Free Sampler</a> has the looping car park and the pack&#x27;s loop game, which draws its five anomalies this way on a run of three levels (it also keeps the bag across runs and saves it with the run).</p>
+<h2>How it was tested</h2>
+<p>In Godot 4.3 and 4.7.2, on stand-in anomalies of the three tiers: a run&#x27;s first level is clean; no anomaly comes twice before every one has come once, and the refilled bag never starts with the one just shown; an anomaly of weight 0 never comes; clean levels come at <code>clean_chance</code>; the ramp makes obvious anomalies likelier on the first levels and subtle ones on the last; a seed repeats a run exactly.</p>
+<h2>The code</h2>
+<pre><code>extends RefCounted
+## How to Draw Anomalies Without Repeats in Godot 4
+## Cordatix Godot 4 PSX tutorials, MIT licensed: https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials
+## The devlog: https://cordatix.itch.io/liminal-psx-parking-anomalies/devlog/1731759/how-to-draw-anomalies-without-repeats-in-godot-4-liminal-psx-parking-anomalies
+## An anomaly game&#x27;s draw: each level is clean or has one anomaly. No anomaly comes twice before every one has come
+## once (a bag that refills only when it is empty, never with the one just shown), each is picked by its weight, and
+## a ramp makes the obvious ones likelier early in a run and the subtle ones deeper down. The run&#x27;s first level is
+## always clean, so the player learns the level before anything changes on it.
+## `anomalies` holds anything with an `id`, a `tier` (&quot;S&quot; subtle, &quot;N&quot; noticeable, &quot;O&quot; obvious) and a `weight`: your
+## anomaly nodes, or the Anomaly class below.
+
+class Anomaly:
+	var id := &quot;&quot;
+	var tier := &quot;N&quot;
+	var weight := 1.0
+
+	func _init(p_id: String, p_tier := &quot;N&quot;, p_weight := 1.0) -&gt; void:
+		id = p_id
+		tier = p_tier
+		weight = p_weight
+
+
+var anomalies: Array = []
+## The chance a level after the first is clean.
+var clean_chance := 0.3
+## The run goes from start_level down to goal_level (the way out).
+var start_level := 6
+var goal_level := 0
+var rng := RandomNumberGenerator.new()
+
+var _bag := {}                        # the ids drawn since the bag was last full
+var _first := true
+var _last = null                      # the anomaly drawn last
+
+
+## A new run. The bag carries on, so a replay meets the anomalies the last run did not show first.
+func start_run() -&gt; void:
+	_first = true
+
+
+## The anomaly for this level, or null for a clean level.
+func draw(level: int):
+	if _first:
+		_first = false
+		return null
+	if rng.randf() &lt; clean_chance:
+		return null
+	var cands := []
+	for a in anomalies:
+		if a.weight &gt; 0.0 and not _bag.has(a.id):
+			cands.append(a)
+	if cands.is_empty():
+		_bag.clear()                  # every one has come: refill the bag, but not with the one just shown
+		for a in anomalies:
+			if a.weight &gt; 0.0 and a != _last:
+				cands.append(a)
+	if cands.is_empty():
+		return null
+	# a weighted pick: each candidate takes its share of the line, weight times its tier&#x27;s ramp here
+	var weights: Array[float] = []
+	var total := 0.0
+	for a in cands:
+		var w: float = a.weight * ramp(a.tier, level)
+		weights.append(w)
+		total += w
+	var r := rng.randf() * total
+	var pick = cands[cands.size() - 1]
+	for i in cands.size():
+		r -= weights[i]
+		if r &lt;= 0.0:
+			pick = cands[i]
+			break
+	_bag[pick.id] = true
+	_last = pick
+	return pick
+
+
+## A tier&#x27;s weight on this level, on a ramp from the start level to the last level before the way out: an obvious
+## anomaly from 2 down to 0.5, a subtle one from 0.15 up to 1.5, a noticeable one 1 all the way.
+func ramp(tier: String, level: int) -&gt; float:
+	var t := clampf(float(start_level - level) / maxf(1.0, float(start_level - goal_level - 1)), 0.0, 1.0)
+	match tier:
+		&quot;O&quot;:
+			return lerpf(2.0, 0.5, t)
+		&quot;S&quot;:
+			return lerpf(0.15, 1.5, t)
+	return 1.0
+</code></pre>
+<h2>The devlog and the pack</h2>
+<p>The step-by-step walkthrough is the devlog <a href="https://cordatix.itch.io/liminal-psx-parking-anomalies/devlog/1731759/how-to-draw-anomalies-without-repeats-in-godot-4-liminal-psx-parking-anomalies">How to Draw Anomalies Without Repeats in Godot 4 (Liminal PSX Parking Anomalies)</a> on itch.io, written for <a href="https://cordatix.itch.io/liminal-psx-parking-anomalies">Liminal PSX Parking Anomalies</a>, a PS1-style asset pack by <a href="https://cordatix.itch.io">Cordatix</a> for Godot 4, Unity, Unreal and Blender.</p>
+</main>
+<footer><p>Cordatix: PS1-style asset packs for Godot 4, Unity, Unreal and Blender, on <a href="https://cordatix.itch.io">itch.io</a>. The tutorials' code on <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials">GitHub</a>, MIT licensed; the pictures show Cordatix asset packs and are not covered by the MIT license.</p></footer>
+</body>
+</html>

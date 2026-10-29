@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cordatix: How to Build a PS1-Style Liminal Room in Godot 4</title>
+<meta name="description" content="Cordatix Godot 4 PSX tutorial: Crisp PS1 textures, a metre scale, office light and a low-resolution PSX look. A tested script, MIT licensed, with a GIF.">
+<link rel="canonical" href="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/ps1-liminal-room/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Cordatix">
+<meta property="og:title" content="Cordatix: How to Build a PS1-Style Liminal Room in Godot 4">
+<meta property="og:description" content="Cordatix Godot 4 PSX tutorial: Crisp PS1 textures, a metre scale, office light and a low-resolution PSX look. A tested script, MIT licensed, with a GIF.">
+<meta property="og:url" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/ps1-liminal-room/">
+<meta property="og:image" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/ps1-liminal-room/thumb.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../site.css">
+<link rel="icon" href="../favicon.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "author": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}, "description": "Crisp PS1 textures, a metre scale, office light and a low-resolution PSX look", "headline": "How to Build a PS1-Style Liminal Room in Godot 4", "image": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/ps1-liminal-room/thumb.png", "inLanguage": "en", "isAccessibleForFree": true, "isBasedOn": "https://cordatix.itch.io/liminal-psx-textures/devlog/1710627/how-to-build-a-ps1-style-liminal-room-in-godot-4-liminal-psx-textures", "license": "https://opensource.org/licenses/MIT", "mainEntityOfPage": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/ps1-liminal-room/", "programmingLanguage": "GDScript", "publisher": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}}</script>
+</head>
+<body>
+<header class="top"><a class="brand" href="../">CORDATIX</a><nav><a href="../">Tutorials</a> <a href="../samplers.html">Free samplers</a> <a href="../packs.html">Packs</a> <a href="https://cordatix.itch.io">Store on itch.io</a></nav></header>
+<main>
+<p class="crumbs"><a href="../">Tutorials</a> › Build a PS1-Style Liminal Room</p>
+<h1>How to Build a PS1-Style Liminal Room in Godot 4</h1>
+<p class="lede">Crisp PS1 textures, a metre scale, office light and a low-resolution PSX look.</p>
+<figure><img src="liminal_rooms.gif" width="480" height="270" alt="Walking through an office doorway and down a hotel corridor in Godot 4, PSX shader on"></figure>
+<p>Five steps to the PS1 look for liminal spaces: import textures lossless with mipmaps, filter them nearest with mipmaps, keep 64 px per metre, light the room like an empty office, and render it at a third of the window size for the PSX look.</p>
+<p class="muted">Script: <a href="liminal_room.gd">liminal_room.gd</a> (MIT) · Godot 4.3 or newer · <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials/tree/main/ps1-liminal-room">its folder on GitHub</a></p>
+<h2>How to use it</h2>
+<ol>
+<li>Set these import defaults in <code>project.godot</code>, so Godot does not compress the small palette textures:
+
+``<code>ini
+[importer_defaults]
+
+texture={
+&quot;compress/mode&quot;: 0,
+&quot;detect_3d/compress_to&quot;: 0,
+&quot;mipmaps/generate&quot;: true
+}
+</code>``</li>
+<li>Take the functions you need from <code>liminal_room.gd</code>: <code>liminal_material(path, size_m)</code> for a mesh with UVs, <code>blockout_material(path)</code> for CSG boxes of any size (world-space, one repeat every 2 m), <code>ceiling_lamp(position)</code> and <code>psx_viewport(world, shrink)</code>.</li>
+</ol>
+<h2>What it needs</h2>
+<ul class="lines">
+<li>Textures at 64 px per metre: a 128 x 128 px texture covers a 2 x 2 m cell.</li>
+</ul>
+<h2>Try it free</h2>
+<p>The <a href="https://cordatix.itch.io/liminal-psx-textures-free">Liminal PSX Textures - Free Sampler</a> has 12 of the textures (9 seamless) and a showcase with the PSX shaders.</p>
+<h2>How it was tested</h2>
+<p>Checked with <code>godot --headless --check-only</code> in Godot 4.3 and 4.7.2.</p>
+<h2>The code</h2>
+<pre><code>extends Node3D
+## How to Build a PS1-Style Liminal Room in Godot 4
+## Cordatix Godot 4 PSX tutorials, MIT licensed: https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials
+## The devlog: https://cordatix.itch.io/liminal-psx-textures/devlog/1710627/how-to-build-a-ps1-style-liminal-room-in-godot-4-liminal-psx-textures
+
+
+func liminal_material(path: String, size_m: Vector2 = Vector2(2.0, 2.0)) -&gt; StandardMaterial3D:
+	var mat := StandardMaterial3D.new()
+	mat.albedo_texture = load(path)
+	mat.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST_WITH_MIPMAPS
+	mat.roughness = 1.0
+	# every texture covers 2 x 2 m, so a 6 x 3 m wall repeats it 3 x 1.5 times
+	mat.uv1_scale = Vector3(size_m.x / 2.0, size_m.y / 2.0, 1.0)
+	return mat
+
+
+func blockout_material(path: String) -&gt; StandardMaterial3D:
+	var mat := StandardMaterial3D.new()
+	mat.albedo_texture = load(path)
+	mat.texture_filter = BaseMaterial3D.TEXTURE_FILTER_NEAREST_WITH_MIPMAPS
+	# world-space projection: one repeat every 2 m, whatever the size of the box
+	mat.uv1_triplanar = true
+	mat.uv1_world_triplanar = true
+	mat.uv1_scale = Vector3(0.5, 0.5, 0.5)
+	return mat
+
+
+func ceiling_lamp(pos: Vector3) -&gt; OmniLight3D:
+	var lamp := OmniLight3D.new()
+	lamp.position = pos
+	lamp.light_color = Color(1.0, 0.95, 0.8)
+	lamp.light_energy = 1.1
+	lamp.omni_range = 6.0
+	add_child(lamp)
+	return lamp
+
+
+func psx_viewport(world: Node3D, shrink: int = 3) -&gt; SubViewportContainer:
+	var container := SubViewportContainer.new()
+	container.stretch = true
+	container.stretch_shrink = shrink
+	container.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	container.set_anchors_preset(Control.PRESET_FULL_RECT)
+	var vp := SubViewport.new()
+	container.add_child(vp)
+	vp.add_child(world)
+	return container
+</code></pre>
+<h2>The devlog and the pack</h2>
+<p>The step-by-step walkthrough is the devlog <a href="https://cordatix.itch.io/liminal-psx-textures/devlog/1710627/how-to-build-a-ps1-style-liminal-room-in-godot-4-liminal-psx-textures">How to Build a PS1-Style Liminal Room in Godot 4 (Liminal PSX Textures)</a> on itch.io, written for <a href="https://cordatix.itch.io/liminal-psx-textures">Liminal PSX Textures</a>, a PS1-style asset pack by <a href="https://cordatix.itch.io">Cordatix</a> for Godot 4, Unity, Unreal and Blender.</p>
+</main>
+<footer><p>Cordatix: PS1-style asset packs for Godot 4, Unity, Unreal and Blender, on <a href="https://cordatix.itch.io">itch.io</a>. The tutorials' code on <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials">GitHub</a>, MIT licensed; the pictures show Cordatix asset packs and are not covered by the MIT license.</p></footer>
+</body>
+</html>

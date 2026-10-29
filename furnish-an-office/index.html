@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cordatix: How to Furnish a Liminal Office in Godot 4</title>
+<meta name="description" content="Cordatix Godot 4 PSX tutorial: Place props, swap their states in place, and push them around. A tested script, MIT licensed, with a GIF.">
+<link rel="canonical" href="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/furnish-an-office/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Cordatix">
+<meta property="og:title" content="Cordatix: How to Furnish a Liminal Office in Godot 4">
+<meta property="og:description" content="Cordatix Godot 4 PSX tutorial: Place props, swap their states in place, and push them around. A tested script, MIT licensed, with a GIF.">
+<meta property="og:url" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/furnish-an-office/">
+<meta property="og:image" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/furnish-an-office/thumb.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../site.css">
+<link rel="icon" href="../favicon.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "author": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}, "description": "Place props, swap their states in place, and push them around", "headline": "How to Furnish a Liminal Office in Godot 4", "image": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/furnish-an-office/thumb.png", "inLanguage": "en", "isAccessibleForFree": true, "isBasedOn": "https://cordatix.itch.io/liminal-psx-office-props/devlog/1717204/how-to-furnish-a-liminal-office-in-godot-4-liminal-psx-office-props", "license": "https://opensource.org/licenses/MIT", "mainEntityOfPage": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/furnish-an-office/", "programmingLanguage": "GDScript", "publisher": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}}</script>
+</head>
+<body>
+<header class="top"><a class="brand" href="../">CORDATIX</a><nav><a href="../">Tutorials</a> <a href="../samplers.html">Free samplers</a> <a href="../packs.html">Packs</a> <a href="https://cordatix.itch.io">Store on itch.io</a></nav></header>
+<main>
+<p class="crumbs"><a href="../">Tutorials</a> › Furnish a Liminal Office</p>
+<h1>How to Furnish a Liminal Office in Godot 4</h1>
+<p class="lede">Place props, swap their states in place, and push them around.</p>
+<figure><img src="furnished_office.gif" width="480" height="270" alt="Walking through a furnished office in Godot 4, PSX shader on"></figure>
+<p>Place ready prop scenes with what stands on a desk at desk height, build a desk corner that turns with its desk, swap a prop for another of its states in place, and let a CharacterBody3D push rigid props.</p>
+<p class="muted">Script: <a href="furnish_office.gd">furnish_office.gd</a> (MIT) · Godot 4.3 or newer · <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials/tree/main/furnish-an-office">its folder on GitHub</a></p>
+<h2>How to use it</h2>
+<ol>
+<li><code>place(name, position, turn)</code> puts a prop scene in the level; <code>desk_corner(position, turn)</code> a desk with its monitor, keyboard and chair.</li>
+<li><code>swap_state(node, other_state)</code> swaps a prop for another of its states at the same place.</li>
+<li>Call <code>push_bodies(body, speed, delta)</code> after <code>move_and_slide()</code>: a CharacterBody3D does not push rigid bodies by itself.</li>
+</ol>
+<h2>What it needs</h2>
+<ul class="lines">
+<li>Prop scenes whose states share their origin.</li>
+</ul>
+<h2>Try it free</h2>
+<p>The <a href="https://cordatix.itch.io/liminal-psx-office-props-free">Liminal PSX Office Props - Free Sampler</a> has 8 props in 17 variants: a desk, a swivel chair, a CRT, a keyboard, a phone, a filing cabinet, a water cooler and a waste bin.</p>
+<h2>How it was tested</h2>
+<p>Checked with <code>godot --headless --check-only</code> in Godot 4.3 and 4.7.2.</p>
+<h2>The code</h2>
+<pre><code>extends Node3D
+## How to Furnish a Liminal Office in Godot 4
+## Cordatix Godot 4 PSX tutorials, MIT licensed: https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials
+## The devlog: https://cordatix.itch.io/liminal-psx-office-props/devlog/1717204/how-to-furnish-a-liminal-office-in-godot-4-liminal-psx-office-props
+
+const PROPS := &quot;res://cordatix/liminal_psx_office_props/props/&quot;
+const DESK_TOP := 0.74   # metres: what stands on a desk sits at this height
+
+
+## Place a prop scene: floor props stand on their origin, desk items on DESK_TOP.
+func place(prop_name: String, at: Vector3, turn_deg := 0.0) -&gt; Node3D:
+	var node: Node3D = load(PROPS + prop_name + &quot;.tscn&quot;).instantiate()
+	node.position = at
+	node.rotation_degrees.y = turn_deg
+	add_child(node)
+	return node
+
+
+## A desk with its monitor, keyboard and chair, all relative to the desk.
+func desk_corner(at: Vector3, turn_deg: float) -&gt; Node3D:
+	var desk := place(&quot;desk_office&quot;, at, turn_deg)
+	var basis := Basis(Vector3.UP, deg_to_rad(turn_deg))
+	place(&quot;crt_monitor__on&quot;, at + basis * Vector3(0.25, DESK_TOP, -0.12), turn_deg)
+	place(&quot;keyboard&quot;, at + basis * Vector3(0.2, DESK_TOP, 0.2), turn_deg)
+	place(&quot;chair_office__rigid&quot;, at + basis * Vector3(0.1, 0.0, 0.75), turn_deg + 180.0)
+	return desk
+
+
+## Swap a prop for another of its states in place: every state shares the origin.
+func swap_state(node: Node3D, prop_state: String) -&gt; Node3D:
+	var next: Node3D = load(PROPS + prop_state + &quot;.tscn&quot;).instantiate()
+	next.transform = node.transform
+	node.add_sibling(next)
+	node.queue_free()
+	return next
+
+
+## A CharacterBody3D does not push rigid bodies by itself: call this after move_and_slide()
+## with the speed the player walks at. The push grows with the prop&#x27;s mass and stops once the
+## prop keeps pace, so a 12 kg chair slides along and a 1 kg bin is not launched. It acts
+## through the centre of mass: a push at the contact point tips chairs over.
+func push_bodies(body: CharacterBody3D, speed: float, delta: float, share := 0.5) -&gt; void:
+	for i in body.get_slide_collision_count():
+		var c := body.get_slide_collision(i)
+		var rb := c.get_collider() as RigidBody3D
+		if rb == null or rb.freeze:
+			continue
+		var n := -c.get_normal()
+		n.y = 0.0
+		if n.length() &lt; 0.1:
+			continue
+		n = n.normalized()
+		var gap := speed - rb.linear_velocity.dot(n)
+		if gap &gt; 0.0:
+			rb.apply_central_impulse(n * rb.mass * minf(gap, 1.0) * share * delta * 60.0)
+</code></pre>
+<h2>The devlog and the pack</h2>
+<p>The step-by-step walkthrough is the devlog <a href="https://cordatix.itch.io/liminal-psx-office-props/devlog/1717204/how-to-furnish-a-liminal-office-in-godot-4-liminal-psx-office-props">How to Furnish a Liminal Office in Godot 4 (Liminal PSX Office Props)</a> on itch.io, written for <a href="https://cordatix.itch.io/liminal-psx-office-props">Liminal PSX Office Props</a>, a PS1-style asset pack by <a href="https://cordatix.itch.io">Cordatix</a> for Godot 4, Unity, Unreal and Blender.</p>
+</main>
+<footer><p>Cordatix: PS1-style asset packs for Godot 4, Unity, Unreal and Blender, on <a href="https://cordatix.itch.io">itch.io</a>. The tutorials' code on <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials">GitHub</a>, MIT licensed; the pictures show Cordatix asset packs and are not covered by the MIT license.</p></footer>
+</body>
+</html>

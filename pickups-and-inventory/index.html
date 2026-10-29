@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cordatix: How to Make Pickups With Inventory Icons in Godot 4</title>
+<meta name="description" content="Cordatix Godot 4 PSX tutorial: Pick items up with a look and a key, and show them in an inventory bar. A tested script, MIT licensed, with a GIF.">
+<link rel="canonical" href="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/pickups-and-inventory/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Cordatix">
+<meta property="og:title" content="Cordatix: How to Make Pickups With Inventory Icons in Godot 4">
+<meta property="og:description" content="Cordatix Godot 4 PSX tutorial: Pick items up with a look and a key, and show them in an inventory bar. A tested script, MIT licensed, with a GIF.">
+<meta property="og:url" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/pickups-and-inventory/">
+<meta property="og:image" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/pickups-and-inventory/thumb.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../site.css">
+<link rel="icon" href="../favicon.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "author": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}, "description": "Pick items up with a look and a key, and show them in an inventory bar", "headline": "How to Make Pickups With Inventory Icons in Godot 4", "image": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/pickups-and-inventory/thumb.png", "inLanguage": "en", "isAccessibleForFree": true, "isBasedOn": "https://cordatix.itch.io/haunted-psx-props/devlog/1719493/how-to-make-pickups-with-inventory-icons-in-godot-4-haunted-psx-props", "license": "https://opensource.org/licenses/MIT", "mainEntityOfPage": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/pickups-and-inventory/", "programmingLanguage": "GDScript", "publisher": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}}</script>
+</head>
+<body>
+<header class="top"><a class="brand" href="../">CORDATIX</a><nav><a href="../">Tutorials</a> <a href="../samplers.html">Free samplers</a> <a href="../packs.html">Packs</a> <a href="https://cordatix.itch.io">Store on itch.io</a></nav></header>
+<main>
+<p class="crumbs"><a href="../">Tutorials</a> › Make Pickups With Inventory Icons</p>
+<h1>How to Make Pickups With Inventory Icons in Godot 4</h1>
+<p class="lede">Pick items up with a look and a key, and show them in an inventory bar.</p>
+<figure><img src="night_house.gif" width="480" height="270" alt="Walking into a back room by flashlight in Godot 4, PSX shader on"></figure>
+<p>A small, complete pickup and inventory setup: the player keeps a list and answers two calls, <code>add_item</code> and <code>has_item</code>; a ray from the camera finds what the player looks at; and an inventory bar of 64 px icons redraws itself whenever the list changes.</p>
+<p class="muted">Script: <a href="pickups_inventory.gd">pickups_inventory.gd</a> (MIT) · Godot 4.3 or newer · <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials/tree/main/pickups-and-inventory">its folder on GitHub</a></p>
+<figure><img src="inventory.png" width="1280" height="720" alt="An inventory bar with the icons of the items picked up, over a dark house"></figure>
+<h2>How to use it</h2>
+<ol>
+<li>Put <code>pickups_inventory.gd</code> on the player&#x27;s CharacterBody3D, with a child Camera3D named <code>Camera3D</code> and an HBoxContainer at <code>Hud/Bar</code> (a CanvasLayer named <code>Hud</code> with the bar in it).</li>
+<li>Bind the key the player uses to the <code>ui_accept</code> action, or change it in <code>_unhandled_input</code>.</li>
+<li>A pickup is any node with an <code>interact(by)</code> method that calls <code>add_item</code> on the player; a lock asks <code>has_item</code> before it opens.</li>
+</ol>
+<h2>What it needs</h2>
+<ul class="lines">
+<li>Pickup scenes with <code>interact(by)</code>, and their icons.</li>
+</ul>
+<h2>Try it free</h2>
+<p>The <a href="https://cordatix.itch.io/haunted-psx-free-sampler">Haunted PSX Free Sampler</a> has 4 of the props as pickups (a candle, a doll, a key and a note) and 5 icons.</p>
+<h2>How it was tested</h2>
+<p>Checked with <code>godot --headless --check-only</code> in Godot 4.3 and 4.7.2.</p>
+<h2>The code</h2>
+<pre><code>extends CharacterBody3D
+## How to Make Pickups With Inventory Icons in Godot 4
+## Cordatix Godot 4 PSX tutorials, MIT licensed: https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials
+## The devlog: https://cordatix.itch.io/haunted-psx-props/devlog/1719493/how-to-make-pickups-with-inventory-icons-in-godot-4-haunted-psx-props
+
+signal inventory_changed
+
+const REACH := 2.2
+
+var inventory: Array = []
+@onready var camera: Camera3D = $Camera3D
+
+
+## The two methods every Haunted PSX pickup and locked scene asks a player for.
+func add_item(id: String, item_name: String, icon: Texture2D) -&gt; void:
+	inventory.append({&quot;id&quot;: id, &quot;name&quot;: item_name, &quot;icon&quot;: icon})
+	inventory_changed.emit()
+
+
+func has_item(id: String) -&gt; bool:
+	for it in inventory:
+		if it[&quot;id&quot;] == id:
+			return true
+	return false
+
+
+func _ready() -&gt; void:
+	inventory_changed.connect(fill_bar.bind($Hud/Bar))    # redraw the bar whenever the list changes
+
+
+## What the player looks at: a ray from the eye that also meets the pickups&#x27; Area3D.
+func look_target() -&gt; Node:
+	var from := camera.global_position
+	var q := PhysicsRayQueryParameters3D.create(from, from - camera.global_transform.basis.z * REACH)
+	q.collide_with_areas = true
+	q.exclude = [get_rid()]
+	var hit := get_world_3d().direct_space_state.intersect_ray(q)
+	var n: Node = hit.get(&quot;collider&quot;) if hit else null
+	while n != null and not n.has_method(&quot;interact&quot;):
+		var pk := n.get_node_or_null(&quot;Pickup&quot;)
+		if pk != null:
+			return pk
+		n = n.get_parent()
+	return n
+
+
+func _unhandled_input(event: InputEvent) -&gt; void:
+	if event.is_action_pressed(&quot;ui_accept&quot;):
+		var t := look_target()
+		if t != null:
+			t.interact(self)
+
+
+## An inventory bar: one TextureRect per item, nearest filtering so the PS1 icons stay crisp.
+func fill_bar(bar: HBoxContainer) -&gt; void:
+	for c in bar.get_children():
+		c.queue_free()
+	for it in inventory:
+		var t := TextureRect.new()
+		t.texture = it[&quot;icon&quot;]
+		t.custom_minimum_size = Vector2(64, 64)
+		t.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		t.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		bar.add_child(t)
+</code></pre>
+<h2>The devlog and the pack</h2>
+<p>The step-by-step walkthrough is the devlog <a href="https://cordatix.itch.io/haunted-psx-props/devlog/1719493/how-to-make-pickups-with-inventory-icons-in-godot-4-haunted-psx-props">How to Make Pickups With Inventory Icons in Godot 4 (Haunted PSX Props)</a> on itch.io, written for <a href="https://cordatix.itch.io/haunted-psx-props">Haunted PSX Props</a>, a PS1-style asset pack by <a href="https://cordatix.itch.io">Cordatix</a> for Godot 4, Unity, Unreal and Blender.</p>
+</main>
+<footer><p>Cordatix: PS1-style asset packs for Godot 4, Unity, Unreal and Blender, on <a href="https://cordatix.itch.io">itch.io</a>. The tutorials' code on <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials">GitHub</a>, MIT licensed; the pictures show Cordatix asset packs and are not covered by the MIT license.</p></footer>
+</body>
+</html>
