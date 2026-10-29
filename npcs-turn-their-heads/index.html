@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cordatix: How to Make NPCs Turn Their Heads to the Player in Godot 4</title>
+<meta name="description" content="Cordatix Godot 4 PSX tutorial: A person&#x27;s chest, neck and head turn to the player who comes near, over whatever clip plays.">
+<link rel="canonical" href="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/npcs-turn-their-heads/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Cordatix">
+<meta property="og:title" content="Cordatix: How to Make NPCs Turn Their Heads to the Player in Godot 4">
+<meta property="og:description" content="Cordatix Godot 4 PSX tutorial: A person&#x27;s chest, neck and head turn to the player who comes near, over whatever clip plays.">
+<meta property="og:url" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/npcs-turn-their-heads/">
+<meta property="og:image" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/npcs-turn-their-heads/thumb.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../site.css">
+<link rel="icon" href="../favicon.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "author": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}, "description": "A person's chest, neck and head turn to the player who comes near, over whatever clip plays", "headline": "How to Make NPCs Turn Their Heads to the Player in Godot 4", "image": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/npcs-turn-their-heads/thumb.png", "inLanguage": "en", "isAccessibleForFree": true, "isBasedOn": "https://cordatix.itch.io/psx-bystanders-npc-pack/devlog/1737124/how-to-make-npcs-turn-their-heads-to-the-player-in-godot-4-psx-bystanders-npc-pack", "license": "https://opensource.org/licenses/MIT", "mainEntityOfPage": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/npcs-turn-their-heads/", "programmingLanguage": "GDScript", "publisher": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}}</script>
+</head>
+<body>
+<header class="top"><a class="brand" href="../">CORDATIX</a><nav><a href="../">Tutorials</a> <a href="../samplers.html">Free samplers</a> <a href="../packs.html">Packs</a> <a href="https://cordatix.itch.io">Store on itch.io</a></nav></header>
+<main>
+<p class="crumbs"><a href="../">Tutorials</a> › Make NPCs Turn Their Heads to the Player</p>
+<h1>How to Make NPCs Turn Their Heads to the Player in Godot 4</h1>
+<p class="lede">A person&#x27;s chest, neck and head turn to the player who comes near, over whatever clip plays.</p>
+<figure><img src="head_turn.gif" width="400" height="225" alt="In the waiting hall of PSX Bystanders NPC Pack (PSX look on): the camera walks up to the security guard, leaning on the wall, and his head turns to it"></figure>
+<p>Background people look alive when they notice you. This script is a SkeletonModifier3D that turns a person&#x27;s chest, neck and head to the camera when it comes near in front of them, on top of whatever clip plays: the turn shared by the bones (the chest a little, the head most), held within <code>max_yaw</code>, never faster than <code>turn_speed</code>, and back to the clip&#x27;s own pose when the camera goes away or behind them.</p>
+<p class="muted">Script: <a href="npc_head_turn.gd">npc_head_turn.gd</a> (MIT) · Godot 4.3 or newer · <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials/tree/main/npcs-turn-their-heads">its folder on GitHub</a></p>
+<h2>How to use it</h2>
+<ol>
+<li>Add a <code>SkeletonModifier3D</code> node as a child of the character&#x27;s <code>Skeleton3D</code> and attach <code>npc_head_turn.gd</code> to it (or in code: <code>skeleton.add_child(preload(&quot;npc_head_turn.gd&quot;).new())</code>).</li>
+<li>Set <code>bones</code> to the bones that share the turn and their shares, which add up to 1: by default Godot&#x27;s humanoid names, <code>[[&quot;Chest&quot;, 0.15], [&quot;Neck&quot;, 0.35], [&quot;Head&quot;, 0.5]]</code>.</li>
+<li>Set how far it turns (<code>max_yaw</code>, degrees to each side), how fast (<code>turn_speed</code>, degrees a second) and from how near (<code>distance</code>, metres across the floor); <code>yaw</code> holds the turn now, in degrees (left of the face positive).</li>
+</ol>
+<h2>What it needs</h2>
+<ul class="lines">
+<li>Godot 4.3 or newer (SkeletonModifier3D came in 4.3).</li>
+<li>A Skeleton3D with the bones in <code>bones</code>, its last one the head, whose +Z is where the face points.</li>
+<li>A current Camera3D: the turn follows the viewport&#x27;s camera.</li>
+</ul>
+<h2>Try it free</h2>
+<p>The <a href="https://cordatix.itch.io/psx-bystanders-npc-pack-free">PSX Bystanders NPC Pack Free Sampler</a> has two of the pack&#x27;s people with every clip, the office worker and the young man: put one&#x27;s model from <code>cordatix/psx_bystanders/models/</code> in a scene, play a clip and add the script under its Skeleton3D. The pack&#x27;s own NPC layer has a fuller turn of its own (<code>CordatixBystanderLook</code>), so the script is for a model without the layer.</p>
+<h2>How it was tested</h2>
+<p>In Godot 4.3 and 4.7.2, on the free sampler&#x27;s office worker playing Idle: it turns to a camera 30 degrees to the left until the face is on it, holds at <code>max_yaw</code> past it, never turns faster than <code>turn_speed</code> when the camera jumps across, goes back to the clip&#x27;s own pose when the camera is behind or far, and the clip plays on under the turn.</p>
+<h2>The code</h2>
+<pre><code>extends SkeletonModifier3D
+## How to Make NPCs Turn Their Heads to the Player in Godot 4
+## Cordatix Godot 4 PSX tutorials, MIT licensed: https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials
+## The devlog: https://cordatix.itch.io/psx-bystanders-npc-pack/devlog/1737124/how-to-make-npcs-turn-their-heads-to-the-player-in-godot-4-psx-bystanders-npc-pack
+## Turns a person&#x27;s chest, neck and head to the camera when it comes near in front of them, over whatever clip plays:
+## the turn shared by the bones (the chest a little, the head most), held within max_yaw, at most turn_speed degrees a
+## second, and back to the clip&#x27;s own pose when the camera goes away or behind them. Add it as a child of the
+## person&#x27;s Skeleton3D (Godot 4.3 or newer). The head bone&#x27;s +Z is where the face points.
+
+## The bones that share the turn, and their shares (they add up to 1).
+@export var bones: Array = [[&quot;Chest&quot;, 0.15], [&quot;Neck&quot;, 0.35], [&quot;Head&quot;, 0.5]]
+## Degrees to each side, at most.
+@export var max_yaw := 65.0
+## Degrees a second, at most.
+@export var turn_speed := 30.0
+## How near the camera must come (metres, across the floor).
+@export var distance := 4.0
+
+## The turn now, in degrees (left of the face positive).
+var yaw := 0.0
+var _ids: Array = []
+
+
+func _process_modification() -&gt; void:
+	var sk := get_skeleton()
+	if sk == null:
+		return
+	if _ids.is_empty():
+		for b in bones:
+			var i := sk.find_bone(String(b[0]))
+			if i &gt;= 0:
+				_ids.append([i, float(b[1])])
+		if _ids.is_empty():
+			return
+	var want := 0.0
+	var cam := get_viewport().get_camera_3d()
+	if cam:
+		# where the camera is, against where the face points in the clip alone, across the floor
+		var head: Transform3D = sk.global_transform * sk.get_bone_global_pose(_ids[-1][0])
+		var face := head.basis.z
+		var to := cam.global_position - head.origin
+		var angle := rad_to_deg(atan2(face.z * to.x - face.x * to.z, face.x * to.x + face.z * to.z))
+		if Vector2(to.x, to.z).length() &lt; distance and absf(angle) &lt; 100.0:      # near, and not behind
+			want = clampf(angle, -max_yaw, max_yaw)
+	yaw = move_toward(yaw, want, turn_speed * get_process_delta_time())
+
+
+	# each bone turns its share about the vertical through its joint, in its parent&#x27;s space
+	var up := (sk.global_transform.basis.inverse() * Vector3.UP).normalized()
+	for e in _ids:
+		var i: int = e[0]
+		var parent := sk.get_bone_parent(i)
+		var axis := up if parent &lt; 0 else (sk.get_bone_global_pose(parent).basis.inverse() * up).normalized()
+		sk.set_bone_pose_rotation(i, Quaternion(axis, deg_to_rad(yaw * float(e[1]))) * sk.get_bone_pose_rotation(i))
+</code></pre>
+<h2>The devlog and the pack</h2>
+<p>The step-by-step walkthrough is the devlog <a href="https://cordatix.itch.io/psx-bystanders-npc-pack/devlog/1737124/how-to-make-npcs-turn-their-heads-to-the-player-in-godot-4-psx-bystanders-npc-pack">How to Make NPCs Turn Their Heads to the Player in Godot 4 (PSX Bystanders NPC Pack)</a> on itch.io, written for <a href="https://cordatix.itch.io/psx-bystanders-npc-pack">PSX Bystanders NPC Pack</a>, a PS1-style asset pack by <a href="https://cordatix.itch.io">Cordatix</a> for Godot 4, Unity, Unreal and Blender.</p>
+</main>
+<footer><p>Cordatix: PS1-style asset packs for Godot 4, Unity, Unreal and Blender, on <a href="https://cordatix.itch.io">itch.io</a>. The tutorials' code on <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials">GitHub</a>, MIT licensed; the pictures show Cordatix asset packs and are not covered by the MIT license.</p></footer>
+</body>
+</html>
