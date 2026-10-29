@@ -38,7 +38,7 @@
 <li>Pickup scenes with <code>interact(by)</code>, and their icons.</li>
 </ul>
 <h2>Try it free</h2>
-<p>The <a href="https://cordatix.itch.io/haunted-psx-free-sampler">Haunted PSX Free Sampler</a> has 4 of the props as pickups (a candle, a doll, a key and a note) and 5 icons.</p>
+<p>The <a href="https://cordatix.itch.io/haunted-psx-free-sampler">Cordatix PSX Horror Free Sampler</a> has 4 of the props as pickups (a candle, a doll, a key and a note) and 5 icons.</p>
 <h2>How it was tested</h2>
 <p>Checked with <code>godot --headless --check-only</code> in Godot 4.3 and 4.7.2.</p>
 <h2>The code</h2>
@@ -55,7 +55,7 @@ var inventory: Array = []
 @onready var camera: Camera3D = $Camera3D
 
 
-## The two methods every Haunted PSX pickup and locked scene asks a player for.
+## The two methods every PSX Horror pickup and locked scene asks a player for.
 func add_item(id: String, item_name: String, icon: Texture2D) -&gt; void:
 	inventory.append({&quot;id&quot;: id, &quot;name&quot;: item_name, &quot;icon&quot;: icon})
 	inventory_changed.emit()
@@ -108,7 +108,7 @@ func fill_bar(bar: HBoxContainer) -&gt; void:
 		bar.add_child(t)
 </code></pre>
 <h2>The devlog and the pack</h2>
-<p>The step-by-step walkthrough is the devlog <a href="https://cordatix.itch.io/haunted-psx-props/devlog/1719493/how-to-make-pickups-with-inventory-icons-in-godot-4-haunted-psx-props">How to Make Pickups With Inventory Icons in Godot 4 (Haunted PSX Props)</a> on itch.io, written for <a href="https://cordatix.itch.io/haunted-psx-props">Haunted PSX Props</a>, a PS1-style asset pack by <a href="https://cordatix.itch.io">Cordatix</a> for Godot 4, Unity, Unreal and Blender.</p>
+<p>The step-by-step walkthrough is the devlog <a href="https://cordatix.itch.io/haunted-psx-props/devlog/1719493/how-to-make-pickups-with-inventory-icons-in-godot-4-haunted-psx-props">How to Make Pickups With Inventory Icons in Godot 4 (Haunted PSX Props)</a> on itch.io, written for <a href="https://cordatix.itch.io/haunted-psx-props">Cordatix PSX Horror Props</a>, a PS1-style asset pack by <a href="https://cordatix.itch.io">Cordatix</a> for Godot 4, Unity, Unreal and Blender.</p>
 </main>
 <footer><p>Cordatix: PS1-style asset packs for Godot 4, Unity, Unreal and Blender, on <a href="https://cordatix.itch.io">itch.io</a>. The tutorials' code on <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials">GitHub</a>, MIT licensed; the pictures show Cordatix asset packs and are not covered by the MIT license.</p></footer>
 </body>

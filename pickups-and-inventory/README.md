@@ -20,7 +20,7 @@ A small, complete pickup and inventory setup: the player keeps a list and answer
 
 ## Try it free
 
-The [Haunted PSX Free Sampler](https://cordatix.itch.io/haunted-psx-free-sampler) has 4 of the props as pickups (a candle, a doll, a key and a note) and 5 icons.
+The [Cordatix PSX Horror Free Sampler](https://cordatix.itch.io/haunted-psx-free-sampler) has 4 of the props as pickups (a candle, a doll, a key and a note) and 5 icons.
 
 ## Tested
 
@@ -28,6 +28,6 @@ Checked with `godot --headless --check-only` in Godot 4.3 and 4.7.2.
 
 ## The devlog and the pack
 
-The step-by-step walkthrough is the devlog [How to Make Pickups With Inventory Icons in Godot 4 (Haunted PSX Props)](https://cordatix.itch.io/haunted-psx-props/devlog/1719493/how-to-make-pickups-with-inventory-icons-in-godot-4-haunted-psx-props) on itch.io, written for [Haunted PSX Props](https://cordatix.itch.io/haunted-psx-props), a PS1-style asset pack by [Cordatix](https://cordatix.itch.io) for Godot 4, Unity, Unreal and Blender.
+The step-by-step walkthrough is the devlog [How to Make Pickups With Inventory Icons in Godot 4 (Haunted PSX Props)](https://cordatix.itch.io/haunted-psx-props/devlog/1719493/how-to-make-pickups-with-inventory-icons-in-godot-4-haunted-psx-props) on itch.io, written for [Cordatix PSX Horror Props](https://cordatix.itch.io/haunted-psx-props), a PS1-style asset pack by [Cordatix](https://cordatix.itch.io) for Godot 4, Unity, Unreal and Blender.
 
 The code is MIT licensed ([LICENSE](../LICENSE)). The pictures show Cordatix asset packs and are not covered by the MIT license.

@@ -18,7 +18,7 @@ A monster that waits pressed flat on a wall, steps out of it when the player com
 
 ## Try it free
 
-The [Haunted PSX Free Sampler](https://cordatix.itch.io/haunted-psx-free-sampler) has Papered, a figure of peeling wallpaper, with all ten of its clips: try the script with it right away.
+The [Cordatix PSX Horror Free Sampler](https://cordatix.itch.io/haunted-psx-free-sampler) has Papered, a figure of peeling wallpaper, with all ten of its clips: try the script with it right away.
 
 ## Tested
 
@@ -26,6 +26,6 @@ In Godot 4.3 and 4.7.2, with Papered from the free sampler: it waits on its wall
 
 ## The devlog and the pack
 
-The step-by-step walkthrough is the devlog [How to Make a Monster Step Out of a Wall in Godot 4 (Haunted PSX Monsters)](https://cordatix.itch.io/haunted-psx-monsters/devlog/1724922/how-to-make-a-monster-step-out-of-a-wall-in-godot-4-haunted-psx-monsters) on itch.io, written for [Haunted PSX Monsters](https://cordatix.itch.io/haunted-psx-monsters), a PS1-style asset pack by [Cordatix](https://cordatix.itch.io) for Godot 4, Unity, Unreal and Blender.
+The step-by-step walkthrough is the devlog [How to Make a Monster Step Out of a Wall in Godot 4 (Haunted PSX Monsters)](https://cordatix.itch.io/haunted-psx-monsters/devlog/1724922/how-to-make-a-monster-step-out-of-a-wall-in-godot-4-haunted-psx-monsters) on itch.io, written for [Cordatix PSX Horror Monsters](https://cordatix.itch.io/haunted-psx-monsters), a PS1-style asset pack by [Cordatix](https://cordatix.itch.io) for Godot 4, Unity, Unreal and Blender.
 
 The code is MIT licensed ([LICENSE](../LICENSE)). The pictures show Cordatix asset packs and are not covered by the MIT license.

@@ -23,7 +23,7 @@
 <p class="crumbs"><a href="../">Tutorials</a> › Hide in a Locker</p>
 <h1>How to Hide in a Locker in Godot 4</h1>
 <p class="lede">Hide the player in a locker; a chasing creature loses them, and can search the lockers.</p>
-<figure><img src="school_hallway.gif" width="480" height="270" alt="Walking down the school hallway of the Haunted PSX Spaces demo, past its lockers"></figure>
+<figure><img src="school_hallway.gif" width="480" height="270" alt="Walking down the school hallway of the Cordatix PSX Horror Spaces demo, past its lockers"></figure>
 <p>A level script that lets the player hide in a locker and makes a chasing creature lose them. When the door shuts on the player, the creature drops its target and the camera moves to the locker&#x27;s peek point behind the vents; when the player steps out, both go back. A creature that searches the room can ask whether anyone is inside, pull the door open and give chase.</p>
 <p class="muted">Script: <a href="locker_hiding.gd">locker_hiding.gd</a> (MIT) · Godot 4.3 or newer · <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials/tree/main/hide-in-a-locker">its folder on GitHub</a></p>
 <figure><img src="hiding.png" width="1280" height="359" alt="A hiding locker in the classroom, and the view from inside it through the vents"></figure>
@@ -35,11 +35,11 @@
 </ol>
 <h2>What it needs</h2>
 <ul class="lines">
-<li>A locker scene with the signals <code>player_hidden(body)</code> and <code>player_left(body)</code> and the methods <code>peek_point()</code> (a Node3D at eye height behind the vents), <code>is_occupied()</code> and <code>interact(by)</code>. The hiding lockers of Haunted PSX Spaces (<code>scenes/hiding_locker__&lt;theme&gt;.tscn</code>) have them; a locker of your own works if it has the same.</li>
+<li>A locker scene with the signals <code>player_hidden(body)</code> and <code>player_left(body)</code> and the methods <code>peek_point()</code> (a Node3D at eye height behind the vents), <code>is_occupied()</code> and <code>interact(by)</code>. The hiding lockers of Cordatix PSX Horror Spaces (<code>scenes/hiding_locker__&lt;theme&gt;.tscn</code>) have them; a locker of your own works if it has the same.</li>
 <li>A creature with a <code>target</code> property: the script sets it to <code>null</code> or to the player.</li>
 </ul>
 <h2>Try it free</h2>
-<p>The lockers come with Haunted PSX Spaces. The Haunted PSX Free Sampler has free room pieces to build the room around them.</p>
+<p>The lockers come with Cordatix PSX Horror Spaces. The Cordatix PSX Horror Free Sampler has free room pieces to build the room around them.</p>
 <h2>How it was tested</h2>
 <p>In Godot 4.3 and 4.7.2, with a stand-in locker that has the signals and methods above: when the player hides, the creature loses its target and the camera moves to the peek point; when the player steps out, the camera is back at the player&#x27;s eyes and the creature is after them; <code>search()</code> opens an occupied locker and sets the creature on the player, and leaves an empty one shut.</p>
 <h2>The code</h2>
@@ -81,7 +81,7 @@ func search(locker: Node3D, player: Node3D) -&gt; void:
 		creature.set(&quot;target&quot;, player)
 </code></pre>
 <h2>The devlog and the pack</h2>
-<p>The step-by-step walkthrough is the devlog <a href="https://cordatix.itch.io/haunted-psx-spaces/devlog/1722819/how-to-hide-in-a-locker-in-godot-4-haunted-psx-spaces">How to Hide in a Locker in Godot 4 (Haunted PSX Spaces)</a> on itch.io, written for <a href="https://cordatix.itch.io/haunted-psx-spaces">Haunted PSX Spaces</a>, a PS1-style asset pack by <a href="https://cordatix.itch.io">Cordatix</a> for Godot 4, Unity, Unreal and Blender.</p>
+<p>The step-by-step walkthrough is the devlog <a href="https://cordatix.itch.io/haunted-psx-spaces/devlog/1722819/how-to-hide-in-a-locker-in-godot-4-haunted-psx-spaces">How to Hide in a Locker in Godot 4 (Haunted PSX Spaces)</a> on itch.io, written for <a href="https://cordatix.itch.io/haunted-psx-spaces">Cordatix PSX Horror Spaces</a>, a PS1-style asset pack by <a href="https://cordatix.itch.io">Cordatix</a> for Godot 4, Unity, Unreal and Blender.</p>
 </main>
 <footer><p>Cordatix: PS1-style asset packs for Godot 4, Unity, Unreal and Blender, on <a href="https://cordatix.itch.io">itch.io</a>. The tutorials' code on <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials">GitHub</a>, MIT licensed; the pictures show Cordatix asset packs and are not covered by the MIT license.</p></footer>
 </body>

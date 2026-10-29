@@ -18,7 +18,7 @@ Build a Halloween party and what is left when it is over in one scene, and switc
 
 ## Try it free
 
-The [Haunted PSX Free Sampler](https://cordatix.itch.io/haunted-psx-free-sampler) has a small setup on both sides (`halloween_wall`), 4 decorations, their data and the flicker script.
+The [Cordatix PSX Horror Free Sampler](https://cordatix.itch.io/haunted-psx-free-sampler) has a small setup on both sides (`halloween_wall`), 4 decorations, their data and the flicker script.
 
 ## Tested
 
@@ -26,6 +26,6 @@ Checked with `godot --headless --check-only` in Godot 4.3 and 4.7.2.
 
 ## The devlog and the pack
 
-The step-by-step walkthrough is the devlog [How to Switch a Room Between Festive and Creepy in Godot 4 (Haunted PSX Halloween Takeover)](https://cordatix.itch.io/haunted-psx-halloween-takeover/devlog/1718867/how-to-switch-a-room-between-festive-and-creepy-in-godot-4-haunted-psx-halloween-takeover) on itch.io, written for [Haunted PSX Halloween Takeover](https://cordatix.itch.io/haunted-psx-halloween-takeover), a PS1-style asset pack by [Cordatix](https://cordatix.itch.io) for Godot 4, Unity, Unreal and Blender.
+The step-by-step walkthrough is the devlog [How to Switch a Room Between Festive and Creepy in Godot 4 (Haunted PSX Halloween Takeover)](https://cordatix.itch.io/haunted-psx-halloween-takeover/devlog/1718867/how-to-switch-a-room-between-festive-and-creepy-in-godot-4-haunted-psx-halloween-takeover) on itch.io, written for [Cordatix PSX Horror Halloween Takeover](https://cordatix.itch.io/haunted-psx-halloween-takeover), a PS1-style asset pack by [Cordatix](https://cordatix.itch.io) for Godot 4, Unity, Unreal and Blender.
 
 The code is MIT licensed ([LICENSE](../LICENSE)). The pictures show Cordatix asset packs and are not covered by the MIT license.

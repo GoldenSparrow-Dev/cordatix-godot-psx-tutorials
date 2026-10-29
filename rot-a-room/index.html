@@ -34,11 +34,11 @@
 </ol>
 <h2>What it needs</h2>
 <ul class="lines">
-<li><code>decay_swap.gd</code> and the handprint decal scene from Haunted PSX Interior Textures, at the paths the script preloads.</li>
+<li><code>decay_swap.gd</code> and the handprint decal scene from Cordatix PSX Horror Interior Textures, at the paths the script preloads.</li>
 <li>Surfaces whose materials come in pairs, <code>&lt;family&gt;_medium.tres</code> and <code>&lt;family&gt;_heavy.tres</code>, in that pack&#x27;s material folders: <code>decay_swap.gd</code> swaps one for the other.</li>
 </ul>
 <h2>Try it free</h2>
-<p>The <a href="https://cordatix.itch.io/haunted-psx-free-sampler">Haunted PSX Free Sampler</a> has <code>decay_swap.gd</code>, the handprint, 4 more decals and 3 of the surfaces in their medium state: the decal works with it, and the swap to heavy needs the full pack&#x27;s heavy materials.</p>
+<p>The <a href="https://cordatix.itch.io/haunted-psx-free-sampler">Cordatix PSX Horror Free Sampler</a> has <code>decay_swap.gd</code>, the handprint, 4 more decals and 3 of the surfaces in their medium state: the decal works with it, and the swap to heavy needs the full pack&#x27;s heavy materials.</p>
 <h2>How it was tested</h2>
 <p>In Godot 4.3 and 4.7.2, in the free sampler&#x27;s project: leaving through the doorway turns the room&#x27;s medium surface heavy once, and only for the player (the test adds a heavy material beside the sampler&#x27;s medium one); <code>mark_wall</code> puts the handprint on the wall the camera looks at, facing out.</p>
 <h2>The code</h2>
@@ -86,7 +86,7 @@ func mark_wall(camera: Camera3D) -&gt; void:
 	decal.global_transform = Transform3D(Basis.looking_at(-n, up), hit[&quot;position&quot;])
 </code></pre>
 <h2>The devlog and the pack</h2>
-<p>The step-by-step walkthrough is the devlog <a href="https://cordatix.itch.io/haunted-psx-interior-textures/devlog/1722195/how-to-rot-a-room-at-run-time-in-godot-4-haunted-psx-interior-textures">How to Rot a Room at Run Time in Godot 4 (Haunted PSX Interior Textures)</a> on itch.io, written for <a href="https://cordatix.itch.io/haunted-psx-interior-textures">Haunted PSX Interior Textures</a>, a PS1-style asset pack by <a href="https://cordatix.itch.io">Cordatix</a> for Godot 4, Unity, Unreal and Blender.</p>
+<p>The step-by-step walkthrough is the devlog <a href="https://cordatix.itch.io/haunted-psx-interior-textures/devlog/1722195/how-to-rot-a-room-at-run-time-in-godot-4-haunted-psx-interior-textures">How to Rot a Room at Run Time in Godot 4 (Haunted PSX Interior Textures)</a> on itch.io, written for <a href="https://cordatix.itch.io/haunted-psx-interior-textures">Cordatix PSX Horror Interior Textures</a>, a PS1-style asset pack by <a href="https://cordatix.itch.io">Cordatix</a> for Godot 4, Unity, Unreal and Blender.</p>
 </main>
 <footer><p>Cordatix: PS1-style asset packs for Godot 4, Unity, Unreal and Blender, on <a href="https://cordatix.itch.io">itch.io</a>. The tutorials' code on <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials">GitHub</a>, MIT licensed; the pictures show Cordatix asset packs and are not covered by the MIT license.</p></footer>
 </body>

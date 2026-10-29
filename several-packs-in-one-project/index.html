@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cordatix: How to Use Several PSX Asset Packs in One Godot 4 Project</title>
+<meta name="description" content="Cordatix Godot 4 PSX tutorial: Several asset packs in one Godot project, and a script that sets the light limits, filters and navigation cells they ask for.">
+<link rel="canonical" href="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/several-packs-in-one-project/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Cordatix">
+<meta property="og:title" content="Cordatix: How to Use Several PSX Asset Packs in One Godot 4 Project">
+<meta property="og:description" content="Cordatix Godot 4 PSX tutorial: Several asset packs in one Godot project, and a script that sets the light limits, filters and navigation cells they ask for.">
+<meta property="og:url" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/several-packs-in-one-project/">
+<meta property="og:image" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/several-packs-in-one-project/thumb.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../site.css">
+<link rel="icon" href="../favicon.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "author": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}, "description": "Several asset packs in one Godot project, and a script that sets the light limits, filters and navigation cells they ask for", "headline": "How to Use Several PSX Asset Packs in One Godot 4 Project", "image": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/several-packs-in-one-project/thumb.png", "inLanguage": "en", "isAccessibleForFree": true, "isBasedOn": "https://cordatix.itch.io/cordatix-psx-mega-pack/devlog/1738246/how-to-use-several-psx-asset-packs-in-one-godot-4-project-cordatix-psx-mega-pack", "license": "https://opensource.org/licenses/MIT", "mainEntityOfPage": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/several-packs-in-one-project/", "programmingLanguage": "GDScript", "publisher": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}}</script>
+</head>
+<body>
+<header class="top"><a class="brand" href="../">CORDATIX</a><nav><a href="../">Tutorials</a> <a href="../samplers.html">Free samplers</a> <a href="../packs.html">Packs</a> <a href="https://cordatix.itch.io">Store on itch.io</a></nav></header>
+<main>
+<p class="crumbs"><a href="../">Tutorials</a> › Use Several PSX Asset Packs in One Godot 4 Project</p>
+<h1>How to Use Several PSX Asset Packs in One Godot 4 Project</h1>
+<p class="lede">Several asset packs in one Godot project, and a script that sets the light limits, filters and navigation cells they ask for.</p>
+<figure><img src="one_project.gif" width="640" height="394" alt="Each pack&#x27;s demo running in one Godot 4 project that holds the 12 packs of Cordatix PSX Mega Pack, a second each, its name under it"></figure>
+<p>Asset packs from one maker are made to sit together, but each comes as its own Godot project, and that project&#x27;s settings are part of how its pack looks. The packs&#x27; folders copy into one project, and this script, a SceneTree run once from the command line, sets what they ask of it: the Compatibility renderer&#x27;s light limits (raised, never lowered), decals and light projectors filtered nearest like every texture of the PS1 look, and navigation cells as small as the monsters&#x27; navigation meshes. It saves <code>project.godot</code>, and a second run changes nothing.</p>
+<p class="muted">Script: <a href="cordatix_project_setup.gd">cordatix_project_setup.gd</a> (MIT) · Godot 4.3 or newer · <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials/tree/main/several-packs-in-one-project">its folder on GitHub</a></p>
+<h2>How to use it</h2>
+<ol>
+<li>Copy each pack&#x27;s <code>cordatix</code> folder onto your project&#x27;s, the oldest pack first: a file two packs share is the same in both, or newer in the newer pack, so let a file replace the one of the same name.</li>
+<li>Put <code>cordatix_project_setup.gd</code> in your project&#x27;s folder and, with the project closed in the editor (an open editor can save its own copy of the settings over the script&#x27;s), run it once from there: <code>godot --headless --path . -s res://cordatix_project_setup.gd</code>. On Windows, give the full path of the Godot executable; its _console.exe shows what the script prints.</li>
+<li>Open the project and let Godot import everything. Godot 4.3 can import a model before the textures its material uses when many packs come in at once (&quot;Failed loading resource&quot; in the Output): select that model&#x27;s .glb and click Reimport in the Import dock.</li>
+<li>For other packs, change <code>AT_LEAST</code> (settings that only rise) and <code>EXACTLY</code> (settings set as given).</li>
+</ol>
+<h2>What it needs</h2>
+<ul class="lines">
+<li>Godot 4.3 or newer, from the command line: the script is a SceneTree run with <code>-s</code>.</li>
+<li>Packs that keep their files in folders of their own, as the Cordatix packs do (<code>res://cordatix/&lt;pack&gt;/</code>, and <code>res://cordatix/shared/</code> for what they share).</li>
+</ul>
+<h2>Try it free</h2>
+<p>The script needs no pack: any Godot 4 project takes it. The free samplers keep the packs&#x27; layout, so they go in one project the same way, oldest first; the <a href="https://cordatix.itch.io/cordatix-sampler-box">Cordatix Sampler Box</a> holds every one.</p>
+<h2>How it was tested</h2>
+<p>In Godot 4.3 and 4.7.2: on fresh projects it sets every value and keeps the project&#x27;s own settings, a second run leaves the file as it was, higher light limits stay and a lower one rises. The eight free samplers in one project: their 74 scripts and 208 scenes load and each sampler&#x27;s demo runs (in Godot 4.3, PSX Bystanders&#x27; props can come in before their textures on the first import: reimported, as the third step says, they wear their materials). The 12 packs of Cordatix PSX Mega Pack in one project: their 161 scripts and 1,115 scenes load and each pack&#x27;s demo runs.</p>
+<h2>The code</h2>
+<pre><code># Sets what the Cordatix packs&#x27; 3D levels ask of the project it runs in, and saves project.godot: the Compatibility
+# renderer&#x27;s light limits, decals and light projectors filtered nearest, the navigation map&#x27;s cells. Run it once from
+# your project&#x27;s folder, with the project closed in the editor (an open editor can save its own copy over it):
+#   godot --headless --path . -s res://cordatix_project_setup.gd
+# A light limit already higher stays as it is; a second run changes nothing.
+extends SceneTree
+## How to Use Several PSX Asset Packs in One Godot 4 Project
+## Cordatix Godot 4 PSX tutorials, MIT licensed: https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials
+## The devlog: https://cordatix.itch.io/cordatix-psx-mega-pack/devlog/1738246/how-to-use-several-psx-asset-packs-in-one-godot-4-project-cordatix-psx-mega-pack
+
+# at least these: the Compatibility renderer&#x27;s light limits (an anomaly kit&#x27;s floor lights a mesh with up to 32 lights)
+const AT_LEAST := {
+	&quot;rendering/limits/opengl/max_renderable_lights&quot;: 64,
+	&quot;rendering/limits/opengl/max_lights_per_object&quot;: 32,
+}
+# exactly these: decals and light projectors filtered nearest, as the PS1 look draws every texture; the navigation
+# map&#x27;s cells as small as the monsters&#x27; navigation meshes (0.1 m)
+const EXACTLY := {
+	&quot;rendering/textures/decals/filter&quot;: 0,
+	&quot;rendering/textures/light_projectors/filter&quot;: 0,
+	&quot;navigation/3d/default_cell_size&quot;: 0.1,
+	&quot;navigation/3d/default_cell_height&quot;: 0.1,
+}
+
+
+func _init() -&gt; void:
+	var changed: Array[String] = []
+	for key in AT_LEAST:
+		if int(ProjectSettings.get_setting(key, 0)) &lt; AT_LEAST[key]:
+			ProjectSettings.set_setting(key, AT_LEAST[key])
+			changed.append(key)
+	for key in EXACTLY:
+		if ProjectSettings.get_setting(key) != EXACTLY[key]:
+			ProjectSettings.set_setting(key, EXACTLY[key])
+			changed.append(key)
+	if changed.is_empty():
+		print(&quot;Cordatix: the project settings are already set.&quot;)
+	else:
+		var err := ProjectSettings.save()
+		print(&quot;Cordatix: set %s; %s.&quot; % [&quot;, &quot;.join(changed), &quot;saved&quot; if err == OK else &quot;not saved (error %d)&quot; % err])
+	quit()
+</code></pre>
+<h2>The devlog and the pack</h2>
+<p>The step-by-step walkthrough is the devlog <a href="https://cordatix.itch.io/cordatix-psx-mega-pack/devlog/1738246/how-to-use-several-psx-asset-packs-in-one-godot-4-project-cordatix-psx-mega-pack">How to Use Several PSX Asset Packs in One Godot 4 Project (Cordatix PSX Mega Pack)</a> on itch.io, written for <a href="https://cordatix.itch.io/cordatix-psx-mega-pack">Cordatix PSX Mega Pack</a>, a PS1-style asset pack by <a href="https://cordatix.itch.io">Cordatix</a> for Godot 4, Unity, Unreal and Blender.</p>
+</main>
+<footer><p>Cordatix: PS1-style asset packs for Godot 4, Unity, Unreal and Blender, on <a href="https://cordatix.itch.io">itch.io</a>. The tutorials' code on <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials">GitHub</a>, MIT licensed; the pictures show Cordatix asset packs and are not covered by the MIT license.</p></footer>
+</body>
+</html>
