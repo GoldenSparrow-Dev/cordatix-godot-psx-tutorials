@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cordatix: How to Make a Boss Fight with Phases in Godot 4</title>
+<meta name="description" content="Cordatix Godot 4 PSX tutorial: A boss&#x27;s health, phases that begin at a share of it with a transition clip, and each phase&#x27;s attacks drawn by weight, never…">
+<link rel="canonical" href="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/boss-fight-with-phases/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Cordatix">
+<meta property="og:title" content="Cordatix: How to Make a Boss Fight with Phases in Godot 4">
+<meta property="og:description" content="Cordatix Godot 4 PSX tutorial: A boss&#x27;s health, phases that begin at a share of it with a transition clip, and each phase&#x27;s attacks drawn by weight, never…">
+<meta property="og:url" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/boss-fight-with-phases/">
+<meta property="og:image" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/boss-fight-with-phases/thumb.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../site.css">
+<link rel="icon" href="../favicon.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "author": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}, "description": "A boss's health, phases that begin at a share of it with a transition clip, and each phase's attacks drawn by weight, never the same three times running", "headline": "How to Make a Boss Fight with Phases in Godot 4", "image": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/boss-fight-with-phases/thumb.png", "inLanguage": "en", "isAccessibleForFree": true, "isBasedOn": "https://cordatix.itch.io/cordatix-psx-horror-bosses/devlog/1739569/how-to-make-a-boss-fight-with-phases-in-godot-4-cordatix-psx-horror-bosses", "license": "https://opensource.org/licenses/MIT", "mainEntityOfPage": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/boss-fight-with-phases/", "programmingLanguage": "GDScript", "publisher": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}}</script>
+</head>
+<body>
+<header class="top"><a class="brand" href="../">CORDATIX</a><nav><a href="../">Tutorials</a> <a href="../samplers.html">Free samplers</a> <a href="../packs.html">Packs</a> <a href="https://cordatix.itch.io">Store on itch.io</a></nav></header>
+<main>
+<p class="crumbs"><a href="../">Tutorials</a> › Make a Boss Fight with Phases</p>
+<h1>How to Make a Boss Fight with Phases in Godot 4</h1>
+<p class="lede">A boss&#x27;s health, phases that begin at a share of it with a transition clip, and each phase&#x27;s attacks drawn by weight, never the same three times running.</p>
+<figure><img src="boss_phases.gif" width="640" height="360" alt="The Foreman of Cordatix PSX Horror Bosses in Godot 4 (PSX look on): a blow takes him under half his health, his coverall tears away and his second phase begins"></figure>
+<p>A boss fight is a boss that changes: at half its health it fights another way. This script, a Node you add to any animated model, is that core: the boss&#x27;s health, phases that each begin when the health falls to their share of it, a transition clip the boss cannot be hurt during, and each phase&#x27;s attacks drawn by weight, never the same one three times running. Its signals tell the rest of the game when a phase begins, an attack starts and the boss is defeated.</p>
+<p class="muted">Script: <a href="boss_phases.gd">boss_phases.gd</a> (MIT) · Godot 4.3 or newer · <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials/tree/main/boss-fight-with-phases">its folder on GitHub</a></p>
+<h2>How to use it</h2>
+<ol>
+<li>Add a <code>Node</code> as a child of the boss&#x27;s model, attach <code>boss_phases.gd</code> to it and set <code>anim_path</code> to the model&#x27;s <code>AnimationPlayer</code>.</li>
+<li>Edit <code>phases</code> in the Inspector, one dictionary a phase: <code>below</code> (the share of <code>max_health</code> it begins at, 1.0 for the first), <code>transition</code> (the clip it plays as it begins, &quot;&quot; for none), <code>idle</code> (its clip between attacks) and <code>attacks</code> (its attack clips and their weights). Set <code>death_clip</code>, and <code>pause_min</code> and <code>pause_max</code>, the seconds between two attacks. With only two attacks in a phase the never-three-running rule evens their odds out (2 to 1 drew about 1.2 to 1 in the test), so give a phase three or more attacks when their weights matter.</li>
+<li>From your weapon, call <code>hit(amount)</code>: it returns false when the hit did not count (during a transition, or once the boss is dead).</li>
+<li>Connect <code>phase_changed(index)</code>, <code>attack_started(clip)</code> and <code>defeated</code> for the rest: a health bar, a sound, the music, the arena&#x27;s doors.</li>
+</ol>
+<h2>What it needs</h2>
+<ul class="lines">
+<li>Godot 4.3 or newer.</li>
+<li>An animated model with an <code>AnimationPlayer</code> whose clips are the ones <code>phases</code> names: an idle, the attacks, a transition for each later phase, and a death.</li>
+</ul>
+<h2>Try it free</h2>
+<p>The <a href="https://cordatix.itch.io/haunted-psx-free-sampler">Cordatix PSX Horror Free Sampler</a> has the Offcut, the mini-boss of Cordatix PSX Horror Bosses, with its clips: put <code>cordatix/psx_horror_bosses/models/offcut.glb</code> in a scene, add the script under it with <code>anim_path</code> on its <code>AnimationPlayer</code>, and the script&#x27;s two example phases (Idle, Attack, Attack2, Scream and Death) play with the Offcut&#x27;s own clips. The pack&#x27;s own boss fight kit adds what a whole fight needs: attacks in range only, wind-ups, staggers, a health bar and arenas.</p>
+<h2>How it was tested</h2>
+<p>In Godot 4.3 and 4.7.2, with the script&#x27;s two example phases on the free sampler&#x27;s Offcut as the sampler ships it: it stands in its idle clip, then attacks on its own and never the same attack three times running; the first phase draws its heavier attack more often; a hit counts; under half its health the second phase begins once with its transition clip, and hits do not count while it plays; the second phase draws its own weights; at zero it dies once, its death clip plays and nothing runs after.</p>
+<h2>The code</h2>
+<pre><code>extends Node
+## How to Make a Boss Fight with Phases in Godot 4
+## Cordatix Godot 4 PSX tutorials, MIT licensed: https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials
+## The devlog: https://cordatix.itch.io/cordatix-psx-horror-bosses/devlog/1739569/how-to-make-a-boss-fight-with-phases-in-godot-4-cordatix-psx-horror-bosses
+## A boss&#x27;s phases (Godot 4.3+): its health, the phase it is in (each begins when the health falls to its share of
+## the maximum), a transition clip it cannot be hurt during, and each phase&#x27;s attacks drawn by weight, never the same
+## one three times running. Add it to the boss as a child, point it at the boss&#x27;s AnimationPlayer, call hit() from
+## your weapon, and connect its signals for the rest (a health bar, a sound, the arena&#x27;s doors).
+
+signal phase_changed(index: int)
+signal attack_started(clip: String)
+signal defeated
+
+@export var anim_path: NodePath
+@export var max_health := 600.0
+## Each phase: &quot;below&quot;, the share of the maximum health it begins at (1.0 for the first); &quot;transition&quot;, the clip it
+## plays as it begins (&quot;&quot; for none); &quot;idle&quot;, its clip between attacks; &quot;attacks&quot;, its attack clips and their weights.
+@export var phases: Array[Dictionary] = [
+	{&quot;below&quot;: 1.0, &quot;transition&quot;: &quot;&quot;, &quot;idle&quot;: &quot;Idle&quot;, &quot;attacks&quot;: {&quot;Attack&quot;: 2.0, &quot;Attack2&quot;: 1.0}},
+	{&quot;below&quot;: 0.5, &quot;transition&quot;: &quot;Scream&quot;, &quot;idle&quot;: &quot;Idle&quot;, &quot;attacks&quot;: {&quot;Attack&quot;: 1.0, &quot;Attack2&quot;: 2.0}},
+]
+## Seconds between two attacks, drawn between these two.
+@export var pause_min := 0.6
+@export var pause_max := 1.4
+@export var death_clip := &quot;Death&quot;
+
+var health := 0.0
+var phase := 0
+var history: Array[String] = []          # the attacks drawn, in order
+
+var _anim: AnimationPlayer
+var _busy := 0.0                          # seconds the clip it plays now still runs
+var _wait := 1.0
+var _rng := RandomNumberGenerator.new()
+
+
+func _ready() -&gt; void:
+	_anim = get_node(anim_path) as AnimationPlayer
+	health = max_health
+	_anim.play(phases[0][&quot;idle&quot;])
+
+
+## Damage to the boss. False when it did not count: during a transition, or once it is dead.
+func hit(amount: float) -&gt; bool:
+	if health &lt;= 0.0 or _in_transition():
+		return false
+	health = maxf(health - amount, 0.0)
+	if health == 0.0:
+		_play(death_clip)
+		defeated.emit()
+		return true
+	var next := phase
+	for i in phases.size():
+		if health / max_health &lt;= float(phases[i][&quot;below&quot;]):
+			next = i
+	if next &gt; phase:
+		phase = next
+		_play(String(phases[phase][&quot;transition&quot;]))
+		phase_changed.emit(phase)
+	return true
+
+
+func _physics_process(delta: float) -&gt; void:
+	if health &lt;= 0.0:
+		return
+	if _busy &gt; 0.0:
+		_busy -= delta
+		if _busy &lt;= 0.0:
+			_anim.play(phases[phase][&quot;idle&quot;])
+		return
+	_wait -= delta
+	if _wait &lt;= 0.0:
+		var clip := _draw()
+		_play(clip)
+		history.append(clip)
+		attack_started.emit(clip)
+		_wait = _rng.randf_range(pause_min, pause_max)
+
+
+## One of the phase&#x27;s attacks by weight, leaving out one drawn the last two times.
+func _draw() -&gt; String:
+	var pool: Dictionary = phases[phase][&quot;attacks&quot;]
+	var ok: Array[String] = []
+	var total := 0.0
+	for clip in pool:
+		var twice: bool = history.size() &gt;= 2 and history[-1] == clip and history[-2] == clip
+		if not twice or pool.size() == 1:
+			ok.append(clip)
+			total += float(pool[clip])
+	var r := _rng.randf() * total
+	for clip in ok:
+		r -= float(pool[clip])
+		if r &lt;= 0.0:
+			return clip
+	return ok[-1]
+
+
+func _play(clip: String) -&gt; void:
+	if clip == &quot;&quot; or not _anim.has_animation(clip):
+		return
+	_anim.play(clip)
+	_busy = _anim.get_animation(clip).length
+
+
+func _in_transition() -&gt; bool:
+	var t := String(phases[phase][&quot;transition&quot;])
+	return t != &quot;&quot; and _busy &gt; 0.0 and _anim.current_animation == t
+</code></pre>
+<h2>The devlog and the pack</h2>
+<p>The step-by-step walkthrough is the devlog <a href="https://cordatix.itch.io/cordatix-psx-horror-bosses/devlog/1739569/how-to-make-a-boss-fight-with-phases-in-godot-4-cordatix-psx-horror-bosses">How to Make a Boss Fight with Phases in Godot 4 (Cordatix PSX Horror Bosses)</a> on itch.io, written for <a href="https://cordatix.itch.io/cordatix-psx-horror-bosses">Cordatix PSX Horror Bosses</a>, a PS1-style asset pack by <a href="https://cordatix.itch.io">Cordatix</a> for Godot 4, Unity, Unreal and Blender.</p>
+</main>
+<footer><p>Cordatix: PS1-style asset packs for Godot 4, Unity, Unreal and Blender, on <a href="https://cordatix.itch.io">itch.io</a>. The tutorials' code on <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials">GitHub</a>, MIT licensed; the pictures show Cordatix asset packs and are not covered by the MIT license.</p></footer>
+</body>
+</html>
