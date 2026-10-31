@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cordatix: How to Grow a PS1-Style Forest in Godot 4</title>
+<meta name="description" content="Cordatix Godot 4 PSX tutorial: Trees scattered over an area by a seed, kept off the trails you draw and set on the ground, drawn as MultiMeshes in chunks:…">
+<link rel="canonical" href="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/grow-a-ps1-style-forest/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Cordatix">
+<meta property="og:title" content="Cordatix: How to Grow a PS1-Style Forest in Godot 4">
+<meta property="og:description" content="Cordatix Godot 4 PSX tutorial: Trees scattered over an area by a seed, kept off the trails you draw and set on the ground, drawn as MultiMeshes in chunks:…">
+<meta property="og:url" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/grow-a-ps1-style-forest/">
+<meta property="og:image" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/grow-a-ps1-style-forest/thumb.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../site.css">
+<link rel="icon" href="../favicon.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "author": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}, "description": "Trees scattered over an area by a seed, kept off the trails you draw and set on the ground, drawn as MultiMeshes in chunks: models near, flat cards far", "headline": "How to Grow a PS1-Style Forest in Godot 4", "image": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/grow-a-ps1-style-forest/thumb.png", "inLanguage": "en", "isAccessibleForFree": true, "isBasedOn": "https://cordatix.itch.io/cordatix-psx-horror-forest/devlog/1743440/how-to-grow-a-ps1-style-forest-in-godot-4-cordatix-psx-horror-forest", "license": "https://opensource.org/licenses/MIT", "mainEntityOfPage": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/grow-a-ps1-style-forest/", "programmingLanguage": "GDScript", "publisher": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}}</script>
+</head>
+<body>
+<header class="top"><a class="brand" href="../">CORDATIX</a><nav><a href="../">Tutorials</a> <a href="../samplers.html">Free samplers</a> <a href="../packs.html">Packs</a> <a href="https://cordatix.itch.io">Store on itch.io</a></nav></header>
+<main>
+<p class="crumbs"><a href="../">Tutorials</a> › Grow a PS1-Style Forest</p>
+<h1>How to Grow a PS1-Style Forest in Godot 4</h1>
+<p class="lede">Trees scattered over an area by a seed, kept off the trails you draw and set on the ground, drawn as MultiMeshes in chunks: models near, flat cards far.</p>
+<figure><img src="forest_grower.gif" width="640" height="360" alt="A forest growing in Godot 4: the pines and dead pines of Cordatix PSX Horror Forest filling the ground round a trail, near ones as models, far ones as cards in the fog"></figure>
+<p>A forest in a PS1-style game is a trick: a few kinds of tree, scattered by a seed, the near ones as models, the far ones as flat cards, and the fog&#x27;s end as the edge of the world. This script, on a Node3D, is that trick: trees scattered over an area by a seed (one seed, one forest), kept off the trails you draw as Path3D curves, set on the ground below them, and drawn as MultiMeshes in chunks, each tree as its model near and as its flat card far, nothing past the fog&#x27;s end. Each trunk gets a cylinder, so the player walks round the trees.</p>
+<p class="muted">Script: <a href="forest_grower.gd">forest_grower.gd</a> (MIT) · Godot 4.3 or newer · <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials/tree/main/grow-a-ps1-style-forest">its folder on GitHub</a></p>
+<h2>How to use it</h2>
+<ol>
+<li>Add a <code>Node3D</code> and attach <code>forest_grower.gd</code>. Its area, <code>size</code>, is centred on the node.</li>
+<li>Give it one entry per kind of tree in <code>meshes</code>, <code>cards</code> and <code>weights</code>: its model, its far card and how common it is. A kind without a card draws its model up to <code>fade_end</code>.</li>
+<li>Draw your trails as <code>Path3D</code> curves and list them in <code>trails</code>: no trunk stands within <code>trail_margin</code> metres of a trail&#x27;s middle.</li>
+<li>Set <code>seed</code>, <code>trees_per_100m2</code> and <code>spacing</code> (no two trunks closer than that). The trees are models up to <code>far_distance</code> and cards from there to <code>fade_end</code>: put your fog&#x27;s end at <code>fade_end</code>.</li>
+<li>At runtime it grows by itself on its first physics frame (its rays down to the ground need the physics world); in the editor, tick <code>grow_now</code>. With <code>follow_ground</code> on, each tree stands on the collider below it, and where there is none there is no tree; off, the trees stand on the node&#x27;s plane.</li>
+</ol>
+<h2>What it needs</h2>
+<ul class="lines">
+<li>Godot 4.3 or newer.</li>
+<li>Ground with collision under the area (any physics body), or <code>follow_ground</code> off; a model for each kind of tree, and a flat card for the far ones.</li>
+</ul>
+<h2>Try it free</h2>
+<p>The <a href="https://cordatix.itch.io/haunted-psx-free-sampler">Cordatix PSX Horror Free Sampler</a> has two trees of Cordatix PSX Horror Forest with their far cards, the medium pine and the dead pine (<code>cordatix/psx_horror_forest/meshes/pine_medium.tres</code> and <code>dead_pine.tres</code>, their cards in <code>cordatix/psx_horror_forest/cards/</code>), in the forest&#x27;s looks, and this script as <code>cordatix/psx_horror_forest/sampler/forest_grower.gd</code>. N in the sampler&#x27;s demo room opens its forest taste: a night trail looping through a forest grown round it. The pack&#x27;s own forest builder adds what a whole forest needs: undergrowth and rocks, slopes, clearings that level the ground, the rolling ground that carves the trails, the four looks at runtime, trail marks and the trail that loops when the player is lost.</p>
+<h2>How it was tested</h2>
+<p>In Godot 4.3 and 4.7.2, on a slope with a trail across it, with the free sampler&#x27;s pine and dead pine and their cards: it grows by itself on the first physics frame; one seed gives one forest and another seed another; no trunk stands within 2 m of the trail; every tree stands on the slope; each chunk draws its models to 45 m and its cards from 45 to 100 m; every trunk has its cylinder; where there is no ground there is no tree.</p>
+<h2>The code</h2>
+<pre><code>@tool
+extends Node3D
+## How to Grow a PS1-Style Forest in Godot 4
+## Cordatix Godot 4 PSX tutorials, MIT licensed: https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials
+## The devlog: https://cordatix.itch.io/cordatix-psx-horror-forest/devlog/1743440/how-to-grow-a-ps1-style-forest-in-godot-4-cordatix-psx-horror-forest
+## Grow a PS1-style forest (Godot 4.3+). Trees are scattered over an area by a seed (the same seed, the same forest),
+## kept off the trails you draw as Path3D curves, set on the ground below them, and drawn as MultiMeshes in chunks:
+## each tree as its model near, as its flat card far, nothing past the fog&#x27;s end. Each trunk gets a cylinder, so the
+## player walks round the trees. In the editor, tick `grow_now`; at runtime it grows by itself.
+
+@export var size := Vector2(60.0, 60.0)
+@export var seed := 1
+@export var trees_per_100m2 := 2.5
+## No two trunks closer than this.
+@export var spacing := 2.4
+## One entry per kind of tree: its model, its far card and how common it is.
+@export var meshes: Array[Mesh] = []
+@export var cards: Array[Mesh] = []
+@export var weights: Array[float] = []
+@export var trails: Array[NodePath] = []
+## A trunk keeps this far from a trail&#x27;s middle.
+@export var trail_margin := 2.0
+## Rays down find the ground (the physics bodies under the area); off, the trees stand on this node&#x27;s plane.
+@export var follow_ground := true
+@export var chunk_size := 24.0
+@export var far_distance := 45.0
+@export var fade_end := 100.0
+@export var trunk_radius := 0.25
+@export var grow_now := false:
+	set(v):
+		grow_now = false
+		if v and is_inside_tree():
+			grow()
+
+
+var _waiting := false
+
+
+func _ready() -&gt; void:
+	if not Engine.is_editor_hint() and get_node_or_null(&quot;Chunks&quot;) == null:
+		_waiting = true            # rays need the physics world: grow on the first physics frame
+
+
+func _physics_process(_delta: float) -&gt; void:
+	if _waiting:
+		_waiting = false
+		grow()
+
+
+func grow() -&gt; void:
+	var old := get_node_or_null(&quot;Chunks&quot;)
+	if old != null:
+		remove_child(old)
+		old.free()
+	var chunks := Node3D.new()
+	chunks.name = &quot;Chunks&quot;
+	add_child(chunks)
+	var rng := RandomNumberGenerator.new()
+	rng.seed = seed
+	var total := 0.0
+	for w in weights:
+		total += w
+	var cell := maxf(spacing, sqrt(100.0 / trees_per_100m2))
+	var groups := {}                 # Vector3i(chunk x, chunk z, kind): [Transform3D]
+	for i in int(size.x / cell):
+		for j in int(size.y / cell):
+			var x := -size.x / 2.0 + (i + rng.randf()) * cell
+			var z := -size.y / 2.0 + (j + rng.randf()) * cell
+			var pick := rng.randf() * total
+			var kind := 0
+			while kind &lt; weights.size() - 1 and pick &gt; weights[kind]:
+				pick -= weights[kind]
+				kind += 1
+			var yaw := rng.randf() * TAU
+			var s := rng.randf_range(0.85, 1.15)
+			var y := _ground_y(Vector3(x, 0.0, z))
+			if is_nan(y) or _near_trail(to_global(Vector3(x, y, z))):
+				continue
+			var key := Vector3i(floori(x / chunk_size), floori(z / chunk_size), kind)
+			var list: Array = groups.get(key, [])
+			list.append(Transform3D(Basis(Vector3.UP, yaw).scaled(Vector3(s, s, s)), Vector3(x, y, z)))
+			groups[key] = list
+	for key in groups:
+		var middle := Vector3((key.x + 0.5) * chunk_size, 0.0, (key.y + 0.5) * chunk_size)
+		var near := _multimesh(chunks, meshes[key.z], groups[key], middle)
+		near.visibility_range_end = far_distance
+		if key.z &lt; cards.size() and cards[key.z] != null:
+			var far := _multimesh(chunks, cards[key.z], groups[key], middle)
+			far.visibility_range_begin = far_distance
+			far.visibility_range_end = fade_end
+		else:
+			near.visibility_range_end = fade_end
+		_trunks(chunks, groups[key])
+
+
+## The ground&#x27;s height under a local point: a ray down through the physics world (NAN where there is none).
+func _ground_y(local: Vector3) -&gt; float:
+	if not follow_ground:
+		return 0.0
+	var top := to_global(local + Vector3(0.0, 50.0, 0.0))
+	var q := PhysicsRayQueryParameters3D.create(top, top - Vector3(0.0, 100.0, 0.0))
+	var hit := get_world_3d().direct_space_state.intersect_ray(q)
+	return to_local(hit[&quot;position&quot;]).y if not hit.is_empty() else NAN
+
+
+func _near_trail(world: Vector3) -&gt; bool:
+	for p in trails:
+		var path := get_node_or_null(p) as Path3D
+		if path == null:
+			continue
+		var c := path.to_global(path.curve.get_closest_point(path.to_local(world)))
+		if Vector2(c.x - world.x, c.z - world.z).length() &lt; trail_margin:
+			return true
+	return false
+
+
+func _multimesh(parent: Node, mesh: Mesh, xforms: Array, middle: Vector3) -&gt; MultiMeshInstance3D:
+	var mm := MultiMesh.new()
+	mm.transform_format = MultiMesh.TRANSFORM_3D
+	mm.mesh = mesh
+	mm.instance_count = xforms.size()
+	for i in xforms.size():
+		mm.set_instance_transform(i, xforms[i].translated(-middle))
+	var mmi := MultiMeshInstance3D.new()
+	mmi.multimesh = mm
+	mmi.position = middle            # the camera&#x27;s distance is measured to the chunk&#x27;s middle
+	parent.add_child(mmi)
+	return mmi
+
+
+func _trunks(parent: Node, xforms: Array) -&gt; void:
+	var body := StaticBody3D.new()
+	parent.add_child(body)
+	for t in xforms:
+		var shape := CylinderShape3D.new()
+		shape.radius = trunk_radius
+		shape.height = 3.0
+		var cs := CollisionShape3D.new()
+		cs.shape = shape
+		cs.position = t.origin + Vector3(0.0, 1.5, 0.0)
+		body.add_child(cs)
+</code></pre>
+<h2>The devlog and the pack</h2>
+<p>The step-by-step walkthrough is the devlog <a href="https://cordatix.itch.io/cordatix-psx-horror-forest/devlog/1743440/how-to-grow-a-ps1-style-forest-in-godot-4-cordatix-psx-horror-forest">How to Grow a PS1-Style Forest in Godot 4 (Cordatix PSX Horror Forest)</a> on itch.io, written for <a href="https://cordatix.itch.io/cordatix-psx-horror-forest">Cordatix PSX Horror Forest</a>, a PS1-style asset pack by <a href="https://cordatix.itch.io">Cordatix</a> for Godot 4, Unity, Unreal and Blender.</p>
+</main>
+<footer><p>Cordatix: PS1-style asset packs for Godot 4, Unity, Unreal and Blender, on <a href="https://cordatix.itch.io">itch.io</a>. The tutorials' code on <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials">GitHub</a>, MIT licensed; the pictures show Cordatix asset packs and are not covered by the MIT license.</p></footer>
+</body>
+</html>
