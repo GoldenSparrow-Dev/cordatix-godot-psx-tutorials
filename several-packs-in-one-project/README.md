@@ -1,6 +1,6 @@
 # How to Use Several PSX Asset Packs in One Godot 4 Project
 
-![Each pack's demo running in one Godot 4 project that holds the 13 packs of Cordatix PSX Mega Pack, a second each, its name under it](one_project.gif)
+![Each pack's demo running in one Godot 4 project that holds the 14 packs of Cordatix PSX Mega Pack, a second each, its name under it](one_project.gif)
 
 Asset packs from one maker are made to sit together, but each comes as its own Godot project, and that project's settings are part of how its pack looks. The packs' folders copy into one project, and this script, a SceneTree run once from the command line, sets what they ask of it: the Compatibility renderer's light limits (raised, never lowered), decals and light projectors filtered nearest like every texture of the PS1 look, and navigation cells as small as the monsters' navigation meshes. It saves `project.godot`, and a second run changes nothing.
 
@@ -24,7 +24,7 @@ The script needs no pack: any Godot 4 project takes it. The free samplers keep t
 
 ## Tested
 
-In Godot 4.3 and 4.7.2: on fresh projects it sets every value and keeps the project's own settings, a second run leaves the file as it was, higher light limits stay and a lower one rises. The eight free samplers in one project: their 77 scripts and 209 scenes load and each sampler's demo runs (in Godot 4.3, PSX Bystanders' props and the PSX Horror sampler's Offcut can come in before their textures on the first import: reimported, as the third step says, they wear their materials). The 13 packs of Cordatix PSX Mega Pack in one project: their 177 scripts and 1,126 scenes load and each pack's demo runs.
+In Godot 4.3 and 4.7.2: on fresh projects it sets every value and keeps the project's own settings, a second run leaves the file as it was, higher light limits stay and a lower one rises. The eight free samplers in one project: their 89 scripts and 225 scenes load and each sampler's demo runs (in Godot 4.3, PSX Bystanders' props and the PSX Horror sampler's Offcut can come in before their textures on the first import: reimported, as the third step says, they wear their materials). The 14 packs of Cordatix PSX Mega Pack in one project: their 196 scripts and 1,483 scenes load and each pack's demo runs.
 
 ## The devlog and the pack
 

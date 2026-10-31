@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cordatix: How to Lock the Player in a Boss Arena in Godot 4</title>
+<meta name="description" content="Cordatix Godot 4 PSX tutorial: An Area3D over an arena&#x27;s floor: the gates slam down behind the player and the boss starts, they rise when it dies, and the…">
+<link rel="canonical" href="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/lock-the-player-in-a-boss-arena/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Cordatix">
+<meta property="og:title" content="Cordatix: How to Lock the Player in a Boss Arena in Godot 4">
+<meta property="og:description" content="Cordatix Godot 4 PSX tutorial: An Area3D over an arena&#x27;s floor: the gates slam down behind the player and the boss starts, they rise when it dies, and the…">
+<meta property="og:url" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/lock-the-player-in-a-boss-arena/">
+<meta property="og:image" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/lock-the-player-in-a-boss-arena/thumb.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../site.css">
+<link rel="icon" href="../favicon.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "author": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}, "description": "An Area3D over an arena's floor: the gates slam down behind the player and the boss starts, they rise when it dies, and the player's death puts the fight back as it was", "headline": "How to Lock the Player in a Boss Arena in Godot 4", "image": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/lock-the-player-in-a-boss-arena/thumb.png", "inLanguage": "en", "isAccessibleForFree": true, "isBasedOn": "https://cordatix.itch.io/cordatix-psx-horror-boss-arena/devlog/1741814/how-to-lock-the-player-in-a-boss-arena-in-godot-4-cordatix-psx-horror-boss-arena", "license": "https://opensource.org/licenses/MIT", "mainEntityOfPage": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/lock-the-player-in-a-boss-arena/", "programmingLanguage": "GDScript", "publisher": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}}</script>
+</head>
+<body>
+<header class="top"><a class="brand" href="../">CORDATIX</a><nav><a href="../">Tutorials</a> <a href="../samplers.html">Free samplers</a> <a href="../packs.html">Packs</a> <a href="https://cordatix.itch.io">Store on itch.io</a></nav></header>
+<main>
+<p class="crumbs"><a href="../">Tutorials</a> › Lock the Player in a Boss Arena</p>
+<h1>How to Lock the Player in a Boss Arena in Godot 4</h1>
+<p class="lede">An Area3D over an arena&#x27;s floor: the gates slam down behind the player and the boss starts, they rise when it dies, and the player&#x27;s death puts the fight back as it was.</p>
+<figure><img src="boss_arena_lock.gif" width="640" height="360" alt="The foundry&#x27;s shutter in Cordatix PSX Horror Boss Arena in Godot 4 (PSX look on): it slams down behind the player and the alarms come on"></figure>
+<p>A boss fight starts when the door slams behind you. This script, on an Area3D over the arena&#x27;s floor, is that moment: the player walks in, the gates drop behind them (solid at once, so nobody slips under) and the boss starts; the boss dies, and the gates rise and stay open; the player dies, and the arena puts everything back as it was before the fight, the player outside the door, so walking in again is the same fight. Its signals tell the rest of the game when the arena seals, when it lets the player go and when the fight starts over.</p>
+<p class="muted">Script: <a href="boss_arena_lock.gd">boss_arena_lock.gd</a> (MIT) · Godot 4.3 or newer · <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials/tree/main/lock-the-player-in-a-boss-arena">its folder on GitHub</a></p>
+<h2>How to use it</h2>
+<ol>
+<li>Add an <code>Area3D</code> with a <code>CollisionShape3D</code> over the arena&#x27;s floor and attach <code>boss_arena_lock.gd</code> to it. Leave the last two metres before the door out of the shape, so the gate drops behind the player, not on them.</li>
+<li>Place each gate shut in its doorway: any <code>Node3D</code> with its collision shapes under it (a <code>StaticBody3D</code> with a box will do). List them in <code>gates</code>; at the start the script lifts each one by <code>gate_drop</code> metres and turns its collision off, and when the player walks in it drops them in <code>slam_time</code> seconds, solid from the first frame.</li>
+<li>Set <code>boss_path</code> to the boss: any node with a <code>died</code> signal. The script calls its <code>start(player)</code> when the arena seals and its <code>reset()</code> on a retry, if it has them.</li>
+<li>Put the player in the <code>player</code> group (<code>player_group</code>) and give it a <code>died</code> signal and a <code>revive()</code> method. Set <code>restart_path</code> to a <code>Marker3D</code> outside the door: <code>retry_delay</code> seconds after the player&#x27;s death, the boss is reset, the gates rise and the player stands at the marker, revived.</li>
+<li>Connect <code>sealed</code>, <code>released</code> and <code>retried</code> for the rest: the music, alarm lights, a health bar.</li>
+</ol>
+<h2>What it needs</h2>
+<ul class="lines">
+<li>Godot 4.3 or newer.</li>
+<li>A player that is a physics body (a <code>CharacterBody3D</code>) in a group, and a boss with a <code>died</code> signal. A gate needs nothing but a collision shape under it.</li>
+</ul>
+<h2>Try it free</h2>
+<p>The <a href="https://cordatix.itch.io/haunted-psx-free-sampler">Cordatix PSX Horror Free Sampler</a> has a small cold store arena of Cordatix PSX Horror Boss Arena to try it in: its floor, its 6 m walls, the wall with the 1 m doorway and the small roll-up shutter&#x27;s leaf (<code>cordatix/psx_horror_boss_arena/meshes/parts/shutter_small__coldstore__leaf.tres</code>). Put that mesh and a <code>StaticBody3D</code> with a 1 by 2.1 m box under a <code>Node3D</code>, place it shut in the doorway and it is a gate for this script, with <code>gate_drop</code> at 2.1. B in the sampler&#x27;s demo room shows the pack&#x27;s own lock there: walk in and the shutter slams shut behind you as the Offcut rises. The pack&#x27;s kit adds gates of every kind (roll-up shutters, drop bars, sluice gates, a freezer door), alarm lights, a lock that waits on every enemy you list, the eight weapons, the player and the HUD.</p>
+<h2>How it was tested</h2>
+<p>In Godot 4.3 and 4.7.2, with stand-ins for the boss and the player, and the free sampler&#x27;s shutter leaf as the gate: open at the start; sealed when the player walks in, the gate solid before it is down; the boss started with the player; opened when the boss dies and kept open; on the player&#x27;s death, after the delay the boss reset, the player revived outside the door and the gate up; walking in again seals it again; a gate turned back on its way up shuts and stays solid.</p>
+<h2>The code</h2>
+<pre><code>extends Area3D
+## How to Lock the Player in a Boss Arena in Godot 4
+## Cordatix Godot 4 PSX tutorials, MIT licensed: https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials
+## The devlog: https://cordatix.itch.io/cordatix-psx-horror-boss-arena/devlog/1741814/how-to-lock-the-player-in-a-boss-arena-in-godot-4-cordatix-psx-horror-boss-arena
+## Lock the player in a boss arena (Godot 4.3+). Give this Area3D a CollisionShape3D over the arena&#x27;s floor. When the
+## player walks in, the gates slam down behind them (solid at once, so nobody slips under) and the boss starts; when
+## the boss dies, the gates rise and stay open; when the player dies, the arena puts everything back as it was before
+## the fight, the player outside the door, so walking in again is the same fight.
+
+signal sealed
+signal released
+signal retried
+
+## The gates: each a Node3D that drops by `gate_drop` metres to shut, its collision shapes anywhere under it.
+@export var gates: Array[NodePath] = []
+@export var gate_drop := 4.0
+@export var slam_time := 0.3
+@export var rise_time := 1.5
+## The boss: any node with a `died` signal; start(player) and reset() are called if it has them.
+@export var boss_path: NodePath
+## Where the player comes back on a retry, and how long after the death.
+@export var restart_path: NodePath
+@export var retry_delay := 1.5
+@export var player_group := &quot;player&quot;
+
+var player: Node3D
+var is_sealed := false
+var is_cleared := false
+var _retry_t := -1.0
+var _shut := {}                  # gate: where it stands shut (as you placed it)
+var _moving := {}                # gate: the tween moving it now
+
+
+func _ready() -&gt; void:
+	body_entered.connect(_on_body_entered)
+	for p in gates:
+		var g := get_node(p) as Node3D
+		_shut[g] = g.position
+		g.position.y += gate_drop          # authored shut: lift it out of the doorway
+		_set_solid(g, false)
+	var boss := get_node_or_null(boss_path)
+	if boss != null:
+		boss.died.connect(_on_boss_died)
+
+
+func _on_body_entered(body: Node3D) -&gt; void:
+	if is_sealed or is_cleared or _retry_t &gt;= 0.0 or not body.is_in_group(player_group):
+		return
+	player = body
+	is_sealed = true
+	for p in gates:
+		var g := get_node(p) as Node3D
+		_set_solid(g, true)                # solid now, before the gate is down
+		_move(g, _shut[g].y, slam_time, Tween.TRANS_QUAD, Tween.EASE_IN)
+	if player.has_signal(&quot;died&quot;) and not player.is_connected(&quot;died&quot;, _on_player_died):
+		player.died.connect(_on_player_died)
+	var boss := get_node_or_null(boss_path)
+	if boss != null and boss.has_method(&quot;start&quot;):
+		boss.start(player)
+	sealed.emit()
+
+
+func _open_gates() -&gt; void:
+	for p in gates:
+		var g := get_node(p) as Node3D
+		var t := _move(g, _shut[g].y + gate_drop, rise_time, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
+		t.tween_callback(_set_solid.bind(g, false))  # the way is clear once it is up
+
+
+func _move(g: Node3D, y: float, time: float, trans: Tween.TransitionType, easing: Tween.EaseType) -&gt; Tween:
+	if _moving.has(g):
+		(_moving[g] as Tween).kill()       # a gate turned back half way: no old tween fights the new one
+	var t := create_tween()
+	t.tween_property(g, &quot;position:y&quot;, y, time).set_trans(trans).set_ease(easing)
+	_moving[g] = t
+	return t
+
+
+func _on_boss_died() -&gt; void:
+	if not is_sealed:
+		return
+	is_sealed = false
+	is_cleared = true
+	_open_gates()
+	released.emit()
+
+
+func _on_player_died() -&gt; void:
+	if is_sealed and _retry_t &lt; 0.0:
+		_retry_t = retry_delay
+
+
+func _physics_process(delta: float) -&gt; void:
+	if _retry_t &lt; 0.0:
+		return
+	_retry_t -= delta
+	if _retry_t &gt;= 0.0:
+		return
+	_retry_t = -1.0
+	is_sealed = false
+	_open_gates()
+	var boss := get_node_or_null(boss_path)
+	if boss != null and boss.has_method(&quot;reset&quot;):
+		boss.reset()
+	var at := get_node_or_null(restart_path) as Node3D
+	if at != null:
+		player.global_transform = at.global_transform
+	if player.has_method(&quot;revive&quot;):
+		player.revive()
+	retried.emit()
+
+
+func _set_solid(gate: Node, on: bool) -&gt; void:
+	for c in gate.find_children(&quot;*&quot;, &quot;CollisionShape3D&quot;, true, false):
+		(c as CollisionShape3D).set_deferred(&quot;disabled&quot;, not on)
+</code></pre>
+<h2>The devlog and the pack</h2>
+<p>The step-by-step walkthrough is the devlog <a href="https://cordatix.itch.io/cordatix-psx-horror-boss-arena/devlog/1741814/how-to-lock-the-player-in-a-boss-arena-in-godot-4-cordatix-psx-horror-boss-arena">How to Lock the Player in a Boss Arena in Godot 4 (Cordatix PSX Horror Boss Arena)</a> on itch.io, written for <a href="https://cordatix.itch.io/cordatix-psx-horror-boss-arena">Cordatix PSX Horror Boss Arena</a>, a PS1-style asset pack by <a href="https://cordatix.itch.io">Cordatix</a> for Godot 4, Unity, Unreal and Blender.</p>
+</main>
+<footer><p>Cordatix: PS1-style asset packs for Godot 4, Unity, Unreal and Blender, on <a href="https://cordatix.itch.io">itch.io</a>. The tutorials' code on <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials">GitHub</a>, MIT licensed; the pictures show Cordatix asset packs and are not covered by the MIT license.</p></footer>
+</body>
+</html>
