@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cordatix: How to Light Up the House the Player Just Left in Godot 4</title>
+<meta name="description" content="Cordatix Godot 4 PSX tutorial: Walk out of a house and, behind your back, its windows glow and a lamp burns inside; come near it again and it goes dark…">
+<link rel="canonical" href="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/light-up-the-house-the-player-just-left/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Cordatix">
+<meta property="og:title" content="Cordatix: How to Light Up the House the Player Just Left in Godot 4">
+<meta property="og:description" content="Cordatix Godot 4 PSX tutorial: Walk out of a house and, behind your back, its windows glow and a lamp burns inside; come near it again and it goes dark…">
+<meta property="og:url" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/light-up-the-house-the-player-just-left/">
+<meta property="og:image" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/light-up-the-house-the-player-just-left/thumb.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../site.css">
+<link rel="icon" href="../favicon.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "author": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}, "description": "Walk out of a house and, behind your back, its windows glow and a lamp burns inside; come near it again and it goes dark before you reach its door", "headline": "How to Light Up the House the Player Just Left in Godot 4", "image": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/light-up-the-house-the-player-just-left/thumb.png", "inLanguage": "en", "isAccessibleForFree": true, "isBasedOn": "https://cordatix.itch.io/cordatix-psx-horror-village/devlog/1744212/how-to-light-up-the-house-the-player-just-left-in-godot-4-cordatix-psx-horror-village", "license": "https://opensource.org/licenses/MIT", "mainEntityOfPage": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/light-up-the-house-the-player-just-left/", "programmingLanguage": "GDScript", "publisher": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}}</script>
+</head>
+<body>
+<header class="top"><a class="brand" href="../">CORDATIX</a><nav><a href="../">Tutorials</a> <a href="../samplers.html">Free samplers</a> <a href="../packs.html">Packs</a> <a href="https://cordatix.itch.io">Store on itch.io</a></nav></header>
+<main>
+<p class="crumbs"><a href="../">Tutorials</a> › Light Up the House the Player Just Left</p>
+<h1>How to Light Up the House the Player Just Left in Godot 4</h1>
+<p class="lede">Walk out of a house and, behind your back, its windows glow and a lamp burns inside; come near it again and it goes dark before you reach its door.</p>
+<figure><img src="house_left_lit.gif" width="640" height="360" alt="A small stone house of Cordatix PSX Horror Village in Godot 4 (PSX look on): dark, then its windows glowing behind the walker&#x27;s back, then dark again as the walker comes back"></figure>
+<p>An empty village is scariest when it is not quite empty. This script, on a Node3D over your houses, does one thing: the house the player just walked out of lights up behind their back, its windows glowing and a lamp burning inside, and when they come back it goes dark before they reach its door. Each house is a child of the node; its windows are the meshes in the group &quot;window&quot;; its inside is its footprint, a wall&#x27;s thickness in, at any height. At most a few houses burn at once, the one lit longest going dark first.</p>
+<p class="muted">Script: <a href="house_left_lit.gd">house_left_lit.gd</a> (MIT) · Godot 4.3 or newer · <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials/tree/main/light-up-the-house-the-player-just-left">its folder on GitHub</a></p>
+<h2>How to use it</h2>
+<ol>
+<li>Add a <code>Node3D</code> and attach <code>house_left_lit.gd</code>. Put each house under it as a child: any <code>Node3D</code> with its meshes under it.</li>
+<li>Put each window&#x27;s <code>MeshInstance3D</code> in the group <code>window</code>. The glass is the surface whose name has &quot;glass&quot; in it (a surface named <code>..._in</code> is the inside face and stays dark), or the mesh&#x27;s first.</li>
+<li>Set <code>lit_glass</code> to a glowing material for a lit window (an unshaded or emissive one).</li>
+<li>Put the player in the group <code>player</code>. Its origin may be at its feet: a house&#x27;s inside is its footprint, <code>wall</code> metres in, at any height.</li>
+<li>Tune <code>delay</code> and <code>leave_distance</code> (how long and how far out before a house lights), <code>approach_distance</code> (how near before it goes dark) and <code>max_lit</code>. Call <code>light(house)</code>, <code>darken(house)</code> or <code>is_lit(house)</code> from your own scripts.</li>
+</ol>
+<h2>What it needs</h2>
+<ul class="lines">
+<li>Godot 4.3 or newer.</li>
+<li>Houses as <code>Node3D</code>s with their meshes under them, windows&#x27; meshes in the group <code>window</code>, a player node in the group <code>player</code>, and a glowing material.</li>
+</ul>
+<h2>Try it free</h2>
+<p>The <a href="https://cordatix.itch.io/haunted-psx-free-sampler">Cordatix PSX Horror Free Sampler</a> has a small stone house of Cordatix PSX Horror Village to try it on: its walls with a window and a door, the corner, a 4 m roof and its gable, the floor, the house door and the window in dark, lit and broken glass (<code>cordatix/psx_horror_village/pieces/</code>, the lit glass <code>cordatix/psx_horror_village/materials/vi_glass_window_lit.tres</code>), the dirt road tile in four looks, and this script as <code>cordatix/psx_horror_village/sampler/house_left_lit.gd</code>. V in the sampler&#x27;s demo room opens its village taste: three houses on a night road under this script. The pack&#x27;s own empty village adds the street lamps that die as you pass under them, the shutters that bang in a gust, every house the house builder makes and its signals.</p>
+<h2>How it was tested</h2>
+<p>In Godot 4.3 and 4.7.2, with three houses of stand-in boxes and again with the free sampler&#x27;s wall, window wall, window and lit glass, the player standing on the floor (its origin at its feet): nothing lights while the player is inside, nor before the delay; the house the player left lights up, its window showing the lit glass on its outside face and a lamp burning inside; it goes dark as the player comes near and its lamp is gone; at most max_lit houses burn, the oldest going dark first.</p>
+<h2>The code</h2>
+<pre><code>extends Node
+## How to Light Up the House the Player Just Left in Godot 4
+## Cordatix Godot 4 PSX tutorials, MIT licensed: https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials
+## The devlog: https://cordatix.itch.io/cordatix-psx-horror-village/devlog/1744212/how-to-light-up-the-house-the-player-just-left-in-godot-4-cordatix-psx-horror-village
+## Light up the house the player just left (Godot 4.3+). Walk out of a house and, behind your back, its windows glow
+## and a lamp burns inside; come near it again and it goes dark before you reach its door. Each house is a Node3D child
+## of this node; its windows are the MeshInstance3D nodes under it in the group &quot;window&quot; (their glass is the surface
+## whose name has &quot;glass&quot; in it, an inside face&#x27;s &quot;..._in&quot; aside, or their first); its inside is its meshes&#x27; footprint,
+## `wall` metres in, at any height. The player is the body in the group &quot;player&quot;.
+
+## The glowing glass a lit house&#x27;s windows show.
+@export var lit_glass: Material
+## Seconds after you are out before the house lights up, and how far out you must be.
+@export var delay := 2.0
+@export var leave_distance := 6.0
+## How near a lit house you come before it goes dark.
+@export var approach_distance := 5.0
+## Houses lit at once at most: the one lit longest goes dark first.
+@export var max_lit := 2
+@export var wall := 0.3
+@export var light_color := Color(1.0, 0.72, 0.42)
+@export var light_energy := 1.6
+
+
+var _inside: Node3D = null
+var _left := {}          # house -&gt; seconds since the player walked out of it
+var _lit: Array = []
+var _boxes := {}
+
+
+func _physics_process(delta: float) -&gt; void:
+	var player := get_tree().get_first_node_in_group(&quot;player&quot;) as Node3D
+	if player == null:
+		return
+	var at := player.global_position
+	var now: Node3D = null
+	for house in get_children():
+		if house is Node3D and _inside_of(house, at):
+			now = house
+	if now != _inside:
+		if _inside != null:
+			_left[_inside] = 0.0
+		_left.erase(now)
+		_inside = now
+	for house in _left.keys():
+		_left[house] += delta
+		if _left[house] &gt;= delay and _distance(house, at) &gt; leave_distance:
+			_left.erase(house)
+			light(house)
+	for house in _lit.duplicate():
+		if house != _inside and _distance(house, at) &lt; approach_distance:
+			darken(house)
+
+
+## Whether a point is in a house: within its footprint, at any height (a player&#x27;s origin is at their feet, on the
+## floor, below the bounds&#x27; bottom brought in).
+func _inside_of(house: Node3D, at: Vector3) -&gt; bool:
+	var b := _box(house)
+	var p := house.to_local(at)
+	return p.x &gt; b.position.x and p.x &lt; b.end.x and p.z &gt; b.position.z and p.z &lt; b.end.z
+
+
+## A house&#x27;s footprint, in its own space: the bounds of its meshes, `wall` metres in on every side.
+func _box(house: Node3D) -&gt; AABB:
+	if not _boxes.has(house):
+		var box := AABB()
+		var first := true
+		for mi in house.find_children(&quot;*&quot;, &quot;MeshInstance3D&quot;, true, false):
+			var b: AABB = house.global_transform.affine_inverse() * (mi as MeshInstance3D).global_transform \
+				* (mi as MeshInstance3D).get_aabb()
+			box = b if first else box.merge(b)
+			first = false
+		_boxes[house] = AABB(box.position + Vector3(wall, 0.0, wall), box.size - Vector3(2.0 * wall, 0.0, 2.0 * wall))
+	return _boxes[house]
+
+
+## How far a point is from a house, along the ground (0 inside).
+func _distance(house: Node3D, at: Vector3) -&gt; float:
+	var b := _box(house)
+	var p := house.to_local(at)
+	var q := p.clamp(b.position, b.end)
+	return Vector2(p.x - q.x, p.z - q.z).length()
+
+
+func light(house: Node3D) -&gt; void:
+	if house in _lit:
+		return
+	_lit.append(house)
+	if _lit.size() &gt; max_lit:
+		darken(_lit[0])
+	for mi in _windows(house):
+		mi.set_surface_override_material(_glass(mi), lit_glass)
+	var lamp := OmniLight3D.new()
+	lamp.name = &quot;LeftLamp&quot;
+	lamp.light_color = light_color
+	lamp.light_energy = light_energy
+	lamp.position = _box(house).get_center()
+	lamp.omni_range = _box(house).size.length() * 0.6
+	house.add_child(lamp)
+
+
+func darken(house: Node3D) -&gt; void:
+	if not house in _lit:
+		return
+	_lit.erase(house)
+	for mi in _windows(house):
+		mi.set_surface_override_material(_glass(mi), null)
+	var lamp := house.get_node_or_null(&quot;LeftLamp&quot;)
+	if lamp != null:
+		house.remove_child(lamp)
+		lamp.queue_free()
+
+
+func is_lit(house: Node3D) -&gt; bool:
+	return house in _lit
+
+
+func _windows(house: Node3D) -&gt; Array:
+	var out: Array = []
+	for mi in house.find_children(&quot;*&quot;, &quot;MeshInstance3D&quot;, true, false):
+		if mi.is_in_group(&quot;window&quot;):
+			out.append(mi)
+	return out
+
+
+## The window&#x27;s glass: the surface named &quot;...glass...&quot; (not an inside face&#x27;s &quot;..._in&quot;: that one stays dark), or its
+## first.
+func _glass(mi: MeshInstance3D) -&gt; int:
+	for i in mi.mesh.get_surface_count():
+		if mi.mesh is ArrayMesh:
+			var n := (mi.mesh as ArrayMesh).surface_get_name(i)
+			if &quot;glass&quot; in n and not n.ends_with(&quot;_in&quot;):
+				return i
+	return 0
+</code></pre>
+<h2>The devlog and the pack</h2>
+<p>The step-by-step walkthrough is the devlog <a href="https://cordatix.itch.io/cordatix-psx-horror-village/devlog/1744212/how-to-light-up-the-house-the-player-just-left-in-godot-4-cordatix-psx-horror-village">How to Light Up the House the Player Just Left in Godot 4 (Cordatix PSX Horror Village)</a> on itch.io, written for <a href="https://cordatix.itch.io/cordatix-psx-horror-village">Cordatix PSX Horror Village</a>, a PS1-style asset pack by <a href="https://cordatix.itch.io">Cordatix</a> for Godot 4, Unity, Unreal and Blender.</p>
+</main>
+<footer><p>Cordatix: PS1-style asset packs for Godot 4, Unity, Unreal and Blender, on <a href="https://cordatix.itch.io">itch.io</a>. The tutorials' code on <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials">GitHub</a>, MIT licensed; the pictures show Cordatix asset packs and are not covered by the MIT license.</p></footer>
+</body>
+</html>
