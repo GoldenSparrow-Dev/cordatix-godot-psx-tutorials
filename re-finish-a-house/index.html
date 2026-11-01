@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cordatix: How to Re-Finish a House in Godot 4</title>
+<meta name="description" content="Cordatix Godot 4 PSX tutorial: Name a model&#x27;s surfaces by their role and give a node a table of names and texture families: every surface takes its…">
+<link rel="canonical" href="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/re-finish-a-house/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Cordatix">
+<meta property="og:title" content="Cordatix: How to Re-Finish a House in Godot 4">
+<meta property="og:description" content="Cordatix Godot 4 PSX tutorial: Name a model&#x27;s surfaces by their role and give a node a table of names and texture families: every surface takes its…">
+<meta property="og:url" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/re-finish-a-house/">
+<meta property="og:image" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/re-finish-a-house/thumb.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../site.css">
+<link rel="icon" href="../favicon.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "author": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}, "description": "Name a model's surfaces by their role and give a node a table of names and texture families: every surface takes its material, and one property swaps the whole house from lived in to abandoned", "headline": "How to Re-Finish a House in Godot 4", "image": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/re-finish-a-house/thumb.png", "inLanguage": "en", "isAccessibleForFree": true, "isBasedOn": "https://cordatix.itch.io/cordatix-psx-horror-village-textures/devlog/1745146/how-to-re-finish-a-house-in-godot-4-cordatix-psx-horror-village-textures", "license": "https://opensource.org/licenses/MIT", "mainEntityOfPage": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/re-finish-a-house/", "programmingLanguage": "GDScript", "publisher": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}}</script>
+</head>
+<body>
+<header class="top"><a class="brand" href="../">CORDATIX</a><nav><a href="../">Tutorials</a> <a href="../samplers.html">Free samplers</a> <a href="../packs.html">Packs</a> <a href="https://cordatix.itch.io">Store on itch.io</a></nav></header>
+<main>
+<p class="crumbs"><a href="../">Tutorials</a> › Re-Finish a House</p>
+<h1>How to Re-Finish a House in Godot 4</h1>
+<p class="lede">Name a model&#x27;s surfaces by their role and give a node a table of names and texture families: every surface takes its material, and one property swaps the whole house from lived in to abandoned.</p>
+<figure><img src="surface_finish.gif" width="640" height="360" alt="The re-finish node of Cordatix PSX Horror Village Textures, built on this script, in Godot 4 on a cottage of the free village pieces at night: the house&#x27;s walls and roof re-finished, then swapped from lived in to abandoned"></figure>
+<p>A model&#x27;s surfaces can carry names, and a name is enough to re-finish a house. An ArrayMesh keeps a name for each surface (a glTF&#x27;s material names arrive as them, and a modular kit can name each part by its role: an outside wall&#x27;s face, a roof, a floor). This node, under a house, sets a material on every surface whose name is in its table, and swaps every finished surface from lived in to abandoned with one property, by the materials&#x27; file names. The mesh is untouched, so the same piece can wear another finish elsewhere.</p>
+<p class="muted">Script: <a href="surface_finish.gd">surface_finish.gd</a> (MIT) · Godot 4.3 or newer · <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials/tree/main/re-finish-a-house">its folder on GitHub</a></p>
+<h2>How to use it</h2>
+<ol>
+<li>Add a <code>Node</code> under the house (or a row of houses) and attach <code>surface_finish.gd</code>; its class is <code>SurfaceFinish</code>. It finishes every <code>MeshInstance3D</code> under its parent.</li>
+<li>Name your meshes&#x27; surfaces by their role: in Blender the material names your glTF carries, in code <code>ArrayMesh.surface_set_name()</code>. Ask a mesh with <code>mesh.surface_get_name(i)</code>.</li>
+<li>Put the materials in one folder, each named <code>&lt;family&gt;_&lt;state&gt;.tres</code> (<code>wall_limewash_blue_lived.tres</code>, <code>wall_limewash_blue_abandoned.tres</code>), and set <code>folder</code> to it.</li>
+<li>Fill <code>finishes</code> with surface names to families, e.g. <code>{&quot;vi_wall_out&quot;: &quot;wall_limewash_blue&quot;, &quot;vi_roof&quot;: &quot;roof_tiles_clay&quot;}</code>.</li>
+<li>Set <code>state</code> to <code>lived</code> or <code>abandoned</code>: every finished surface swaps at once. A family with no material for that state is skipped; call <code>apply()</code> again after you add meshes.</li>
+</ol>
+<h2>What it needs</h2>
+<ul class="lines">
+<li>Godot 4.3 or newer.</li>
+<li>Meshes whose surfaces carry names (ArrayMesh surface names) and a folder of materials named <code>&lt;family&gt;_&lt;state&gt;.tres</code>.</li>
+</ul>
+<h2>Try it free</h2>
+<p>The <a href="https://cordatix.itch.io/haunted-psx-free-sampler">Cordatix PSX Horror Free Sampler</a> carries this script as <code>cordatix/psx_horror_village_textures/sampler/surface_finish.gd</code>, with a small stone cottage of the free village pieces to try it on and 13 of the pack&#x27;s textures with their materials (a blue limewash wall, clay pantiles, a roller-printed room wall, painted floorboards and a panelled door, in their states, the wall also burnt and the roof also under snow and burnt). M in the sampler&#x27;s demo room opens its Village Textures taste: the cottage re-finished lived in, abandoned, under snow and burnt. The pack&#x27;s own re-finish node adds finishes by group, the village&#x27;s winter and burnt looks, the PSX look and the house builder&#x27;s houses.</p>
+<h2>How it was tested</h2>
+<p>In Godot 4.3 and 4.7.2, in the free sampler&#x27;s project: a wall with a window and a roof end of the free village pieces, the script&#x27;s table naming the outside wall&#x27;s face and the roof: they wear the pack&#x27;s blue limewash and clay pantiles, lived in, and state abandoned swaps both to their abandoned textures.</p>
+<h2>The code</h2>
+<pre><code>class_name SurfaceFinish
+extends Node
+## How to Re-Finish a House in Godot 4
+## Cordatix Godot 4 PSX tutorials, MIT licensed: https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials
+## The devlog: https://cordatix.itch.io/cordatix-psx-horror-village-textures/devlog/1745146/how-to-re-finish-a-house-in-godot-4-cordatix-psx-horror-village-textures
+## Re-finish a house by its surfaces&#x27; names (Godot 4.3+). A mesh&#x27;s surfaces can carry names: an ArrayMesh&#x27;s
+## surface_get_name() (the material&#x27;s name in a glTF, the role a kit gave each part). This node sets a material
+## override on every surface under its parent whose name is in `finishes`, so one model takes a new finish in place,
+## and it swaps every finished surface between states (lived and abandoned) by the materials&#x27; file names:
+## &lt;folder&gt;/&lt;family&gt;_&lt;state&gt;.tres.
+
+
+## Which surface takes which texture family, e.g. {&quot;vi_wall_out&quot;: &quot;wall_limewash_blue&quot;, &quot;vi_roof&quot;: &quot;roof_tiles_clay&quot;}.
+@export var finishes: Dictionary = {}
+## Where the materials are: &lt;folder&gt;/&lt;family&gt;_&lt;state&gt;.tres.
+@export_dir var folder := &quot;res://cordatix/psx_horror_village_textures/materials&quot;
+@export_enum(&quot;lived&quot;, &quot;abandoned&quot;) var state := &quot;lived&quot;:
+	set(v):
+		state = v
+		if is_inside_tree():
+			apply()
+
+
+func _ready() -&gt; void:
+	apply()
+
+
+## Sets the finishes on every surface named in `finishes` under the parent; returns how many it set.
+func apply() -&gt; int:
+	var n := 0
+	for node in get_parent().find_children(&quot;*&quot;, &quot;MeshInstance3D&quot;, true, false):
+		var mi := node as MeshInstance3D
+		var mesh := mi.mesh as ArrayMesh
+		if mesh == null:
+			continue
+		for i in mesh.get_surface_count():
+			var family: Variant = finishes.get(mesh.surface_get_name(i))
+			if family == null:
+				continue
+			var path := &quot;%s/%s_%s.tres&quot; % [folder, family, state]
+			if not ResourceLoader.exists(path):
+				continue                  # no material for this family in this state: the surface keeps its own
+			mi.set_surface_override_material(i, load(path) as Material)
+			n += 1
+	return n
+</code></pre>
+<h2>The devlog and the pack</h2>
+<p>The step-by-step walkthrough is the devlog <a href="https://cordatix.itch.io/cordatix-psx-horror-village-textures/devlog/1745146/how-to-re-finish-a-house-in-godot-4-cordatix-psx-horror-village-textures">How to Re-Finish a House in Godot 4 (Cordatix PSX Horror Village Textures)</a> on itch.io, written for <a href="https://cordatix.itch.io/cordatix-psx-horror-village-textures">Cordatix PSX Horror Village Textures</a>, a PS1-style asset pack by <a href="https://cordatix.itch.io">Cordatix</a> for Godot 4, Unity, Unreal and Blender.</p>
+</main>
+<footer><p>Cordatix: PS1-style asset packs for Godot 4, Unity, Unreal and Blender, on <a href="https://cordatix.itch.io">itch.io</a>. The tutorials' code on <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials">GitHub</a>, MIT licensed; the pictures show Cordatix asset packs and are not covered by the MIT license.</p></footer>
+</body>
+</html>
