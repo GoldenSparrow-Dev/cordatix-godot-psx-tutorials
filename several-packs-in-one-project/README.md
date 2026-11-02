@@ -24,7 +24,7 @@ The script needs no pack: any Godot 4 project takes it. The free samplers keep t
 
 ## Tested
 
-In Godot 4.3 and 4.7.2: on fresh projects it sets every value and keeps the project's own settings, a second run leaves the file as it was, higher light limits stay and a lower one rises. The eight free samplers in one project: their 106 scripts and 292 scenes load and each sampler's demo runs (in Godot 4.3, PSX Bystanders' props and the PSX Horror sampler's Offcut can come in before their textures on the first import: reimported, as the third step says, they wear their materials). The 18 packs of Cordatix PSX Mega Pack in one project: their 229 scripts and 2,095 scenes load and each pack's demo runs.
+In Godot 4.3 and 4.7.2: on fresh projects it sets every value and keeps the project's own settings, a second run leaves the file as it was, higher light limits stay and a lower one rises. The eight free samplers in one project: their 111 scripts and 311 scenes load and each sampler's demo runs (in Godot 4.3, PSX Bystanders' props and the PSX Horror sampler's Offcut can come in before their textures on the first import: reimported, as the third step says, they wear their materials). The 18 packs of Cordatix PSX Mega Pack in one project: their 240 scripts and 2,510 scenes load and each pack's demo runs.
 
 ## The devlog and the pack
 

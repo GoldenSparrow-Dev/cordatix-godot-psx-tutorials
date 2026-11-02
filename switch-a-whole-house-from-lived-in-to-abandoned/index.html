@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cordatix: How to Switch a Whole House from Lived In to Abandoned in Godot 4</title>
+<meta name="description" content="Cordatix Godot 4 PSX tutorial: Every prop under a house swaps for the same prop years later, in place, and the house&#x27;s walls and windows age with them: one…">
+<link rel="canonical" href="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/switch-a-whole-house-from-lived-in-to-abandoned/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Cordatix">
+<meta property="og:title" content="Cordatix: How to Switch a Whole House from Lived In to Abandoned in Godot 4">
+<meta property="og:description" content="Cordatix Godot 4 PSX tutorial: Every prop under a house swaps for the same prop years later, in place, and the house&#x27;s walls and windows age with them: one…">
+<meta property="og:url" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/switch-a-whole-house-from-lived-in-to-abandoned/">
+<meta property="og:image" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/switch-a-whole-house-from-lived-in-to-abandoned/thumb.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../site.css">
+<link rel="icon" href="../favicon.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "author": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}, "description": "Every prop under a house swaps for the same prop years later, in place, and the house's walls and windows age with them: one property, one node", "headline": "How to Switch a Whole House from Lived In to Abandoned in Godot 4", "image": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/switch-a-whole-house-from-lived-in-to-abandoned/thumb.png", "inLanguage": "en", "isAccessibleForFree": true, "isBasedOn": "https://cordatix.itch.io/cordatix-psx-horror-village/devlog/1747801/how-to-switch-a-whole-house-from-lived-in-to-abandoned-in-godot-4-cordatix-psx-horror-village-11", "license": "https://opensource.org/licenses/MIT", "mainEntityOfPage": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/switch-a-whole-house-from-lived-in-to-abandoned/", "programmingLanguage": "GDScript", "publisher": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}}</script>
+</head>
+<body>
+<header class="top"><a class="brand" href="../">CORDATIX</a><nav><a href="../">Tutorials</a> <a href="../samplers.html">Free samplers</a> <a href="../packs.html">Packs</a> <a href="https://cordatix.itch.io">Store on itch.io</a></nav></header>
+<main>
+<p class="crumbs"><a href="../">Tutorials</a> › Switch a Whole House from Lived In to Abandoned</p>
+<h1>How to Switch a Whole House from Lived In to Abandoned in Godot 4</h1>
+<p class="lede">Every prop under a house swaps for the same prop years later, in place, and the house&#x27;s walls and windows age with them: one property, one node.</p>
+<figure><img src="house_years.gif" width="640" height="360" alt="This script in Godot 4 on the free sampler&#x27;s kitchen corner in a small stone cottage at night: the table with a television, a kettle, a jar and a loaf, two chairs, then the same corner years later, abandoned, the walls aged with it"></figure>
+<p>An abandoned house is scarier when the player has seen it lived in. If every prop comes twice, as it was the night before the house was left and the same prop years later, with one origin, a whole house can switch with one property. This node reads the pairs from a JSON file once, and setting its state swaps every prop under the house for its twin in place: the same transform, the same name, the same place among its siblings. Then it hands the state on to any node in the house that has a state and an apply() (a re-finish script, so the walls age with the furniture), and to the house itself when the house is a builder with a state and a build().</p>
+<p class="muted">Script: <a href="house_years.gd">house_years.gd</a> (MIT) · Godot 4.3 or newer · <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials/tree/main/switch-a-whole-house-from-lived-in-to-abandoned">its folder on GitHub</a></p>
+<h2>How to use it</h2>
+<ol>
+<li>Add a <code>Node</code> under the house (or under a row of houses) and attach <code>house_years.gd</code>; its class is <code>HouseYears</code>. It switches every prop under its parent.</li>
+<li>Give your props two scenes each, with one origin, in <code>&lt;pack&gt;/props/</code>: <code>chair.tscn</code> lived in and its twin <code>chair__abandoned.tscn</code> (the abandoned one&#x27;s file name holds <code>abandoned</code>). Pair them in <code>&lt;pack&gt;/data/props.json</code> as <code>{&quot;props&quot;: [{&quot;pairs&quot;: {&quot;chair&quot;: &quot;chair__abandoned&quot;}}]}</code>. A prop&#x27;s pickup, use and rigid scenes pair the same way when both sides have them: <code>loaf__pickup.tscn</code> with <code>loaf__abandoned__pickup.tscn</code>.</li>
+<li>Set <code>pack</code> to the folder that holds <code>data/props.json</code> and <code>props/</code>.</li>
+<li>Set <code>state</code> to <code>lived</code> or <code>abandoned</code>: every prop under the house swaps at once. Switch behind a fade or a blink, and call <code>apply()</code> again after you add props at run time. A prop the player took is gone, so it stays gone when the house switches back.</li>
+</ol>
+<h2>What it needs</h2>
+<ul class="lines">
+<li>Godot 4.3 or newer (the Compatibility renderer is enough).</li>
+<li>Props as pairs of scenes, lived in and abandoned, with one origin, and a <code>data/props.json</code> that pairs them.</li>
+<li>For the walls to age too: a node in the house with a <code>state</code> and an <code>apply()</code> (a re-finish script).</li>
+</ul>
+<h2>Try it free</h2>
+<p>The <a href="https://cordatix.itch.io/haunted-psx-free-sampler">Cordatix PSX Horror Free Sampler</a> carries this script as <code>cordatix/psx_horror_village_props/sampler/house_years.gd</code>, with six of the village&#x27;s props in both states (a kitchen table and chair, a portable television, a kettle, a jar of preserves and a loaf, the jar and the loaf to take) and the re-finish script <code>surface_finish.gd</code>, so a wall ages with them. In that project use the file as it is, or drop the <code>class_name</code> line from a copy of your own: Godot takes each class name once. The pack&#x27;s 107 props come in both states, with things to take and to open, ready-made scenes and the kit&#x27;s seven ready houses furnished.</p>
+<h2>How it was tested</h2>
+<p>In Godot 4.3 and 4.7.2, in the free sampler&#x27;s project, on stand-in props and on the sampler&#x27;s six props by a wall of the free village pieces with the sampler&#x27;s re-finish script: abandoned, every prop is its twin where it stood, turned as it was, a pickup stays a pickup, the wall wears its abandoned textures, nothing is doubled, a thing the player took stays gone when the house switches back, and a house builder is rebuilt once in the new state.</p>
+<h2>The code</h2>
+<pre><code>class_name HouseYears
+extends Node
+## How to Switch a Whole House from Lived In to Abandoned in Godot 4
+## Cordatix Godot 4 PSX tutorials, MIT licensed: https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials
+## The devlog: https://cordatix.itch.io/cordatix-psx-horror-village/devlog/1747801/how-to-switch-a-whole-house-from-lived-in-to-abandoned-in-godot-4-cordatix-psx-horror-village-11
+## Switch a whole house between lived in and abandoned (Godot 4.3+). MIT licence.
+## Every prop of Cordatix PSX Horror Village comes twice: as it was the night before the village was left, and
+## the same prop years later, both with one origin. data/props.json pairs each lived scene with its abandoned twin. Put
+## this node under a house: setting `state` swaps every prop under the house for its twin in place, and hands the
+## state on to any re-finish node in the house (a node with a `state` and an `apply()`, such as the free sampler&#x27;s
+## surface_finish.gd), so the walls age with the furniture, and to the house itself when it is Cordatix PSX Horror
+## Village&#x27;s house builder (a `state` and a `build()`): its windows break and board with the years.
+
+## The pack&#x27;s folder: its data/props.json and props/ scenes.
+@export_dir var pack := &quot;res://cordatix/psx_horror_village_props&quot;
+@export_enum(&quot;lived&quot;, &quot;abandoned&quot;) var state := &quot;lived&quot;:
+	set(v):
+		state = v
+		if is_inside_tree():
+			apply()
+
+
+var _twin := {}            # scene path -&gt; its other side&#x27;s scene path, both ways
+
+
+func _ready() -&gt; void:
+	var data: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(pack + &quot;/data/props.json&quot;))
+	for p in data[&quot;props&quot;]:
+		for lived in p[&quot;pairs&quot;]:
+			var dead: String = p[&quot;pairs&quot;][lived]
+			for kind in [&quot;&quot;, &quot;__pickup&quot;, &quot;__use&quot;, &quot;__rigid&quot;]:
+				var a := &quot;%s/props/%s%s.tscn&quot; % [pack, lived, kind]
+				var b := &quot;%s/props/%s%s.tscn&quot; % [pack, dead, kind]
+				if ResourceLoader.exists(a) and ResourceLoader.exists(b):
+					_twin[a] = b
+					_twin[b] = a
+	apply()
+
+
+## Swaps every prop under the parent onto the side `state` names; returns how many it swapped.
+func apply() -&gt; int:
+	var n := 0
+	for node in get_parent().find_children(&quot;*&quot;, &quot;Node3D&quot;, true, false):
+		var path: String = node.scene_file_path
+		if not _twin.has(path) or _is_side(path) == state or _gone(node):
+			continue
+		var twin: Node3D = (load(_twin[path]) as PackedScene).instantiate()
+		twin.transform = (node as Node3D).transform
+		var parent := node.get_parent()
+		var at := node.get_index()
+		var nm := node.name
+		node.name = String(nm) + &quot;_old&quot;
+		parent.add_child(twin)
+		parent.move_child(twin, at)
+		twin.name = nm
+		node.queue_free()
+		n += 1
+	for f in get_parent().find_children(&quot;*&quot;, &quot;&quot;, true, false):
+		if f != self and f.has_method(&quot;apply&quot;) and &quot;state&quot; in f:
+			f.set(&quot;state&quot;, state)
+	var house := get_parent()
+	if house.has_method(&quot;build&quot;) and &quot;state&quot; in house and house.get(&quot;state&quot;) != state:
+		house.set(&quot;state&quot;, state)
+		house.call(&quot;build&quot;)
+	return n
+
+
+func _gone(node: Node) -&gt; bool:
+	while node != null:
+		if node.is_queued_for_deletion():
+			return true
+		node = node.get_parent()
+	return false
+
+
+func _is_side(path: String) -&gt; String:
+	return &quot;abandoned&quot; if path.get_file().get_basename().contains(&quot;abandoned&quot;) else &quot;lived&quot;
+</code></pre>
+<h2>The devlog and the pack</h2>
+<p>The step-by-step walkthrough is the devlog <a href="https://cordatix.itch.io/cordatix-psx-horror-village/devlog/1747801/how-to-switch-a-whole-house-from-lived-in-to-abandoned-in-godot-4-cordatix-psx-horror-village-11">How to Switch a Whole House from Lived In to Abandoned in Godot 4 (Cordatix PSX Horror Village 1.1)</a> on itch.io, written for <a href="https://cordatix.itch.io/cordatix-psx-horror-village">Cordatix PSX Horror Village</a>, a PS1-style asset pack by <a href="https://cordatix.itch.io">Cordatix</a> for Godot 4, Unity, Unreal and Blender.</p>
+</main>
+<footer><p>Cordatix: PS1-style asset packs for Godot 4, Unity, Unreal and Blender, on <a href="https://cordatix.itch.io">itch.io</a>. The tutorials' code on <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials">GitHub</a>, MIT licensed; the pictures show Cordatix asset packs and are not covered by the MIT license.</p></footer>
+</body>
+</html>
