@@ -19,7 +19,7 @@ The loop of an anomaly game: one hallway between two stairwells built alike. A f
 
 ## Try it free
 
-The [Liminal PSX Anomalies Free Sampler](https://cordatix.itch.io/liminal-psx-anomalies-free) has the hotel floor, its two stairwells and the pack's full loop game with five anomalies, on a run of three floors (it also waits for both stairwell doors to shut, dresses each floor and writes the floor number on the sign and every door).
+The [Liminal PSX Anomalies Free Sampler](https://cordatix.itch.io/liminal-psx-anomalies) has the hotel floor, its two stairwells and the pack's full loop game with five anomalies, on a run of three floors (it also waits for both stairwell doors to shut, dresses each floor and writes the floor number on the sign and every door).
 
 ## Tested
 

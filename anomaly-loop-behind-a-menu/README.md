@@ -19,7 +19,7 @@ An anomaly game opens on its title menu with the level already in the scene behi
 
 ## Try it free
 
-The [Liminal PSX Anomalies Free Sampler](https://cordatix.itch.io/liminal-psx-anomalies-free) has the hotel floor and the pack's loop game, which also does nothing before a run has begun (from version 1.1), with five anomalies on a run of three floors.
+The [Liminal PSX Anomalies Free Sampler](https://cordatix.itch.io/liminal-psx-anomalies) has the hotel floor and the pack's loop game, which also does nothing before a run has begun (from version 1.1), with five anomalies on a run of three floors.
 
 ## Tested
 
