@@ -26,6 +26,6 @@ Checked with `godot --headless --check-only` in Godot 4.3 and 4.7.2.
 
 ## The devlog and the pack
 
-The step-by-step walkthrough is the devlog [How to Switch a Room Between Festive and Creepy in Godot 4 (Haunted PSX Halloween Takeover)](https://cordatix.itch.io/haunted-psx-halloween-takeover/devlog/1718867/how-to-switch-a-room-between-festive-and-creepy-in-godot-4-haunted-psx-halloween-takeover) on itch.io, written for [Cordatix PSX Horror Halloween Takeover](https://cordatix.itch.io/haunted-psx-halloween-takeover), a PS1-style asset pack by [Cordatix](https://cordatix.itch.io) for Godot 4, Unity, Unreal and Blender.
+This tutorial was first a devlog of Halloween Takeover, whose decorations are now part of Cordatix PSX Horror Props 1.1; that page is closed, so the script and this README are the whole tutorial. It is written for [Cordatix PSX Horror Props](https://cordatix.itch.io/haunted-psx-props), a PS1-style asset pack by [Cordatix](https://cordatix.itch.io) for Godot 4, Unity, Unreal and Blender.
 
 The code is MIT licensed ([LICENSE](../LICENSE)). The pictures show Cordatix asset packs and are not covered by the MIT license.

@@ -1,6 +1,6 @@
 # How to Use Several PSX Asset Packs in One Godot 4 Project
 
-Asset packs from one maker are made to sit together, but each comes as its own Godot project, and that project's settings are part of how its pack looks. The packs' folders copy into one project, and this script, a SceneTree run once from the command line, sets what they ask of it: the Compatibility renderer's light limits (raised, never lowered), decals and light projectors filtered nearest like every texture of the PS1 look, and navigation cells as small as the monsters' navigation meshes. It saves `project.godot`, and a second run changes nothing.
+Asset packs from one maker are made to sit together, but each comes as its own Godot project, and that project's settings are part of how its pack looks. The packs' folders copy into one project, and this script, a SceneTree run once from the command line, sets what they ask of it: the Compatibility renderer's light limits (raised, never lowered), decals and light projectors filtered nearest like every texture of the PS1 look, and navigation cells as small as the monsters' navigation meshes, their edges merged at that scale (a village street's navigation mesh needs it in Godot 4.3). It saves `project.godot`, and a second run changes nothing. This is the script as the Mega Pack's Start here zip 1.8 carries it: the devlog's, with the merge scale added.
 
 **See it working:** the GIF on [the tutorial's page](https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/several-packs-in-one-project/).
 
@@ -24,7 +24,7 @@ The script needs no pack: any Godot 4 project takes it. The free samplers keep t
 
 ## Tested
 
-In Godot 4.3 and 4.7.2: on fresh projects it sets every value and keeps the project's own settings, a second run leaves the file as it was, higher light limits stay and a lower one rises. The eight free samplers in one project: their 111 scripts and 311 scenes load and each sampler's demo runs (in Godot 4.3, PSX Bystanders' props and the PSX Horror sampler's Offcut can come in before their textures on the first import: reimported, as the third step says, they wear their materials). The 18 packs of Cordatix PSX Mega Pack in one project: their 240 scripts and 2,510 scenes load and each pack's demo runs.
+In Godot 4.3 and 4.7.2: on fresh projects it sets every value and keeps the project's own settings, a second run leaves the file as it was, higher light limits stay and a lower one rises. The eight free samplers in one project: their 112 scripts and 311 scenes load and each sampler's demo runs (in Godot 4.3, PSX Bystanders' props and the PSX Horror sampler's Offcut can come in before their textures on the first import: reimported, as the third step says, they wear their materials). The 19 packs of Cordatix PSX Mega Pack in one project: their 252 scripts and 2,530 scenes load and each pack's demo runs.
 
 ## The devlog and the pack
 

@@ -1,7 +1,7 @@
 extends Node3D
 ## How to Switch a Room Between Festive and Creepy in Godot 4
 ## Cordatix Godot 4 PSX tutorials, MIT licensed: https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials
-## The devlog: https://cordatix.itch.io/haunted-psx-halloween-takeover/devlog/1718867/how-to-switch-a-room-between-festive-and-creepy-in-godot-4-haunted-psx-halloween-takeover
+## Written for: https://cordatix.itch.io/haunted-psx-props
 
 const PACK := "res://cordatix/haunted_psx_halloween_takeover/"
 const SIDES := ["festive", "creepy"]
