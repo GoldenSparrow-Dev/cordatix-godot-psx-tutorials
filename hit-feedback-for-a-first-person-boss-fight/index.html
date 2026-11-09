@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cordatix: How to Add Hit Feedback and Sounds to a Boss Fight in Godot 4</title>
+<meta name="description" content="Cordatix Godot 4 PSX tutorial: A sound and four ticks at the crosshair when a hit lands, a sound per swing and shot, red edges when hurt.">
+<link rel="canonical" href="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/hit-feedback-for-a-first-person-boss-fight/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Cordatix">
+<meta property="og:title" content="Cordatix: How to Add Hit Feedback and Sounds to a Boss Fight in Godot 4">
+<meta property="og:description" content="Cordatix Godot 4 PSX tutorial: A sound and four ticks at the crosshair when a hit lands, a sound per swing and shot, red edges when hurt.">
+<meta property="og:url" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/hit-feedback-for-a-first-person-boss-fight/">
+<meta property="og:image" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/hit-feedback-for-a-first-person-boss-fight/thumb.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../site.css">
+<link rel="icon" href="../favicon.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "author": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}, "description": "A sound and four ticks at the crosshair when a hit lands, a sound per swing and shot, red edges when hurt", "headline": "How to Add Hit Feedback and Sounds to a Boss Fight in Godot 4", "image": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/hit-feedback-for-a-first-person-boss-fight/thumb.png", "inLanguage": "en", "isAccessibleForFree": true, "isBasedOn": "https://cordatix.itch.io/cordatix-psx-horror-bosses/devlog/1766008/how-to-add-hit-feedback-and-sounds-to-a-first-person-boss-fight-in-godot-4-cordatix-psx-horror-bosses", "license": "https://opensource.org/licenses/MIT", "mainEntityOfPage": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/hit-feedback-for-a-first-person-boss-fight/", "programmingLanguage": "GDScript", "publisher": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}}</script>
+</head>
+<body>
+<header class="top"><a class="brand" href="../">CORDATIX</a><nav><a href="../">Tutorials</a> <a href="../samplers.html">Free samplers</a> <a href="../packs.html">Packs</a> <a href="https://cordatix.itch.io">Store on itch.io</a></nav></header>
+<main>
+<p class="crumbs"><a href="../">Tutorials</a> › Add Hit Feedback and Sounds to a Boss Fight</p>
+<h1>How to Add Hit Feedback and Sounds to a Boss Fight in Godot 4</h1>
+<p class="lede">A sound and four ticks at the crosshair when a hit lands, a sound per swing and shot, red edges when hurt.</p>
+<figure><img src="hit_feedback.gif" width="640" height="360" alt="Each boss in the arena made for it in Godot 4 (PSX look on), through the player&#x27;s eyes, the hands and the weapon in view"></figure>
+<p>In a first-person fight the player cannot see their own blow land on a boss across the room, so the game has to say it. One CanvasLayer listens to three signals: a weapon&#x27;s <code>struck</code> when a blow or a shot lands, its <code>clip_event</code> as its animation passes a moment, and the player&#x27;s <code>hurt</code>. It plays a sound for each through four voices, so a shot and its hit do not cut each other off, marks a hit with four short ticks round the crosshair and the player&#x27;s hurt with red edges; both fade.</p>
+<p class="muted">Script: <a href="hit_feedback.gd">hit_feedback.gd</a> (MIT) · Godot 4.3 or newer · <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials/tree/main/hit-feedback-for-a-first-person-boss-fight">its folder on GitHub</a></p>
+<h2>How to use it</h2>
+<ol>
+<li>Add a <code>CanvasLayer</code> to your scene and attach <code>hit_feedback.gd</code>.</li>
+<li>Give it <code>sounds</code>, a dictionary by name: <code>hit</code>, <code>hurt</code>, and one per clip event (<code>swing</code>, <code>shot</code>). A name with no sound is skipped.</li>
+<li>Call <code>watch_weapon()</code> for every weapon (any node with <code>struck(target, amount, at)</code> and <code>clip_event(event, clip, data)</code>) and <code>watch_player()</code> for the player (any node with <code>hurt(amount, source)</code>).</li>
+<li>Tune <code>tick_color</code>, <code>tick_fade</code> and <code>hurt_fade</code>; connect <code>played</code> to see each sound as it plays.</li>
+</ol>
+<h2>What it needs</h2>
+<ul class="lines">
+<li>Godot 4.3 or newer (the Compatibility renderer is enough).</li>
+<li>Weapons and a player that send the three signals; any sounds of your own.</li>
+</ul>
+<h2>Try it free</h2>
+<p>The Cordatix PSX Horror Free Sampler has the Offcut, PSX Horror Bosses&#x27; mini-boss, to fight; the script itself needs no file of a pack: give it your own weapons, player and sounds.</p>
+<h2>How it was tested</h2>
+<p>In Godot 4.3 and 4.7.2: on stand-ins (a node with a weapon&#x27;s two signals, one with the player&#x27;s hurt) a blow sets the ticks and plays the hit, a shot plays its sound and an event with none is skipped, the player&#x27;s hurt reddens the edges, and both fade; in the pack, on its own first-person player and its nine items too.</p>
+<h2>The code</h2>
+<pre><code>extends CanvasLayer
+## How to Add Hit Feedback and Sounds to a Boss Fight in Godot 4
+## Cordatix Godot 4 PSX tutorials, MIT licensed: https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials
+## The devlog: https://cordatix.itch.io/cordatix-psx-horror-bosses/devlog/1766008/how-to-add-hit-feedback-and-sounds-to-a-first-person-boss-fight-in-godot-4-cordatix-psx-horror-bosses
+## Hit feedback for a first-person fight (Godot 4.3+): a short sound and four ticks round the crosshair when a blow
+## or a shot lands, another sound for each swing and shot, and the screen&#x27;s edges reddening when the player is hurt.
+## Add it to your scene, then call watch_weapon() for each weapon and watch_player() for the player. A weapon is any
+## node with the signals struck(target, amount, at) and clip_event(event, clip, data); a player any node with hurt.
+
+signal played(sound: String)
+
+## The sounds by name: &quot;hit&quot; when a blow lands, &quot;hurt&quot; when the player is hurt, and one per clip event (&quot;swing&quot;,
+## &quot;shot&quot;...). A name with no sound is skipped.
+@export var sounds: Dictionary = {}
+@export var tick_color := Color(0.95, 0.88, 0.70)
+@export var tick_fade := 0.25
+@export var hurt_fade := 0.7
+
+var hit := 0.0                # 1 when a blow lands, fading to 0
+var hurt := 0.0               # the same for the red edges
+var _canvas := Control.new()
+var _voices: Array[AudioStreamPlayer] = []
+
+
+func _ready() -&gt; void:
+	_canvas.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_canvas.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_canvas.draw.connect(_paint)
+	add_child(_canvas)
+	for i in 4:
+		var v := AudioStreamPlayer.new()
+		add_child(v)
+		_voices.append(v)
+
+
+func watch_weapon(w: Node) -&gt; void:
+	w.connect(&quot;struck&quot;, func(_t, _a, _at) -&gt; void:
+		hit = 1.0
+		play(&quot;hit&quot;))
+	w.connect(&quot;clip_event&quot;, func(event: String, _clip, _data) -&gt; void: play(event))
+
+
+func watch_player(p: Node) -&gt; void:
+	p.connect(&quot;hurt&quot;, func(_amount, _source) -&gt; void:
+		hurt = 1.0
+		play(&quot;hurt&quot;))
+
+
+## Plays a sound by name on the next of four voices in turn (a fifth sound at once cuts the oldest).
+func play(sound: String) -&gt; void:
+	var s: AudioStream = sounds.get(sound)
+	if s == null:
+		return
+	var v: AudioStreamPlayer = _voices.pop_front()
+	_voices.append(v)
+	v.stream = s
+	if DisplayServer.get_name() != &quot;headless&quot;:       # a server or a test run has nothing to hear
+		v.play()
+	played.emit(sound)
+
+
+func _process(delta: float) -&gt; void:
+	hit = maxf(hit - delta / tick_fade, 0.0)
+	hurt = maxf(hurt - delta / hurt_fade, 0.0)
+	_canvas.queue_redraw()
+
+
+func _paint() -&gt; void:
+	var c := _canvas.size / 2.0
+	var s := _canvas.size.y / 480.0
+	if hit &gt; 0.0:
+		for d in [Vector2(1, 1), Vector2(-1, 1), Vector2(1, -1), Vector2(-1, -1)]:
+			_canvas.draw_line(c + d * 6.0 * s, c + d * 12.0 * s, Color(tick_color, hit), 2.0 * s)
+	if hurt &gt; 0.0:
+		var e := minf(_canvas.size.x, _canvas.size.y) * 0.12
+		var red := Color(0.55, 0.02, 0.02, 0.35 * hurt)
+		var r := Rect2(Vector2.ZERO, _canvas.size)
+		for edge in [Rect2(0, 0, r.size.x, e), Rect2(0, r.size.y - e, r.size.x, e), Rect2(0, 0, e, r.size.y),
+				Rect2(r.size.x - e, 0, e, r.size.y)]:
+			_canvas.draw_rect(edge, red)
+</code></pre>
+<h2>The devlog and the pack</h2>
+<p>The step-by-step walkthrough is the devlog <a href="https://cordatix.itch.io/cordatix-psx-horror-bosses/devlog/1766008/how-to-add-hit-feedback-and-sounds-to-a-first-person-boss-fight-in-godot-4-cordatix-psx-horror-bosses">How to Add Hit Feedback and Sounds to a First-Person Boss Fight in Godot 4 (Cordatix PSX Horror Bosses 2.0)</a> on itch.io, written for <a href="https://cordatix.itch.io/cordatix-psx-horror-bosses">Cordatix PSX Horror Bosses</a>, a PS1-style asset pack by <a href="https://cordatix.itch.io">Cordatix</a> for Godot 4, Unity, Unreal and Blender.</p>
+</main>
+<footer><p>Cordatix: PS1-style asset packs for Godot 4, Unity, Unreal and Blender, on <a href="https://cordatix.itch.io">itch.io</a>. The tutorials' code on <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials">GitHub</a>, MIT licensed; the pictures show Cordatix asset packs and are not covered by the MIT license.</p></footer>
+</body>
+</html>

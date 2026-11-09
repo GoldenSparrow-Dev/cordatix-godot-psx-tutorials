@@ -14,12 +14,14 @@ const AT_LEAST := {
 	"rendering/limits/opengl/max_lights_per_object": 32,
 }
 # exactly these: decals and light projectors filtered nearest, as the PS1 look draws every texture; the navigation
-# map's cells as small as the monsters' navigation meshes (0.1 m)
+# map's cells as small as the monsters' navigation meshes (0.1 m), and its edges merged at that scale (a village
+# street's navigation mesh in Godot 4.3)
 const EXACTLY := {
 	"rendering/textures/decals/filter": 0,
 	"rendering/textures/light_projectors/filter": 0,
 	"navigation/3d/default_cell_size": 0.1,
 	"navigation/3d/default_cell_height": 0.1,
+	"navigation/3d/merge_rasterizer_cell_scale": 0.001,
 }
 
 

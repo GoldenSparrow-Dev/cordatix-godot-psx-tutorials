@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cordatix: How to Make a Monster Hide Until a Flashlight Finds It in Godot 4</title>
+<meta name="description" content="Cordatix Godot 4 PSX tutorial: Dim in the dark, pale and glowing a little where a flashlight&#x27;s beam falls, fading back when it moves on.">
+<link rel="canonical" href="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/monster-hidden-until-the-flashlight-finds-it/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Cordatix">
+<meta property="og:title" content="Cordatix: How to Make a Monster Hide Until a Flashlight Finds It in Godot 4">
+<meta property="og:description" content="Cordatix Godot 4 PSX tutorial: Dim in the dark, pale and glowing a little where a flashlight&#x27;s beam falls, fading back when it moves on.">
+<meta property="og:url" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/monster-hidden-until-the-flashlight-finds-it/">
+<meta property="og:image" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/monster-hidden-until-the-flashlight-finds-it/thumb.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../site.css">
+<link rel="icon" href="../favicon.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "author": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}, "description": "Dim in the dark, pale and glowing a little where a flashlight's beam falls, fading back when it moves on", "headline": "How to Make a Monster Hide Until a Flashlight Finds It in Godot 4", "image": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/monster-hidden-until-the-flashlight-finds-it/thumb.png", "inLanguage": "en", "isAccessibleForFree": true, "isBasedOn": "https://cordatix.itch.io/haunted-psx-monsters/devlog/1764265/how-to-make-a-monster-that-hides-until-your-flashlight-finds-it-in-godot-4-cordatix-psx-horror-monsters", "license": "https://opensource.org/licenses/MIT", "mainEntityOfPage": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/monster-hidden-until-the-flashlight-finds-it/", "programmingLanguage": "GDScript", "publisher": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}}</script>
+</head>
+<body>
+<header class="top"><a class="brand" href="../">CORDATIX</a><nav><a href="../">Tutorials</a> <a href="../samplers.html">Free samplers</a> <a href="../packs.html">Packs</a> <a href="https://cordatix.itch.io">Store on itch.io</a></nav></header>
+<main>
+<p class="crumbs"><a href="../">Tutorials</a> › Make a Monster Hide Until a Flashlight Finds It</p>
+<h1>How to Make a Monster Hide Until a Flashlight Finds It in Godot 4</h1>
+<p class="lede">Dim in the dark, pale and glowing a little where a flashlight&#x27;s beam falls, fading back when it moves on.</p>
+<figure><img src="lint_beam.gif" width="480" height="360" alt="In a dark room a flashlight&#x27;s beam sweeps onto Lint, a figure of house dust: it pales in the beam and fades back after it"></figure>
+<p>A monster you can hardly see in the dark until your flashlight finds it. The script gives each mesh of the model its own copy of every material, so revealing one monster does not light every other copy of the same model, and adds a glow made from the model&#x27;s own colours. Every physics frame it asks each flashlight whether its beam reaches three points on the body: within the light&#x27;s range, inside its cone and with nothing in between. It shows fast and fades back slowly, so a player who swings the light past sees it a moment too late.</p>
+<p class="muted">Script: <a href="flashlight_reveal.gd">flashlight_reveal.gd</a> (MIT) · Godot 4.3 or newer · <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials/tree/main/monster-hidden-until-the-flashlight-finds-it">its folder on GitHub</a></p>
+<h2>How to use it</h2>
+<ol>
+<li>Make the monster a CharacterBody3D with its model under it, and attach <code>flashlight_reveal.gd</code> to the CharacterBody3D.</li>
+<li>Put your player&#x27;s flashlight, a <code>SpotLight3D</code>, in the group <code>flashlight</code>. Any number of lights count.</li>
+<li>Tune <code>dark</code> (its colours in the dark, times this), <code>glow</code>, <code>fade_in</code> and <code>fade_out</code> (seconds), and <code>heights</code>: where on the body the beam can find it, in metres up.</li>
+<li>A material with a glow map of its own (glowing eyes) keeps it: those still glow in the dark.</li>
+</ol>
+<h2>What it needs</h2>
+<ul class="lines">
+<li>Godot 4.3 or newer (the Compatibility renderer is enough).</li>
+<li>A model with StandardMaterial3D materials; any rigged or static model works.</li>
+</ul>
+<h2>Try it free</h2>
+<p>The Cordatix PSX Horror Free Sampler has Papered, a figure of peeling wallpaper, with all ten of its clips and the enemy script: the code works on it as it is. In the full pack Lint, a figure of house dust, does the same through its enemy script&#x27;s <code>show_in_light</code> settings.</p>
+<h2>How it was tested</h2>
+<p>In Godot 4.3 and 4.7.2, with Papered from the free sampler: in the dark it stays dim; the beam finds it and it shows within <code>fade_in</code> while another copy of the same model stays as it was; it fades back, not at once, when the beam leaves; beside the beam, behind a wall, beyond the beam&#x27;s range or with the flashlight off it stays dark; the body carrying the light never blocks it.</p>
+<h2>The code</h2>
+<pre><code>extends CharacterBody3D
+## How to Make a Monster Hide Until a Flashlight Finds It in Godot 4
+## Cordatix Godot 4 PSX tutorials, MIT licensed: https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials
+## The devlog: https://cordatix.itch.io/haunted-psx-monsters/devlog/1764265/how-to-make-a-monster-that-hides-until-your-flashlight-finds-it-in-godot-4-cordatix-psx-horror-monsters
+
+## Dim in the dark; where a flashlight&#x27;s beam falls on it, it pales and glows a little, and it fades back when the
+## beam moves on. Any SpotLight3D in the group &quot;flashlight&quot; counts.
+@export var dark := 0.5              # its colours in the dark, times this
+@export var glow := 0.35             # how much it glows in the beam
+@export var fade_in := 0.12          # seconds to show when the beam finds it
+@export var fade_out := 0.6          # seconds to fade back when the beam leaves
+@export var heights: Array[float] = [0.6, 1.1, 1.6]   # where on the body the beam can find it, metres up
+
+var reveal := 0.0                    # 0 in the dark, 1 in the beam
+var _mats: Array[StandardMaterial3D] = []
+var _colours: Array[Color] = []
+var _own_glow: Array[bool] = []
+
+
+func _ready() -&gt; void:
+	# its own copy of each material: revealing it must not light every monster that shares the texture
+	for node in find_children(&quot;*&quot;, &quot;MeshInstance3D&quot;, true, false):
+		var mi := node as MeshInstance3D
+		if mi.mesh == null:
+			continue
+		for i in mi.mesh.get_surface_count():
+			var mat := mi.get_active_material(i) as StandardMaterial3D
+			if mat == null:
+				continue
+			mat = mat.duplicate()
+			var own := mat.emission_enabled      # a glow map of its own (eyes, flames) stays: it glows in the dark too
+			if not own:
+				mat.emission_enabled = true
+				mat.emission = Color.WHITE
+				mat.emission_texture = mat.albedo_texture
+				mat.emission_operator = BaseMaterial3D.EMISSION_OP_MULTIPLY
+			mi.set_surface_override_material(i, mat)
+			_mats.append(mat)
+			_colours.append(mat.albedo_color)
+			_own_glow.append(own)
+	_apply()
+
+
+## Whether a flashlight&#x27;s beam falls on a point: the light on, the point within its range and inside its cone, and
+## nothing in between (the ray skips this body and the body that carries the light).
+func in_beam(light: SpotLight3D, point: Vector3) -&gt; bool:
+	if not light.is_visible_in_tree():
+		return false
+	var from := light.global_position
+	var to := point - from
+	if to.length() &gt; light.spot_range:
+		return false
+	var forward := -light.global_transform.basis.z          # a light shines down its -Z
+	if rad_to_deg(forward.angle_to(to)) &gt; light.spot_angle:  # spot_angle is half the cone
+		return false
+	var skip: Array[RID] = [get_rid()]
+	var holder: Node = light.get_parent()
+	while holder != null and not holder is CollisionObject3D:
+		holder = holder.get_parent()
+	if holder != null:
+		skip.append((holder as CollisionObject3D).get_rid())
+	var ray := PhysicsRayQueryParameters3D.create(from, point)
+	ray.exclude = skip
+	return get_world_3d().direct_space_state.intersect_ray(ray).is_empty()
+
+
+## Every physics frame: lit when any flashlight finds any of its points, then it eases to lit or to dark.
+func _physics_process(delta: float) -&gt; void:
+	var lit := false
+	for light in get_tree().get_nodes_in_group(&quot;flashlight&quot;):
+		for h in heights:
+			if light is SpotLight3D and in_beam(light, global_position + Vector3.UP * h):
+				lit = true
+	reveal = move_toward(reveal, 1.0 if lit else 0.0, delta / (fade_in if lit else fade_out))
+	_apply()
+
+
+func _apply() -&gt; void:
+	var shade := lerpf(dark, 1.0, reveal)
+	for i in _mats.size():
+		var c := _colours[i]
+		_mats[i].albedo_color = Color(c.r * shade, c.g * shade, c.b * shade, c.a)
+		if not _own_glow[i]:
+			_mats[i].emission_energy_multiplier = glow * reveal
+</code></pre>
+<h2>The devlog and the pack</h2>
+<p>The step-by-step walkthrough is the devlog <a href="https://cordatix.itch.io/haunted-psx-monsters/devlog/1764265/how-to-make-a-monster-that-hides-until-your-flashlight-finds-it-in-godot-4-cordatix-psx-horror-monsters">How to Make a Monster Hide Until a Flashlight Finds It in Godot 4 (Cordatix PSX Horror Monsters 2.0)</a> on itch.io, written for <a href="https://cordatix.itch.io/haunted-psx-monsters">Cordatix PSX Horror Monsters</a>, a PS1-style asset pack by <a href="https://cordatix.itch.io">Cordatix</a> for Godot 4, Unity, Unreal and Blender.</p>
+</main>
+<footer><p>Cordatix: PS1-style asset packs for Godot 4, Unity, Unreal and Blender, on <a href="https://cordatix.itch.io">itch.io</a>. The tutorials' code on <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials">GitHub</a>, MIT licensed; the pictures show Cordatix asset packs and are not covered by the MIT license.</p></footer>
+</body>
+</html>

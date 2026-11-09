@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cordatix: How to Turn an NPC into an Enemy at Nightfall in Godot 4</title>
+<meta name="description" content="Cordatix Godot 4 PSX tutorial: Two bodies of one person, a clip that hands one to the other with no jump, and a darkness value.">
+<link rel="canonical" href="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/turn-an-npc-into-an-enemy-at-nightfall/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Cordatix">
+<meta property="og:title" content="Cordatix: How to Turn an NPC into an Enemy at Nightfall in Godot 4">
+<meta property="og:description" content="Cordatix Godot 4 PSX tutorial: Two bodies of one person, a clip that hands one to the other with no jump, and a darkness value.">
+<meta property="og:url" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/turn-an-npc-into-an-enemy-at-nightfall/">
+<meta property="og:image" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/turn-an-npc-into-an-enemy-at-nightfall/thumb.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../site.css">
+<link rel="icon" href="../favicon.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "author": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}, "description": "Two bodies of one person, a clip that hands one to the other with no jump, and a darkness value", "headline": "How to Turn an NPC into an Enemy at Nightfall in Godot 4", "image": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/turn-an-npc-into-an-enemy-at-nightfall/thumb.png", "inLanguage": "en", "isAccessibleForFree": true, "isBasedOn": "https://cordatix.itch.io/psx-horror-villagers/devlog/1754522/how-to-turn-an-npc-into-an-enemy-at-nightfall-in-godot-4-psx-horror-villagers", "license": "https://opensource.org/licenses/MIT", "mainEntityOfPage": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/turn-an-npc-into-an-enemy-at-nightfall/", "programmingLanguage": "GDScript", "publisher": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}}</script>
+</head>
+<body>
+<header class="top"><a class="brand" href="../">CORDATIX</a><nav><a href="../">Tutorials</a> <a href="../samplers.html">Free samplers</a> <a href="../packs.html">Packs</a> <a href="https://cordatix.itch.io">Store on itch.io</a></nav></header>
+<main>
+<p class="crumbs"><a href="../">Tutorials</a> › Turn an NPC into an Enemy at Nightfall</p>
+<h1>How to Turn an NPC into an Enemy at Nightfall in Godot 4</h1>
+<p class="lede">Two bodies of one person, a clip that hands one to the other with no jump, and a darkness value.</p>
+<figure><img src="night_turn.gif" width="640" height="360" alt="In Godot 4: the lamplighter and the ploughman at dusk, standing and talking; the light goes, the lamplighter&#x27;s head drops and comes up with his eyes shining, and they come for the player"></figure>
+<p>The scariest enemy is the one the player walked past an hour ago. A villager is two instances of one model: Day, an ordinary person with its day clips, and Night, the enemy; only one shows at a time. When the darkness from your sky passes <code>turn_at</code>, the day body plays Turn, a clip made to end on the night body&#x27;s first Idle frame, and on that last frame the night body takes its place in the same pose. At dawn the day body steps back in; a hidden body is also stopped, so it costs nothing.</p>
+<p class="muted">Script: <a href="night_turn.gd">night_turn.gd</a> (MIT) · Godot 4.3 or newer · <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials/tree/main/turn-an-npc-into-an-enemy-at-nightfall">its folder on GitHub</a></p>
+<h2>How to use it</h2>
+<ol>
+<li>Add a <code>Node3D</code> and attach <code>night_turn.gd</code>. Give it two children, <code>Day</code> and <code>Night</code>: two instances of one villager&#x27;s model, each with its own AnimationPlayer.</li>
+<li>The model&#x27;s clips: the day&#x27;s (<code>Day_Idle</code> by default), <code>Turn</code>, which ends on the night&#x27;s first Idle frame, and the night&#x27;s (<code>Idle</code>). Rename them in <code>day_idle</code>, <code>turn_clip</code> and <code>night_idle</code>.</li>
+<li>Set <code>darkness</code> from your sky, 0 by day to 1 at night. The villager turns at <code>turn_at</code> and comes back at <code>dawn_at</code>; in between it stays as it is, so a cloud over the moon does not flip it.</li>
+<li>Connect <code>turned</code> (true at nightfall, false at dawn) and give the night body your enemy script.</li>
+</ol>
+<h2>What it needs</h2>
+<ul class="lines">
+<li>Godot 4.3 or newer (the Compatibility renderer is enough).</li>
+<li>A rigged character with day clips, a Turn clip and night clips on one skeleton.</li>
+</ul>
+<h2>Try it free</h2>
+<p>The free demo on PSX Horror Villagers&#x27; page (Download demo) has the ploughman with every clip, day and night, the lean tan dog, both of the pack&#x27;s scripts and a corner of the village: try the script on the ploughman right away.</p>
+<h2>How it was tested</h2>
+<p>In Godot 4.3 and 4.7.2, with the ploughman from the free demo: by day the day body shows; in the dark it plays Turn and the night body takes over in the same pose; at dawn the day body is back; the signal fires both ways.</p>
+<h2>The code</h2>
+<pre><code>class_name NightTurn
+extends Node3D
+## How to Turn an NPC into an Enemy at Nightfall in Godot 4
+## Cordatix Godot 4 PSX tutorials, MIT licensed: https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials
+## The devlog: https://cordatix.itch.io/psx-horror-villagers/devlog/1754522/how-to-turn-an-npc-into-an-enemy-at-nightfall-in-godot-4-psx-horror-villagers
+## Turn a villager at nightfall in Godot 4.3+: by day one body, by night another, handed over in the same pose.
+## Give this node two children, &quot;Day&quot; and &quot;Night&quot;: two instances of one villager&#x27;s model, each with its own
+## AnimationPlayer (a PSX Horror Villagers GLB carries both bodies&#x27; clips: the day&#x27;s as Day_&lt;name&gt;, the night&#x27;s, and
+## Turn). The day body plays Turn, a clip that ends on the night&#x27;s first Idle frame; on that last frame the night body
+## takes its place, so the hand-over shows no jump. Set `darkness` from your sky, 0 (day) to 1 (night): the villager
+## turns when it reaches turn_at and comes back when it falls to dawn_at (in between it stays as it is).
+
+signal turned(night: bool)
+
+@export_range(0.0, 1.0) var darkness := 0.0
+@export var turn_at := 0.6
+@export var dawn_at := 0.35
+@export var day_idle := &quot;Day_Idle&quot;
+@export var turn_clip := &quot;Turn&quot;
+@export var night_idle := &quot;Idle&quot;
+
+
+var is_night := false
+var _turning := false
+@onready var day: Node3D = $Day
+@onready var night: Node3D = $Night
+
+func _ready() -&gt; void:
+	_play(day, day_idle)
+	_play(night, night_idle)
+	_show(day, night)
+
+
+func _physics_process(_delta: float) -&gt; void:
+	if _turning:
+		return
+	if not is_night and darkness &gt;= turn_at:
+		_turn()
+	elif is_night and darkness &lt;= dawn_at:
+		_back()
+
+
+func _turn() -&gt; void:
+	_turning = true
+	var ap := _anim(day)
+	if ap and ap.has_animation(turn_clip):
+		ap.play(turn_clip, 0.2)
+		await ap.animation_finished          # Turn&#x27;s last frame: the night&#x27;s first Idle pose
+	night.global_transform = day.global_transform
+	_play(night, night_idle)
+	_anim(night).seek(0.0, true)
+	_show(night, day)
+	is_night = true
+	_turning = false
+	turned.emit(true)
+
+
+func _back() -&gt; void:
+	day.global_transform = night.global_transform
+	_play(day, day_idle)
+	_show(day, night)
+	is_night = false
+	turned.emit(false)
+
+func _show(on: Node3D, off: Node3D) -&gt; void:
+	off.visible = false
+	off.process_mode = Node.PROCESS_MODE_DISABLED
+	on.visible = true
+	on.process_mode = Node.PROCESS_MODE_INHERIT
+
+
+func _play(body: Node3D, clip: String) -&gt; void:
+	var ap := _anim(body)
+	if ap and ap.has_animation(clip):
+		ap.play(clip)
+
+
+func _anim(body: Node3D) -&gt; AnimationPlayer:
+	return body.find_child(&quot;AnimationPlayer&quot;, true, false) as AnimationPlayer
+</code></pre>
+<h2>The devlog and the pack</h2>
+<p>The step-by-step walkthrough is the devlog <a href="https://cordatix.itch.io/psx-horror-villagers/devlog/1754522/how-to-turn-an-npc-into-an-enemy-at-nightfall-in-godot-4-psx-horror-villagers">How to Turn an NPC into an Enemy at Nightfall in Godot 4 (PSX Horror Villagers)</a> on itch.io, written for <a href="https://cordatix.itch.io/psx-horror-villagers">PSX Horror Villagers</a>, a PS1-style asset pack by <a href="https://cordatix.itch.io">Cordatix</a> for Godot 4, Unity, Unreal and Blender.</p>
+</main>
+<footer><p>Cordatix: PS1-style asset packs for Godot 4, Unity, Unreal and Blender, on <a href="https://cordatix.itch.io">itch.io</a>. The tutorials' code on <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials">GitHub</a>, MIT licensed; the pictures show Cordatix asset packs and are not covered by the MIT license.</p></footer>
+</body>
+</html>

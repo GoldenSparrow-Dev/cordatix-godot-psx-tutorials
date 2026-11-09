@@ -21,7 +21,7 @@ A boss fight starts when the door slams behind you. This script, on an Area3D ov
 
 ## Try it free
 
-The [Cordatix PSX Horror Free Sampler](https://cordatix.itch.io/haunted-psx-free-sampler) has a small cold store arena of Cordatix PSX Horror Boss Arena to try it in: its floor, its 6 m walls, the wall with the 1 m doorway and the small roll-up shutter's leaf (`cordatix/psx_horror_boss_arena/meshes/parts/shutter_small__coldstore__leaf.tres`). Put that mesh and a `StaticBody3D` with a 1 by 2.1 m box under a `Node3D`, place it shut in the doorway and it is a gate for this script, with `gate_drop` at 2.1. B in the sampler's demo room shows the pack's own lock there: walk in and the shutter slams shut behind you as the Offcut rises. The pack's kit adds gates of every kind (roll-up shutters, drop bars, sluice gates, a freezer door), alarm lights, a lock that waits on every enemy you list, the eight weapons, the player and the HUD.
+The [Cordatix PSX Horror Free Sampler](https://cordatix.itch.io/haunted-psx-free-sampler) has a small cold store arena of the boss arena kit (now in PSX Horror Bosses) to try it in: its floor, its 6 m walls, the wall with the 1 m doorway and the small roll-up shutter's leaf (`cordatix/psx_horror_boss_arena/meshes/parts/shutter_small__coldstore__leaf.tres`). Put that mesh and a `StaticBody3D` with a 1 by 2.1 m box under a `Node3D`, place it shut in the doorway and it is a gate for this script, with `gate_drop` at 2.1. B in the sampler's demo room shows the pack's own lock there: walk in and the shutter slams shut behind you as the Offcut rises. The pack's kit adds gates of every kind (roll-up shutters, drop bars, sluice gates, a freezer door), alarm lights, a lock that waits on every enemy you list, the eight weapons, the player and the HUD.
 
 ## Tested
 
@@ -29,6 +29,6 @@ In Godot 4.3 and 4.7.2, with stand-ins for the boss and the player, and the free
 
 ## The devlog and the pack
 
-The step-by-step walkthrough is the devlog [How to Lock the Player in a Boss Arena in Godot 4 (Cordatix PSX Horror Boss Arena)](https://cordatix.itch.io/cordatix-psx-horror-boss-arena/devlog/1741814/how-to-lock-the-player-in-a-boss-arena-in-godot-4-cordatix-psx-horror-boss-arena) on itch.io, written for [Cordatix PSX Horror Boss Arena](https://cordatix.itch.io/cordatix-psx-horror-boss-arena), a PS1-style asset pack by [Cordatix](https://cordatix.itch.io) for Godot 4, Unity, Unreal and Blender.
+This tutorial was first a devlog of Cordatix PSX Horror Boss Arena, whose kit is now part of PSX Horror Bosses 2.0; that page is closed, so the script and this README are the whole tutorial. It is written for [PSX Horror Bosses](https://cordatix.itch.io/cordatix-psx-horror-bosses), a PS1-style asset pack by [Cordatix](https://cordatix.itch.io) for Godot 4, Unity, Unreal and Blender.
 
 The code is MIT licensed ([LICENSE](../LICENSE)). The pictures show Cordatix asset packs and are not covered by the MIT license.

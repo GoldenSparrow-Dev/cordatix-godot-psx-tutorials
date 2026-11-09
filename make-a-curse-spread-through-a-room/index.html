@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cordatix: How to Make a Curse Spread Through a Room in Godot 4</title>
+<meta name="description" content="Cordatix Godot 4 PSX tutorial: Every prop with a cursed or creepy state turns, one at a time, nearest to where it starts first.">
+<link rel="canonical" href="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/make-a-curse-spread-through-a-room/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Cordatix">
+<meta property="og:title" content="Cordatix: How to Make a Curse Spread Through a Room in Godot 4">
+<meta property="og:description" content="Cordatix Godot 4 PSX tutorial: Every prop with a cursed or creepy state turns, one at a time, nearest to where it starts first.">
+<meta property="og:url" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/make-a-curse-spread-through-a-room/">
+<meta property="og:image" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/make-a-curse-spread-through-a-room/thumb.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../site.css">
+<link rel="icon" href="../favicon.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "author": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}, "description": "Every prop with a cursed or creepy state turns, one at a time, nearest to where it starts first", "headline": "How to Make a Curse Spread Through a Room in Godot 4", "image": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/make-a-curse-spread-through-a-room/thumb.png", "inLanguage": "en", "isAccessibleForFree": true, "isBasedOn": "https://cordatix.itch.io/haunted-psx-props/devlog/1765998/how-to-make-a-curse-spread-through-a-room-in-godot-4-cordatix-psx-horror-props", "license": "https://opensource.org/licenses/MIT", "mainEntityOfPage": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/make-a-curse-spread-through-a-room/", "programmingLanguage": "GDScript", "publisher": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}}</script>
+</head>
+<body>
+<header class="top"><a class="brand" href="../">CORDATIX</a><nav><a href="../">Tutorials</a> <a href="../samplers.html">Free samplers</a> <a href="../packs.html">Packs</a> <a href="https://cordatix.itch.io">Store on itch.io</a></nav></header>
+<main>
+<p class="crumbs"><a href="../">Tutorials</a> › Make a Curse Spread Through a Room</p>
+<h1>How to Make a Curse Spread Through a Room in Godot 4</h1>
+<p class="lede">Every prop with a cursed or creepy state turns, one at a time, nearest to where it starts first.</p>
+<figure><img src="curse_spread.gif" width="480" height="270" alt="In the Halloween living room the curse starts at the party table and spreads: one by one the pumpkins rot and the decorations turn creepy"></figure>
+<p>A curse that spreads is scarier than a room that switches at once. The script finds every prop under a room that can still turn (placed as its first state, shown, within a radius if you set one), sorts them by their distance to where the curse starts and swaps each in place for its other state, a fraction of a second apart, with the pack&#x27;s <code>cordatix_sides.gd</code>: same place, parent, name and groups. A signal for each prop is the place for a sound or a flicker of the lights.</p>
+<p class="muted">Script: <a href="curse_spread.gd">curse_spread.gd</a> (MIT) · Godot 4.3 or newer · <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials/tree/main/make-a-curse-spread-through-a-room">its folder on GitHub</a></p>
+<h2>How to use it</h2>
+<ol>
+<li>Add a <code>Node</code> to your level and attach <code>curse_spread.gd</code>.</li>
+<li>Set <code>room</code> (any node the props are under), <code>source</code> (a <code>Marker3D</code> where the curse starts) and <code>pack</code>: the pack&#x27;s folder with its trailing slash.</li>
+<li>Tune <code>step</code> (seconds between two props) and <code>radius</code> (0: every prop under the room).</li>
+<li>Call <code>spread()</code> when the moment comes: an Area3D the player walks into, an item picked up, a door opened. Connect <code>turned</code> and <code>finished</code>.</li>
+</ol>
+<h2>What it needs</h2>
+<ul class="lines">
+<li>Godot 4.3 or newer.</li>
+<li>A Cordatix PSX Horror pack that has a switch: its props placed as their own scenes, its <code>data/props.json</code> and the series&#x27; <code>cordatix_sides.gd</code>.</li>
+</ul>
+<h2>Try it free</h2>
+<p>The Cordatix PSX Horror Free Sampler&#x27;s Halloween decorations (carved pumpkin, string lights, banner, ghost sheet) have their festive and creepy states: set <code>pack</code> to <code>res://cordatix/haunted_psx_halloween_takeover/</code> and the code works on them as they are. The full pack&#x27;s are in <code>res://cordatix/haunted_psx_props/</code>.</p>
+<h2>How it was tested</h2>
+<p>In Godot 4.3 and 4.7.2, with the free sampler&#x27;s decorations: four props at known distances turn, nearest first, each once, into its pair at its place; a hidden one and one already turned stay as they were; <code>finished</code> comes once and nothing is left to turn; with a radius only the props within it turn.</p>
+<h2>The code</h2>
+<pre><code>extends Node
+## How to Make a Curse Spread Through a Room in Godot 4
+## Cordatix Godot 4 PSX tutorials, MIT licensed: https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials
+## The devlog: https://cordatix.itch.io/haunted-psx-props/devlog/1765998/how-to-make-a-curse-spread-through-a-room-in-godot-4-cordatix-psx-horror-props
+## Spreads a curse through a room: every prop under `room` that has a cursed (or creepy) state turns, one at a time,
+## the nearest to `source` first. Works with every Cordatix PSX Horror pack that has a switch (its data/props.json).
+
+const Sides := preload(&quot;res://cordatix/shared/scripts/cordatix_sides.gd&quot;)
+
+@export var pack := &quot;res://cordatix/haunted_psx_props/&quot;   # the pack folder, with its trailing slash
+@export var room: Node3D                                  # the props to turn are anywhere under it
+@export var source: Node3D                                # where the curse starts
+@export var step := 0.3                                   # seconds between two props
+@export var radius := 0.0                                 # only props this close to the source; 0: all of them
+
+signal turned(prop: Node3D)                               # each prop as it turns (a sound, a flicker)
+signal finished
+
+var spreading := false
+
+
+## The props under `room` that can still turn: placed as a prop&#x27;s first state (normal, festive, lit), shown, and
+## within `radius` of the source when it is set.
+func turnable() -&gt; Array[Node3D]:
+	var first := {}
+	var data: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(pack + &quot;data/props.json&quot;))
+	for p in data[&quot;props&quot;]:
+		for v in p[&quot;pairs&quot;]:
+			first[v] = true
+	var out: Array[Node3D] = []
+	for n in room.find_children(&quot;*&quot;, &quot;Node3D&quot;, true, false):
+		if not first.has(variant_of(n)) or not n.is_visible_in_tree():
+			continue
+		if radius &gt; 0.0 and n.global_position.distance_to(source.global_position) &gt; radius:
+			continue
+		out.append(n)
+	return out
+
+
+## A placed prop&#x27;s variant: its scene&#x27;s file name without the physics, flicker, pickup or lock suffix.
+static func variant_of(n: Node) -&gt; String:
+	var f := n.scene_file_path.get_file().get_basename()
+	for sfx in [&quot;__rigid&quot;, &quot;__flicker&quot;, &quot;__pickup&quot;, &quot;__use&quot;]:
+		f = f.trim_suffix(sfx)
+	return f
+
+
+## Turns every turnable prop, nearest first, `step` seconds apart.
+func spread() -&gt; void:
+	if spreading:
+		return
+	spreading = true
+	var props := turnable()
+	var at := source.global_position
+	props.sort_custom(func(a: Node3D, b: Node3D) -&gt; bool:
+		return a.global_position.distance_squared_to(at) &lt; b.global_position.distance_squared_to(at))
+	for p in props:
+		if not is_instance_valid(p):
+			continue
+		turned.emit(Sides.swap_in_place(p, pack))
+		await get_tree().create_timer(step).timeout
+	spreading = false
+	finished.emit()
+</code></pre>
+<h2>The devlog and the pack</h2>
+<p>The step-by-step walkthrough is the devlog <a href="https://cordatix.itch.io/haunted-psx-props/devlog/1765998/how-to-make-a-curse-spread-through-a-room-in-godot-4-cordatix-psx-horror-props">How to Make a Curse Spread Through a Room in Godot 4 (Cordatix PSX Horror Props 1.1)</a> on itch.io, written for <a href="https://cordatix.itch.io/haunted-psx-props">Cordatix PSX Horror Props</a>, a PS1-style asset pack by <a href="https://cordatix.itch.io">Cordatix</a> for Godot 4, Unity, Unreal and Blender.</p>
+</main>
+<footer><p>Cordatix: PS1-style asset packs for Godot 4, Unity, Unreal and Blender, on <a href="https://cordatix.itch.io">itch.io</a>. The tutorials' code on <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials">GitHub</a>, MIT licensed; the pictures show Cordatix asset packs and are not covered by the MIT license.</p></footer>
+</body>
+</html>

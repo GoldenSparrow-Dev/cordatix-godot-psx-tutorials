@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cordatix: How to Seat Two NPCs on a Bench and Have Them Talk in Godot 4</title>
+<meta name="description" content="Cordatix Godot 4 PSX tutorial: Two people on two seats, talking in turn, their heads turning to each other. A tested script, MIT licensed, with a GIF.">
+<link rel="canonical" href="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/seat-two-npcs-on-a-bench-and-have-them-talk/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Cordatix">
+<meta property="og:title" content="Cordatix: How to Seat Two NPCs on a Bench and Have Them Talk in Godot 4">
+<meta property="og:description" content="Cordatix Godot 4 PSX tutorial: Two people on two seats, talking in turn, their heads turning to each other. A tested script, MIT licensed, with a GIF.">
+<meta property="og:url" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/seat-two-npcs-on-a-bench-and-have-them-talk/">
+<meta property="og:image" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/seat-two-npcs-on-a-bench-and-have-them-talk/thumb.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../site.css">
+<link rel="icon" href="../favicon.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "author": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}, "description": "Two people on two seats, talking in turn, their heads turning to each other", "headline": "How to Seat Two NPCs on a Bench and Have Them Talk in Godot 4", "image": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/seat-two-npcs-on-a-bench-and-have-them-talk/thumb.png", "inLanguage": "en", "isAccessibleForFree": true, "isBasedOn": "https://cordatix.itch.io/psx-bystanders-npc-pack/devlog/1766079/how-to-seat-two-npcs-on-a-bench-and-have-them-talk-in-godot-4-psx-bystanders-npc-pack", "license": "https://opensource.org/licenses/MIT", "mainEntityOfPage": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/seat-two-npcs-on-a-bench-and-have-them-talk/", "programmingLanguage": "GDScript", "publisher": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}}</script>
+</head>
+<body>
+<header class="top"><a class="brand" href="../">CORDATIX</a><nav><a href="../">Tutorials</a> <a href="../samplers.html">Free samplers</a> <a href="../packs.html">Packs</a> <a href="https://cordatix.itch.io">Store on itch.io</a></nav></header>
+<main>
+<p class="crumbs"><a href="../">Tutorials</a> › Seat Two NPCs on a Bench and Have Them Talk</p>
+<h1>How to Seat Two NPCs on a Bench and Have Them Talk in Godot 4</h1>
+<p class="lede">Two people on two seats, talking in turn, their heads turning to each other.</p>
+<figure><img src="bench_talk.gif" width="400" height="225" alt="In the waiting hall of PSX Bystanders NPC Pack by day (PSX look on): two people on a bench, one talking while the other listens, their heads turned to each other"></figure>
+<p>A pair on a bench is the cheapest life a level can have. One script seats two people on two markers, gives them turns to talk (one plays a seated talking clip while the other listens) and turns their heads to each other with a SkeletonModifier3D that runs after the clips, so the turn adds to whatever the clip does: within a limit, at a limited speed, shared between chest, neck and head.</p>
+<p class="muted">Script: <a href="bench_talk.gd">bench_talk.gd</a> (MIT) · Godot 4.3 or newer · <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials/tree/main/seat-two-npcs-on-a-bench-and-have-them-talk">its folder on GitHub</a></p>
+<h2>How to use it</h2>
+<ol>
+<li>Add a <code>Node</code> and attach <code>bench_talk.gd</code>. Set <code>people</code> to two characters (each with an AnimationPlayer that has <code>Sit</code> and <code>SitTalk</code>, and a Skeleton3D with Chest, Neck and Head bones; their front +Z, as a GLB has it).</li>
+<li>Set <code>seats</code> to two markers (<code>Marker3D</code>) where the feet go, their -Z the way the people face.</li>
+<li>Tune <code>turn</code> (each turn&#x27;s length, from x to y seconds), <code>max_yaw</code> (degrees) and <code>turn_speed</code> (degrees a second).</li>
+<li>Connect <code>turn_changed</code> (the talker&#x27;s index) for voices or subtitles.</li>
+</ol>
+<h2>What it needs</h2>
+<ul class="lines">
+<li>Godot 4.3 or newer (SkeletonModifier3D; the Compatibility renderer is enough).</li>
+<li>Two rigged characters with a seated clip and a seated talking clip.</li>
+</ul>
+<h2>Try it free</h2>
+<p>The <a href="https://cordatix.itch.io/psx-bystanders-npc-pack-free">PSX Bystanders NPC Pack Free Sampler</a> has the office worker and the young man with every clip, Sit and SitTalk among them, and the station bench: the code works on them as they are.</p>
+<h2>How it was tested</h2>
+<p>In Godot 4.3 and 4.7.2, with the free sampler&#x27;s two people on its station bench: each sits on their seat, the hips on it; one talks while the other listens; both get turns, each within the times set; each head turns to the other, never past <code>max_yaw</code>, never faster than <code>turn_speed</code>.</p>
+<h2>The code</h2>
+<pre><code>extends Node
+## How to Seat Two NPCs on a Bench and Have Them Talk in Godot 4
+## Cordatix Godot 4 PSX tutorials, MIT licensed: https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials
+## The devlog: https://cordatix.itch.io/psx-bystanders-npc-pack/devlog/1766079/how-to-seat-two-npcs-on-a-bench-and-have-them-talk-in-godot-4-psx-bystanders-npc-pack
+## Two people side by side on a bench who talk in turn: each sits on its seat (a marker where the feet go, its -Z the
+## way they face), plays SitTalk while it speaks and Sit while it listens, and turns its head to the other. Set the two
+## people (models with an AnimationPlayer that has Sit and SitTalk, and a Skeleton3D with Chest, Neck and Head bones;
+## their front +Z, as a GLB has it) and their two seats. Godot 4.3 or newer.
+
+signal turn_changed(talker: int)
+
+@export var people: Array[Node3D] = []
+@export var seats: Array[Node3D] = []
+## Seconds one talks before the other answers (at least, at most).
+@export var turn := Vector2(3.0, 6.0)
+## How far a head turns to the other (degrees, at most) and how fast (degrees a second, at most).
+@export var max_yaw := 55.0
+@export var turn_speed := 60.0
+
+var talker := 0
+var heads: Array = []
+var _left := 0.0
+
+
+func _ready() -&gt; void:
+	for i in 2:
+		# on the seat: the feet on the marker, the front (+Z) the way the marker faces (its -Z)
+		people[i].global_transform = seats[i].global_transform * Transform3D(Basis(Vector3.UP, PI), Vector3.ZERO)
+		var head := HeadTo.new()
+		head.target = people[1 - i]
+		head.max_yaw = max_yaw
+		head.turn_speed = turn_speed
+		_skeleton(i).add_child(head)
+		heads.append(head)
+	_anim(1).play(&quot;Sit&quot;)
+	_anim(1).seek(1.3)         # the two out of step with each other
+	_switch(0)
+
+
+func _process(delta: float) -&gt; void:
+	_left -= delta
+	if _left &lt;= 0.0:
+		_switch(1 - talker)
+
+
+func _switch(i: int) -&gt; void:
+	## i talks and the other listens, until the next turn in turn.x to turn.y seconds.
+	talker = i
+	_left = randf_range(turn.x, turn.y)
+	_anim(i).play(&quot;SitTalk&quot;, 0.4)
+	_anim(1 - i).play(&quot;Sit&quot;, 0.4)
+	turn_changed.emit(i)
+
+
+func _anim(i: int) -&gt; AnimationPlayer:
+	return people[i].find_children(&quot;*&quot;, &quot;AnimationPlayer&quot;, true, false)[0]
+
+
+func _skeleton(i: int) -&gt; Skeleton3D:
+	return people[i].find_children(&quot;*&quot;, &quot;Skeleton3D&quot;, true, false)[0]
+
+
+class HeadTo extends SkeletonModifier3D:
+	## Turns the chest, the neck and the head to the other one, over whatever clip plays.
+	var target: Node3D
+	var max_yaw := 55.0
+	var turn_speed := 60.0
+	var bones := [[&quot;Chest&quot;, 0.15], [&quot;Neck&quot;, 0.35], [&quot;Head&quot;, 0.5]]
+	var yaw := 0.0
+
+	func _process_modification() -&gt; void:
+		var sk := get_skeleton()
+		var head: Transform3D = sk.global_transform * sk.get_bone_global_pose(sk.find_bone(&quot;Head&quot;))
+		# the other one against where this face points in the clip alone, across the floor (left positive); the
+		# other&#x27;s place, not its head&#x27;s pose: reading another skeleton&#x27;s pose here would pose it again, its turn twice
+		# a frame
+		var f := head.basis.z
+		var to := target.global_position - head.origin
+		var want := clampf(rad_to_deg(atan2(f.z * to.x - f.x * to.z, f.x * to.x + f.z * to.z)), -max_yaw, max_yaw)
+		yaw = move_toward(yaw, want, turn_speed * get_process_delta_time())
+		# each bone turns its share about the vertical through its joint, in its parent&#x27;s space
+		var up := (sk.global_transform.basis.inverse() * Vector3.UP).normalized()
+		for b in bones:
+			var i := sk.find_bone(String(b[0]))
+			var parent := sk.get_bone_parent(i)
+			var axis := up if parent &lt; 0 else (sk.get_bone_global_pose(parent).basis.inverse() * up).normalized()
+			sk.set_bone_pose_rotation(i, Quaternion(axis, deg_to_rad(yaw * float(b[1]))) * sk.get_bone_pose_rotation(i))
+</code></pre>
+<h2>The devlog and the pack</h2>
+<p>The step-by-step walkthrough is the devlog <a href="https://cordatix.itch.io/psx-bystanders-npc-pack/devlog/1766079/how-to-seat-two-npcs-on-a-bench-and-have-them-talk-in-godot-4-psx-bystanders-npc-pack">How to Seat Two NPCs on a Bench and Have Them Talk in Godot 4 (PSX Bystanders NPC Pack 2.0)</a> on itch.io, written for <a href="https://cordatix.itch.io/psx-bystanders-npc-pack">PSX Bystanders NPC Pack</a>, a PS1-style asset pack by <a href="https://cordatix.itch.io">Cordatix</a> for Godot 4, Unity, Unreal and Blender.</p>
+</main>
+<footer><p>Cordatix: PS1-style asset packs for Godot 4, Unity, Unreal and Blender, on <a href="https://cordatix.itch.io">itch.io</a>. The tutorials' code on <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials">GitHub</a>, MIT licensed; the pictures show Cordatix asset packs and are not covered by the MIT license.</p></footer>
+</body>
+</html>

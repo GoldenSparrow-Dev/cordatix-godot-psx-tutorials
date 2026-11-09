@@ -1,7 +1,7 @@
 extends Area3D
 ## How to Lock the Player in a Boss Arena in Godot 4
 ## Cordatix Godot 4 PSX tutorials, MIT licensed: https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials
-## The devlog: https://cordatix.itch.io/cordatix-psx-horror-boss-arena/devlog/1741814/how-to-lock-the-player-in-a-boss-arena-in-godot-4-cordatix-psx-horror-boss-arena
+## Written for: https://cordatix.itch.io/cordatix-psx-horror-bosses
 ## Lock the player in a boss arena (Godot 4.3+). Give this Area3D a CollisionShape3D over the arena's floor. When the
 ## player walks in, the gates slam down behind them (solid at once, so nobody slips under) and the boss starts; when
 ## the boss dies, the gates rise and stay open; when the player dies, the arena puts everything back as it was before
