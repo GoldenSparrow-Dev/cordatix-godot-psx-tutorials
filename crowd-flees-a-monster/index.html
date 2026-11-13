@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cordatix: How to Make a Crowd Flee from a Monster in Godot 4</title>
+<meta name="description" content="Cordatix Godot 4 PSX tutorial: People who see a monster close by run, the ones further off back away, and the panic spreads from runner to runner.">
+<link rel="canonical" href="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/crowd-flees-a-monster/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Cordatix">
+<meta property="og:title" content="Cordatix: How to Make a Crowd Flee from a Monster in Godot 4">
+<meta property="og:description" content="Cordatix Godot 4 PSX tutorial: People who see a monster close by run, the ones further off back away, and the panic spreads from runner to runner.">
+<meta property="og:url" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/crowd-flees-a-monster/">
+<meta property="og:image" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/crowd-flees-a-monster/thumb.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../site.css">
+<link rel="icon" href="../favicon.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "author": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}, "description": "People who see a monster close by run, the ones further off back away, and the panic spreads from runner to runner", "headline": "How to Make a Crowd Flee from a Monster in Godot 4", "image": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/crowd-flees-a-monster/thumb.png", "inLanguage": "en", "isAccessibleForFree": true, "license": "https://opensource.org/licenses/MIT", "mainEntityOfPage": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/crowd-flees-a-monster/", "programmingLanguage": "GDScript", "publisher": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}}</script>
+</head>
+<body>
+<header class="top"><a class="brand" href="../">CORDATIX</a><nav><a href="../">Tutorials</a> <a href="../samplers.html">Free samplers</a> <a href="../packs.html">Packs</a> <a href="https://cordatix.itch.io">Store on itch.io</a></nav></header>
+<main>
+<p class="crumbs"><a href="../">Tutorials</a> › Make a Crowd Flee from a Monster</p>
+<h1>How to Make a Crowd Flee from a Monster in Godot 4</h1>
+<p class="lede">People who see a monster close by run, the ones further off back away, and the panic spreads from runner to runner.</p>
+<figure><img src="crowd_flee.gif" width="480" height="270" alt="In the waiting hall of PSX Bystanders NPC Pack by day (PSX look on), Boiler of Cordatix PSX Horror Monsters walks in from the street: the people near it jump up and run, the ones further off start and back away, and the panic spreads along the benches"></figure>
+<p>A monster walks into a crowded room, and nobody moves: the cheapest way to break a horror scene. One script under the monster tells the people who can see it close by to run, the ones further off to start or step back, and lets the panic spread from whoever runs to the people beside them, a moment later. It calls four methods on each person (flee, back_away, startle, calm).</p>
+<p class="muted">Script: <a href="crowd_flee.gd">crowd_flee.gd</a> (MIT) · Godot 4.3 or newer · <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials/tree/main/crowd-flees-a-monster">its folder on GitHub</a></p>
+<h2>How to use it</h2>
+<ol>
+<li>Add a <code>Node</code> under whatever moves as the monster (a <code>Node3D</code>: the script only needs where it is) and attach <code>crowd_flee.gd</code>.</li>
+<li>Set <code>flee_radius</code> (inside it people run), <code>notice_radius</code> (inside it they start or back away), <code>spread_radius</code> (how far the panic jumps from a runner, after a short random delay) and <code>cooldown</code> (one reaction of a kind per person per cooldown).</li>
+<li>Give your people <code>flee</code>, <code>back_away</code>, <code>startle</code> and <code>calm</code>. Set <code>need_sight</code> off for a monster that is heard before it is seen.</li>
+</ol>
+<h2>What it needs</h2>
+<ul class="lines">
+<li>Godot 4.3 or newer (the Compatibility renderer is enough).</li>
+<li>People with four methods: flee, back_away, startle and calm.</li>
+</ul>
+<h2>Try it free</h2>
+<p>The <a href="https://cordatix.itch.io/psx-bystanders-npc-pack-free">PSX Bystanders NPC Pack Free Sampler</a> has the office worker and the young man with the pack&#x27;s NPC layer, which has the four methods: the code works on them as they are.</p>
+<h2>How it was tested</h2>
+<p>In Godot 4.3 and 4.7.2, with the free sampler&#x27;s two people round a stand-in monster, one of them behind a wall: the two near ones run, the one next to a runner runs a moment after it, the one further off backs away, the one behind the wall and the one far off stay calm, no one reacts the same way twice, and once the monster has gone the people who ran stand again.</p>
+<h2>The code</h2>
+<pre><code>extends Node
+## How to Make a Crowd Flee from a Monster in Godot 4
+## Cordatix Godot 4 PSX tutorials, MIT licensed: https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials
+## Written for: https://cordatix.itch.io/psx-bystanders-npc-pack
+## Put it under the monster (any Node3D that moves, or set `monster`). The people who can see it within `flee_radius`
+## run; those within `notice_radius` start or back away; and whoever runs spreads the panic to the people near them, a
+## moment later, whether those can see the monster or not. Once the monster is gone, the people who ran calm down.
+## It works with PSX Bystanders&#x27; people (CordatixBystander: flee, back_away, startle, calm) and with any NPC in `group`
+## that has those methods. Godot 4.3 or newer.
+
+signal panicked(person: Node3D, how: String)
+
+@export var monster: Node3D
+@export var flee_radius := 6.0
+@export var notice_radius := 10.0
+## Whether a wall between the monster and a person keeps that person calm (the panic can still reach them).
+@export var need_sight := true
+## Metres around a person who runs that the panic reaches, and how long it takes (at least, at most).
+@export var spread_radius := 3.0
+@export var spread_delay := Vector2(0.3, 0.9)
+## Seconds before the same person reacts the same way again (a start can still turn into a run), and how long the
+## monster must be out of `notice_radius` before the people who ran calm down.
+@export var cooldown := 8.0
+@export var calm_after := 6.0
+@export var group := &quot;cordatix_bystander&quot;
+
+var _clock := 0.0
+var _last := {}            # person -&gt; [when it last reacted, 1 if it ran, else 0]
+var _ran: Array = []       # the people who ran, to calm down later
+var _pending: Array = []   # [when, person]: the panic on its way
+var _gone := 0.0
+
+
+func _ready() -&gt; void:
+	if monster == null:
+		monster = get_parent() as Node3D
+
+
+func _physics_process(delta: float) -&gt; void:
+	_clock += delta
+	var at := monster.global_position
+	for p in _pending.duplicate():
+		if p[0] &lt;= _clock:
+			_pending.erase(p)
+			_react(p[1], &quot;flee&quot;, at)
+	var near := false
+	for person in get_tree().get_nodes_in_group(group):
+		var d: float = person.global_position.distance_to(at)
+		if d &gt; notice_radius:
+			continue
+		near = true
+		var how := &quot;flee&quot; if d &lt;= flee_radius else &quot;back_away&quot;
+		if not _cooled(person, how) or (need_sight and not _sees(person)):
+			continue
+		_react(person, how, at)
+	_gone = 0.0 if near else _gone + delta
+	if _gone &gt;= calm_after:
+		for person in _ran:
+			if is_instance_valid(person) and person.has_method(&quot;calm&quot;):
+				person.calm()
+		_ran.clear()
+
+
+func _cooled(person: Node3D, how: String) -&gt; bool:
+	## Whether `person` may react `how` now: not within cooldown of a reaction as strong (a run is stronger).
+	var last: Array = _last.get(person, [-INF, -1])
+	return _clock - last[0] &gt;= cooldown or int(how == &quot;flee&quot;) &gt; last[1]
+
+
+func _react(person: Node3D, how: String, from: Vector3) -&gt; void:
+	if not _cooled(person, how):
+		return
+	_last[person] = [_clock, int(how == &quot;flee&quot;)]
+	if how == &quot;back_away&quot; and not person.has_method(&quot;back_away&quot;):
+		how = &quot;startle&quot;
+	person.call(how, from)
+	panicked.emit(person, how)
+	if how != &quot;flee&quot;:
+		return
+	_ran.append(person)
+	# the people around one who runs run too, a moment later
+	for other in get_tree().get_nodes_in_group(group):
+		if other != person and other.global_position.distance_to(person.global_position) &lt;= spread_radius \
+				and _cooled(other, &quot;flee&quot;):
+			_pending.append([_clock + randf_range(spread_delay.x, spread_delay.y), other])
+
+
+func _sees(person: Node3D) -&gt; bool:
+	## A ray from the monster&#x27;s eyes to the person&#x27;s: nothing but the two of them in its way.
+	var eye := monster.global_position + Vector3.UP * 1.5
+	var q := PhysicsRayQueryParameters3D.create(eye, person.global_position + Vector3.UP * 1.5)
+	var skip: Array[RID] = []
+	for n in [monster, person]:
+		if n is CollisionObject3D:
+			skip.append(n.get_rid())
+	q.exclude = skip
+	return monster.get_world_3d().direct_space_state.intersect_ray(q).is_empty()
+</code></pre>
+<h2>The devlog and the pack</h2>
+<p>The step-by-step walkthrough comes as a devlog on itch.io on 16 November 2026; this page is the tutorial until then. It is written for <a href="https://cordatix.itch.io/psx-bystanders-npc-pack">PSX Bystanders NPC Pack</a>, a PS1-style asset pack by <a href="https://cordatix.itch.io">Cordatix</a> for Godot 4, Unity, Unreal and Blender.</p>
+</main>
+<footer><p>Cordatix: PS1-style asset packs for Godot 4, Unity, Unreal and Blender, on <a href="https://cordatix.itch.io">itch.io</a>. The tutorials' code on <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials">GitHub</a>, MIT licensed; the pictures show Cordatix asset packs and are not covered by the MIT license.</p></footer>
+</body>
+</html>

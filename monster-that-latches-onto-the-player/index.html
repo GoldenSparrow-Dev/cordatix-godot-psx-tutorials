@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cordatix: How to Make a Monster That Latches onto the Player in Godot 4</title>
+<meta name="description" content="Cordatix Godot 4 PSX tutorial: A monster that glides at you, rears, lunges, latches onto your chest and bites until quick hits knock it off.">
+<link rel="canonical" href="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/monster-that-latches-onto-the-player/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Cordatix">
+<meta property="og:title" content="Cordatix: How to Make a Monster That Latches onto the Player in Godot 4">
+<meta property="og:description" content="Cordatix Godot 4 PSX tutorial: A monster that glides at you, rears, lunges, latches onto your chest and bites until quick hits knock it off.">
+<meta property="og:url" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/monster-that-latches-onto-the-player/">
+<meta property="og:image" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/monster-that-latches-onto-the-player/thumb.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../site.css">
+<link rel="icon" href="../favicon.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "author": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}, "description": "A monster that glides at you, rears, lunges, latches onto your chest and bites until quick hits knock it off", "headline": "How to Make a Monster That Latches onto the Player in Godot 4", "image": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/monster-that-latches-onto-the-player/thumb.png", "inLanguage": "en", "isAccessibleForFree": true, "isBasedOn": "https://cordatix.itch.io/cordatix-psx-horror-swarms/devlog/1774519/how-to-make-a-monster-that-latches-onto-the-player-in-godot-4-psx-horror-swarms", "license": "https://opensource.org/licenses/MIT", "mainEntityOfPage": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/monster-that-latches-onto-the-player/", "programmingLanguage": "GDScript", "publisher": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}}</script>
+</head>
+<body>
+<header class="top"><a class="brand" href="../">CORDATIX</a><nav><a href="../">Tutorials</a> <a href="../samplers.html">Free samplers</a> <a href="../packs.html">Packs</a> <a href="https://cordatix.itch.io">Store on itch.io</a></nav></header>
+<main>
+<p class="crumbs"><a href="../">Tutorials</a> › Make a Monster That Latches onto the Player</p>
+<h1>How to Make a Monster That Latches onto the Player in Godot 4</h1>
+<p class="lede">A monster that glides at you, rears, lunges, latches onto your chest and bites until quick hits knock it off.</p>
+<figure><img src="latching_monster.gif" width="480" height="270" alt="The Latching of PSX Horror Swarms in Godot 4 with the PSX look: a giant leech of worms comes across a cellar, rears its front, lunges with its toothed sucker open and latches onto the player&#x27;s chest; three shots knock it off, it bursts into its worms, and they gather and come again"></figure>
+<p>One script that hunts, rears, lunges, holds on and lets go, with any mesh: the monster glides along the floor at its target, rears its front up when it is near, lunges, latches onto the target&#x27;s chest and bites on time until quick hits knock it off; knocked off, it falls, lies still a moment and comes again.</p>
+<p class="muted">Script: <a href="latching_monster.gd">latching_monster.gd</a> (MIT) · Godot 4.3 or newer · <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials/tree/main/monster-that-latches-onto-the-player">its folder on GitHub</a></p>
+<h2>How to use it</h2>
+<ol>
+<li>Add a <code>Node3D</code>, attach <code>latching_monster.gd</code> and put your monster&#x27;s mesh under it (its front -Z, its pivot at its tail end, so rearing tips its front up).</li>
+<li>Set <code>target</code> to your player: its <code>take_damage(amount, from)</code> takes the bites.</li>
+<li>Your weapons call <code>hit(amount)</code> on it: damage adds up while the hits come quickly, and enough of it while it holds on knocks it off.</li>
+<li>Tune the distances it changes its mind at (where it rears, where it lunges), the height it holds on at and how hard it is to shake off.</li>
+</ol>
+<h2>What it needs</h2>
+<ul class="lines">
+<li>Godot 4.3 or newer (the Compatibility renderer is enough).</li>
+<li>A target with <code>take_damage(amount, from)</code>.</li>
+</ul>
+<h2>Try it free</h2>
+<p>The <a href="https://cordatix.itch.io/haunted-psx-free-sampler">Cordatix PSX Horror Free Sampler</a> has a small swarm of PSX Horror Swarms&#x27; worms, not The Latching: the code works on any mesh of yours.</p>
+<h2>How it was tested</h2>
+<p>In Godot 4.3 and 4.7.2 with a stand-in target: it glides at its target and rears at the rear distance, its mesh tipped up; it lunges and latches onto the chest; it bites on time; it holds on as its target walks and turns; slow hits do not knock it off and three quick ones do; it falls to the floor, lies still, and comes again.</p>
+<h2>The code</h2>
+<pre><code>extends Node3D
+## How to Make a Monster That Latches onto the Player in Godot 4
+## Cordatix Godot 4 PSX tutorials, MIT licensed: https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials
+## The devlog: https://cordatix.itch.io/cordatix-psx-horror-swarms/devlog/1774519/how-to-make-a-monster-that-latches-onto-the-player-in-godot-4-psx-horror-swarms
+## A monster that latches onto the player, for Godot 4.3+: it glides along the floor at its target, rears its front
+## up when it is near, lunges, latches onto the target&#x27;s chest and bites until it is shot off; knocked off, it lies
+## still a moment and comes again. Put your monster&#x27;s mesh under this node (its front -Z, its pivot at its tail end:
+## rearing tips its front up). Set target to your player; its take_damage(amount, from) takes the bites, and your
+## weapons call hit(amount) on this node.
+
+signal latched(target: Node3D)
+signal released
+
+@export var target: Node3D
+@export var glide_speed := 2.6          ## along the floor, metres a second
+@export var rear_distance := 3.0        ## this near (along the floor), it rears its front up
+@export var lunge_distance := 1.7       ## this near, reared, it lunges and latches on
+@export var latch_height := 1.1         ## where it holds on, metres above the target&#x27;s feet: a chest
+@export var latch_depth := 0.25         ## in front of the target&#x27;s middle, so it sits on the chest, not in it
+@export var bite_every := 0.8
+@export var bite_damage := 7.0
+@export var shake_off := 60.0           ## this much damage...
+@export var shake_window := 1.5         ## ...each hit less than this many seconds after the last, knocks it off
+@export var rest_after := 2.0           ## knocked off, it lies this long before it comes again
+
+var state := &quot;hunt&quot;                     ## hunt, rear, lunge, latched, off
+var rear := 0.0                         ## 0 lying flat, 1 reared
+var _t := 0.0
+var _damage := 0.0
+var _since_hit := 0.0
+var _from := Vector3.ZERO
+var _vel := Vector3.ZERO
+var _floor_y := 0.0
+
+
+func _ready() -&gt; void:
+	_floor_y = global_position.y
+
+
+func _physics_process(dt: float) -&gt; void:
+	if target == null:
+		return
+	_since_hit += dt
+	if _since_hit &gt; shake_window:
+		_damage = 0.0
+	var to := target.global_position - global_position
+	to.y = 0.0
+	var d := to.length()
+	match state:
+		&quot;hunt&quot;:                                   # glide at it; near enough, rear
+			rear = move_toward(rear, 0.0, dt * 3.0)
+			_face(to, dt)
+			if d &gt; lunge_distance:
+				global_position += to / d * minf(glide_speed * dt, d - lunge_distance)
+			if d &lt;= rear_distance:
+				state = &quot;rear&quot;
+		&quot;rear&quot;:                                   # rear up, edge in slowly; reared and near, lunge
+			rear = move_toward(rear, 1.0, dt / 0.45)
+			_face(to, dt)
+			if d &gt; rear_distance + 0.8:
+				state = &quot;hunt&quot;
+			elif rear &gt;= 1.0 and d &lt;= lunge_distance + 0.05:
+				state = &quot;lunge&quot;
+				_t = 0.0
+				_from = global_position
+			elif d &gt; lunge_distance:
+				global_position += to / d * minf(glide_speed * 0.4 * dt, d - lunge_distance)
+
+
+		&quot;lunge&quot;:                                  # a quarter of a second through the air onto the chest
+			_t = minf(_t + dt / 0.28, 1.0)
+			global_position = _from.lerp(_chest(), smoothstep(0.0, 1.0, _t))
+			if _t &gt;= 1.0:
+				state = &quot;latched&quot;
+				_t = 0.15
+				latched.emit(target)
+		&quot;latched&quot;:                                # held on: it goes where the chest goes, and bites
+			global_position = _chest()
+			_face(target.global_basis.z, dt)            # its front to the target&#x27;s middle
+			_t -= dt
+			if _t &lt;= 0.0:
+				_t = bite_every
+				if target.has_method(&quot;take_damage&quot;):
+					target.call(&quot;take_damage&quot;, bite_damage, self)
+		&quot;off&quot;:                                    # thrown off: it falls, lies still, then hunts again
+			_vel.y -= 9.8 * dt
+			global_position += _vel * dt
+			if global_position.y &lt;= _floor_y:
+				global_position.y = _floor_y
+				_vel = Vector3.ZERO
+			rear = move_toward(rear, 0.0, dt * 3.0)
+			_t -= dt
+			if _t &lt;= 0.0 and _vel == Vector3.ZERO:
+				state = &quot;hunt&quot;
+	for c in get_children():                      # its front tipped up as it rears
+		if c is Node3D:
+			(c as Node3D).rotation.x = rear * deg_to_rad(55.0)
+
+
+## A blow: damage that comes quickly enough adds up, and enough of it knocks the monster off.
+func hit(amount: float, _at := Vector3.ZERO) -&gt; void:
+	_damage += amount
+	_since_hit = 0.0
+	if state == &quot;latched&quot; and _damage &gt;= shake_off:
+		state = &quot;off&quot;
+		_damage = 0.0
+		_t = rest_after
+		var back := global_position - target.global_position
+		back.y = 0.0
+		_vel = back.normalized() * 2.5 + Vector3.UP * 1.5
+		released.emit()
+
+
+func _chest() -&gt; Vector3:
+	var front := -target.global_basis.z
+	front.y = 0.0
+	return target.global_position + Vector3(0, latch_height, 0) + front.normalized() * latch_depth
+
+
+## Turn so its front (-Z) looks along `to` across the floor.
+func _face(to: Vector3, dt: float) -&gt; void:
+	if Vector2(to.x, to.z).length() &lt; 0.01:
+		return
+	rotation.y = lerp_angle(rotation.y, atan2(-to.x, -to.z), minf(1.0, dt * 6.0))
+</code></pre>
+<h2>The devlog and the pack</h2>
+<p>The step-by-step walkthrough is the devlog <a href="https://cordatix.itch.io/cordatix-psx-horror-swarms/devlog/1774519/how-to-make-a-monster-that-latches-onto-the-player-in-godot-4-psx-horror-swarms">How to Make a Monster That Latches onto the Player in Godot 4 (PSX Horror Swarms 2.0)</a> on itch.io, written for <a href="https://cordatix.itch.io/cordatix-psx-horror-swarms">PSX Horror Swarms</a>, a PS1-style asset pack by <a href="https://cordatix.itch.io">Cordatix</a> for Godot 4, Unity, Unreal and Blender.</p>
+</main>
+<footer><p>Cordatix: PS1-style asset packs for Godot 4, Unity, Unreal and Blender, on <a href="https://cordatix.itch.io">itch.io</a>. The tutorials' code on <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials">GitHub</a>, MIT licensed; the pictures show Cordatix asset packs and are not covered by the MIT license.</p></footer>
+</body>
+</html>
