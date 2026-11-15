@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cordatix: How to Ring a Bell That Swings in Its Turret in Godot 4</title>
+<meta name="description" content="Cordatix Godot 4 PSX tutorial: A bell that swings in steps on its headstock, the clapper striking at the top of every swing, your own sound on each stroke,…">
+<link rel="canonical" href="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/ring-a-bell-that-swings-in-its-turret/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Cordatix">
+<meta property="og:title" content="Cordatix: How to Ring a Bell That Swings in Its Turret in Godot 4">
+<meta property="og:description" content="Cordatix Godot 4 PSX tutorial: A bell that swings in steps on its headstock, the clapper striking at the top of every swing, your own sound on each stroke,…">
+<meta property="og:url" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/ring-a-bell-that-swings-in-its-turret/">
+<meta property="og:image" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/ring-a-bell-that-swings-in-its-turret/thumb.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../site.css">
+<link rel="icon" href="../favicon.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "author": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}, "description": "A bell that swings in steps on its headstock, the clapper striking at the top of every swing, your own sound on each stroke, then down to rest", "headline": "How to Ring a Bell That Swings in Its Turret in Godot 4", "image": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/ring-a-bell-that-swings-in-its-turret/thumb.png", "inLanguage": "en", "isAccessibleForFree": true, "license": "https://opensource.org/licenses/MIT", "mainEntityOfPage": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/ring-a-bell-that-swings-in-its-turret/", "programmingLanguage": "GDScript", "publisher": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}}</script>
+</head>
+<body>
+<header class="top"><a class="brand" href="../">CORDATIX</a><nav><a href="../">Tutorials</a> <a href="../samplers.html">Free samplers</a> <a href="../packs.html">Packs</a> <a href="https://cordatix.itch.io">Store on itch.io</a></nav></header>
+<main>
+<p class="crumbs"><a href="../">Tutorials</a> › Ring a Bell That Swings in Its Turret</p>
+<h1>How to Ring a Bell That Swings in Its Turret in Godot 4</h1>
+<p class="lede">A bell that swings in steps on its headstock, the clapper striking at the top of every swing, your own sound on each stroke, then down to rest.</p>
+<figure><img src="ring_the_bell.gif" width="640" height="360" alt="The village hall&#x27;s bell turret of Cordatix PSX Horror Village in Godot 4 with the PSX look at dusk: the bronze bell swings on its headstock in the open turret, three strokes in small steps, over the clock stopped at five past six, then it swings down to rest"></figure>
+<p>A bell that rings in a horror game should swing, not just play a sound. One script swings any bell on its headstock in the stepped motion of PS1 games: its swing grows over the first pull, the clapper strikes at the top of every swing (a signal, and your own sound if you give it one), and when its strokes are rung it swings down to rest. It can ring itself when the player walks near.</p>
+<p class="muted">Script: <a href="ring_the_bell.gd">ring_the_bell.gd</a> (MIT) · Godot 4.3 or newer · <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials/tree/main/ring-a-bell-that-swings-in-its-turret">its folder on GitHub</a></p>
+<h2>How to use it</h2>
+<ol>
+<li>Put the bell&#x27;s mesh under a <code>Node3D</code> whose X axis is the headstock (turning it about X swings the bell), add a parent <code>Node3D</code> and attach <code>ring_the_bell.gd</code> to it; set <code>pivot</code> to the headstock node.</li>
+<li>Call <code>ring(n)</code> for n strokes, or <code>ring()</code> to ring until <code>stop()</code>. Connect <code>struck</code> for anything that should happen at a stroke, or set <code>sound</code> to an <code>AudioStreamPlayer3D</code>: it plays at every stroke.</li>
+<li>Set <code>swing_deg</code>, <code>period</code> and <code>steps</code> (poses a second; 0 for a smooth swing). Give it an <code>Area3D</code> as <code>ring_when_near</code> and it rings <code>strokes_when_near</code> strokes when a body walks in.</li>
+</ol>
+<h2>What it needs</h2>
+<ul class="lines">
+<li>Godot 4.3 or newer (the Compatibility renderer is enough).</li>
+<li>A bell under a node that turns about its X axis; a sound of your own if you want one.</li>
+</ul>
+<h2>Try it free</h2>
+<p>The code works on any bell mesh of yours; the free sampler has no bell (Cordatix PSX Horror Village&#x27;s hall carries one in its turret).</p>
+<h2>How it was tested</h2>
+<p>In Godot 4.3 and 4.7.2, with a stand-in bell in any project: ring(3) strikes three times at the tops of its swings, plays the sound each time and comes to rest; the swing stays within its degrees and changes pose in steps; ring() rings until stop() and then strikes no more; a body walking into the area rings it once, not again while it rings. In the pack&#x27;s own project the hall&#x27;s bell swings and strikes with it as well.</p>
+<h2>The code</h2>
+<pre><code>extends Node3D
+## How to Ring a Bell That Swings in Its Turret in Godot 4
+## Cordatix Godot 4 PSX tutorials, MIT licensed: https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials
+## Written for: https://cordatix.itch.io/cordatix-psx-horror-village
+## Rings a bell that swings in its turret, the way the PS1 moved things: in steps. Put it on any Node3D whose child
+## (pivot) turns about its X axis: the bell hangs under that axis. ring() swings it, the swing growing to its full
+## height, and every time it reaches the top of a swing the clapper strikes: `struck` fires and, if you gave it one, a
+## sound plays. Stop it and it swings down to rest. From the tutorial &quot;How to Ring a Bell That Swings in Its Turret in
+## Godot 4&quot; (Cordatix). MIT licence.
+
+signal struck(stroke: int)
+
+@export var pivot: Node3D               ## what swings: the bell and its headstock, its axis along its X
+@export var sound: Node                 ## optional: an AudioStreamPlayer3D, played at every stroke
+@export var swing_deg := 35.0           ## how far it swings either way, at full height
+@export var period := 1.4               ## seconds from one side to the other
+@export var steps := 15.0               ## poses a second (the PS1&#x27;s stepped motion); 0 for a smooth swing
+@export var ring_when_near: Area3D      ## optional: rings once when a body enters this area
+@export var strokes_when_near := 6
+
+var _t := -1.0          # seconds since the ring began; below zero: at rest
+var _amp := 0.0         # the swing&#x27;s height now, in radians
+var _left := 0          # strokes still to ring (0 and ringing: until stop())
+var _forever := false
+var _stroke := 0
+var _last_side := 0.0
+var _hold := 0.0        # time since the last pose was shown
+
+
+func _ready() -&gt; void:
+	if ring_when_near:
+		ring_when_near.body_entered.connect(func(_body: Node3D) -&gt; void:
+			if not is_ringing():
+				ring(strokes_when_near))
+
+
+## Rings n strokes (each a swing to one side, the clapper striking at its top); n = 0 rings until stop().
+func ring(n: int = 0) -&gt; void:
+	_left = n
+	_forever = n &lt;= 0
+	_t = 0.0
+	_stroke = 0
+	_last_side = 0.0
+
+
+## Lets the bell swing down to rest: it strikes no more.
+func stop() -&gt; void:
+	_forever = false
+	_left = _stroke
+
+
+func is_ringing() -&gt; bool:
+	return _t &gt;= 0.0
+
+
+## The swing: the bell&#x27;s angle follows a sine of the time, its height growing over the first swing and, once its
+## strokes are rung, shrinking until it hangs still. The top of a swing is where the sine&#x27;s slope changes sign.
+func _process(delta: float) -&gt; void:
+	if pivot == null or _t &lt; 0.0:
+		return
+	_t += delta
+	var full := deg_to_rad(swing_deg)
+	var done := not _forever and _stroke &gt;= _left
+	if done:
+		_amp = maxf(0.0, _amp - full * delta / period)   # it dies down over about one swing
+	else:
+		_amp = minf(full, full * _t / period)            # it swings up to full in one swing
+	var phase := _t / period * PI
+	var side := signf(cos(phase))
+	if _last_side != 0.0 and side != _last_side and not done:
+		_stroke += 1
+		struck.emit(_stroke)
+		if sound and sound.has_method(&quot;play&quot;):
+			sound.call(&quot;play&quot;)
+	_last_side = side
+	if done and _amp &lt;= 0.0:
+		_t = -1.0
+		pivot.rotation.x = 0.0
+		return
+	# the pose changes only `steps` times a second: in between the bell holds still, then jumps
+	if steps &gt; 0.0:
+		_hold += delta
+		if _hold &lt; 1.0 / steps:
+			return
+		_hold = fmod(_hold, 1.0 / steps)
+	pivot.rotation.x = sin(phase) * _amp
+</code></pre>
+<h2>The devlog and the pack</h2>
+<p>The step-by-step walkthrough comes as a devlog on itch.io on 23 November 2026; this page is the tutorial until then. It is written for <a href="https://cordatix.itch.io/cordatix-psx-horror-village">Cordatix PSX Horror Village</a>, a PS1-style asset pack by <a href="https://cordatix.itch.io">Cordatix</a> for Godot 4, Unity, Unreal and Blender.</p>
+</main>
+<footer><p>Cordatix: PS1-style asset packs for Godot 4, Unity, Unreal and Blender, on <a href="https://cordatix.itch.io">itch.io</a>. The tutorials' code on <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials">GitHub</a>, MIT licensed; the pictures show Cordatix asset packs and are not covered by the MIT license.</p></footer>
+</body>
+</html>
