@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cordatix: How to Make a Monster That Waits at the End of the Corridor in Godot 4</title>
+<meta name="description" content="Cordatix Godot 4 PSX tutorial: A monster that backs away as you walk at it, still facing you, and follows when your back is turned, always at the same distance.">
+<link rel="canonical" href="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/monster-that-waits-at-the-end-of-the-corridor/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Cordatix">
+<meta property="og:title" content="Cordatix: How to Make a Monster That Waits at the End of the Corridor in Godot 4">
+<meta property="og:description" content="Cordatix Godot 4 PSX tutorial: A monster that backs away as you walk at it, still facing you, and follows when your back is turned, always at the same distance.">
+<meta property="og:url" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/monster-that-waits-at-the-end-of-the-corridor/">
+<meta property="og:image" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/monster-that-waits-at-the-end-of-the-corridor/thumb.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../site.css">
+<link rel="icon" href="../favicon.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "author": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}, "description": "A monster that backs away as you walk at it, still facing you, and follows when your back is turned, always at the same distance", "headline": "How to Make a Monster That Waits at the End of the Corridor in Godot 4", "image": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/monster-that-waits-at-the-end-of-the-corridor/thumb.png", "inLanguage": "en", "isAccessibleForFree": true, "license": "https://opensource.org/licenses/MIT", "mainEntityOfPage": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/monster-that-waits-at-the-end-of-the-corridor/", "programmingLanguage": "GDScript", "publisher": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}}</script>
+</head>
+<body>
+<header class="top"><a class="brand" href="../">CORDATIX</a><nav><a href="../">Tutorials</a> <a href="../samplers.html">Free samplers</a> <a href="../packs.html">Packs</a> <a href="https://cordatix.itch.io">Store on itch.io</a></nav></header>
+<main>
+<p class="crumbs"><a href="../">Tutorials</a> › Make a Monster That Waits at the End of the Corridor</p>
+<h1>How to Make a Monster That Waits at the End of the Corridor in Godot 4</h1>
+<p class="lede">A monster that backs away as you walk at it, still facing you, and follows when your back is turned, always at the same distance.</p>
+<figure><img src="corridor_watcher.gif" width="384" height="216" alt="In a lit cream office corridor, the Watcher of Liminal PSX Entities, a giant folded under the ceiling, waits at the far end. You walk up to it and it stays where it is, backing off as you come; you turn your back and walk away, and when you turn round it has followed you, still at the same distance"></figure>
+<p>Most monsters run at you. This one waits at the end of the corridor: walk toward it and it backs away, still facing you; turn your back and it follows, and when you look again it is still there, at its distance. One script on any CharacterBody3D with a NavigationAgent3D: it asks whether the camera sees it, then backs away, follows or stands and watches.</p>
+<p class="muted">Script: <a href="corridor_watcher.gd">corridor_watcher.gd</a> (MIT) · Godot 4.3 or newer · <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials/tree/main/monster-that-waits-at-the-end-of-the-corridor">its folder on GitHub</a></p>
+<h2>How to use it</h2>
+<ol>
+<li>Put <code>corridor_watcher.gd</code> on your monster&#x27;s <code>CharacterBody3D</code>, with a <code>NavigationAgent3D</code> child named &quot;NavigationAgent3D&quot; and a collision shape.</li>
+<li>Put your player in the group &quot;player&quot;, its <code>Camera3D</code> the current camera.</li>
+<li>Set <code>near</code>, the distance it keeps while you watch it, and <code>far</code>: farther than that it comes for you whether you look or not.</li>
+<li>If the model has an <code>AnimationPlayer</code> with Idle, Walk and Retreat (a walk played backwards), they play.</li>
+</ol>
+<h2>What it needs</h2>
+<ul class="lines">
+<li>Godot 4.3 or newer (the Compatibility renderer is enough).</li>
+<li>A navigation mesh for it to follow along (straight at you where there is none), and a player in the group &quot;player&quot; with the current camera.</li>
+</ul>
+<h2>Try it free</h2>
+<p>Liminal PSX Entities&#x27; free demo, on its page, has Nape on the Overtime floor; the Watcher is in the pack. The code works on any CharacterBody3D of yours.</p>
+<h2>How it was tested</h2>
+<p>In Godot 4.3 and 4.7.2 on a stand-in body in a straight corridor: a collider on your own body (a held torch) does not hide it; seen and approached, it backs away and keeps its distance; it never comes closer while watched; unseen, it follows.</p>
+<h2>The code</h2>
+<pre><code>class_name CorridorWatcher
+extends CharacterBody3D
+## How to Make a Monster That Waits at the End of the Corridor in Godot 4
+## Cordatix Godot 4 PSX tutorials, MIT licensed: https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials
+## Written for: https://cordatix.itch.io/liminal-psx-entities
+## A monster that waits at the end of the corridor, in Godot 4.3+. While you can see it and come closer than `near`,
+## it backs away, still facing you; while your back is turned it follows, up to `near`; farther than `far` it follows
+## whether you look or not. It never comes closer while you watch it.
+## Give it a NavigationAgent3D child named &quot;NavigationAgent3D&quot; and a collision shape; put the player in the group
+## &quot;player&quot; (its Camera3D is the current camera). If the model has an AnimationPlayer with &quot;Idle&quot;, &quot;Walk&quot; and &quot;Retreat&quot;
+## (a walk played backwards), they play; Liminal PSX Entities&#x27; Watcher has all three.
+
+@export var near := 7.0
+@export var far := 12.0
+@export var walk_speed := 0.9
+@export var retreat_speed := 0.7
+## The heights (m) where it checks whether the camera sees it: its chest and its head.
+@export var look_points: Array[float] = [1.2, 2.4]
+
+var player: Node3D
+var anim: AnimationPlayer
+var phase := &quot;&quot;
+var gravity: float = ProjectSettings.get_setting(&quot;physics/3d/default_gravity&quot;, 9.8)
+@onready var agent: NavigationAgent3D = $NavigationAgent3D
+
+
+func _ready() -&gt; void:
+	player = get_tree().get_first_node_in_group(&quot;player&quot;) as Node3D
+	anim = find_child(&quot;AnimationPlayer&quot;, true, false) as AnimationPlayer
+
+
+func is_seen() -&gt; bool:
+	## Seen: one of its look points is inside the camera&#x27;s view, and nothing stands between the camera and it.
+	var cam := get_viewport().get_camera_3d()
+	if cam == null:
+		return false
+	var space := get_world_3d().direct_space_state
+	for h in look_points:
+		var at: Vector3 = global_position + Vector3.UP * h
+		if not cam.is_position_in_frustum(at):
+			continue
+		var q := PhysicsRayQueryParameters3D.create(cam.global_position, at)
+		var skip: Array[RID] = [get_rid()]           # itself and the player&#x27;s own body are not in the way
+		if player is CollisionObject3D:
+			skip.append((player as CollisionObject3D).get_rid())
+		q.exclude = skip                              # set the whole list: the getter returns a copy
+		if space.intersect_ray(q).is_empty():
+			return true
+	return false
+
+
+func _physics_process(delta: float) -&gt; void:
+	if player == null:
+		return
+	var to := player.global_position - global_position
+	to.y = 0.0
+	var d := to.length()
+	var seen := is_seen()
+	var move := Vector3.ZERO
+	if seen and d &lt; near:
+		phase = &quot;retreat&quot;                      # back away, still facing them
+		move = -to.normalized() * retreat_speed
+	elif (not seen and d &gt; near) or d &gt; far:
+		phase = &quot;follow&quot;                       # along the navigation mesh, to them
+		agent.target_position = player.global_position
+		var next := agent.get_next_path_position()
+		var step := next - global_position
+		step.y = 0.0
+		if step.length() &lt; 0.05:
+			step = to                          # no navigation mesh: straight at them
+		move = step.normalized() * walk_speed
+	else:
+		phase = &quot;watch&quot;
+	_play({&quot;retreat&quot;: &quot;Retreat&quot;, &quot;follow&quot;: &quot;Walk&quot;, &quot;watch&quot;: &quot;Idle&quot;}[phase])
+	if d &gt; 0.1:
+		look_at(Vector3(player.global_position.x, global_position.y, player.global_position.z), Vector3.UP)
+	velocity.x = move.x
+	velocity.z = move.z
+	velocity.y = 0.0 if is_on_floor() else velocity.y - gravity * delta
+	move_and_slide()
+
+
+func _play(clip: String) -&gt; void:
+	if anim and anim.has_animation(clip) and anim.current_animation != clip:
+		anim.play(clip, 0.2)
+</code></pre>
+<h2>The devlog and the pack</h2>
+<p>The step-by-step walkthrough comes as a devlog on itch.io on 7 December 2026; this page is the tutorial until then. It is written for <a href="https://cordatix.itch.io/liminal-psx-entities">Liminal PSX Entities</a>, a PS1-style asset pack by <a href="https://cordatix.itch.io">Cordatix</a> for Godot 4, Unity, Unreal and Blender.</p>
+</main>
+<footer><p>Cordatix: PS1-style asset packs for Godot 4, Unity, Unreal and Blender, on <a href="https://cordatix.itch.io">itch.io</a>. The tutorials' code on <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials">GitHub</a>, MIT licensed; the pictures show Cordatix asset packs and are not covered by the MIT license.</p></footer>
+</body>
+</html>

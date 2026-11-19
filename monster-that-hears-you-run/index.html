@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cordatix: How to Make a Monster That Hears You Run in Godot 4</title>
+<meta name="description" content="Cordatix Godot 4 PSX tutorial: Footsteps that carry further the faster the player moves, silent when sneaking, muffled by every wall, heard by every monster…">
+<link rel="canonical" href="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/monster-that-hears-you-run/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Cordatix">
+<meta property="og:title" content="Cordatix: How to Make a Monster That Hears You Run in Godot 4">
+<meta property="og:description" content="Cordatix Godot 4 PSX tutorial: Footsteps that carry further the faster the player moves, silent when sneaking, muffled by every wall, heard by every monster…">
+<meta property="og:url" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/monster-that-hears-you-run/">
+<meta property="og:image" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/monster-that-hears-you-run/thumb.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../site.css">
+<link rel="icon" href="../favicon.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "author": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}, "description": "Footsteps that carry further the faster the player moves, silent when sneaking, muffled by every wall, heard by every monster they reach", "headline": "How to Make a Monster That Hears You Run in Godot 4", "image": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/monster-that-hears-you-run/thumb.png", "inLanguage": "en", "isAccessibleForFree": true, "license": "https://opensource.org/licenses/MIT", "mainEntityOfPage": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/monster-that-hears-you-run/", "programmingLanguage": "GDScript", "publisher": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}}</script>
+</head>
+<body>
+<header class="top"><a class="brand" href="../">CORDATIX</a><nav><a href="../">Tutorials</a> <a href="../samplers.html">Free samplers</a> <a href="../packs.html">Packs</a> <a href="https://cordatix.itch.io">Store on itch.io</a></nav></header>
+<main>
+<p class="crumbs"><a href="../">Tutorials</a> › Make a Monster That Hears You Run</p>
+<h1>How to Make a Monster That Hears You Run in Godot 4</h1>
+<p class="lede">Footsteps that carry further the faster the player moves, silent when sneaking, muffled by every wall, heard by every monster they reach.</p>
+<figure><img src="footstep_noise.gif" width="480" height="270" alt="In a dark corridor of the Cordatix PSX Horror Free Sampler, seen from the player with a flashlight: Papered stands with its back turned while the player sneaks closer; a few running steps, and it turns, screams and comes down the corridor"></figure>
+<p>A monster that only sees you can be beaten by walking behind it. Give it ears and the player has to choose: sneak past slowly, or run and be heard. One script under the player makes every step a noise that carries further the faster the player moves, nothing at all when sneaking, and divides its reach for every wall between the step and a monster. Each monster it reaches hears it through its hear(position) method.</p>
+<p class="muted">Script: <a href="footstep_noise.gd">footstep_noise.gd</a> (MIT) · Godot 4.3 or newer · <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials/tree/main/monster-that-hears-you-run">its folder on GitHub</a></p>
+<h2>How to use it</h2>
+<ol>
+<li>Add a <code>Node</code> under your player (a <code>CharacterBody3D</code>) and attach <code>footstep_noise.gd</code>.</li>
+<li>Set <code>sneak_speed</code> (slower is silent), <code>walk_speed</code> and <code>walk_radius</code>, <code>run_speed</code> and <code>run_radius</code> (how far a step carries at each pace), <code>stride</code> and <code>run_stride</code> (a step every so many metres), <code>land_speed</code> and <code>land_radius</code> (a landing), and <code>wall_muffle</code> (each wall divides the reach by it).</li>
+<li>Put your monsters in <code>listener_group</code> with a <code>hear(position)</code> method; the monsters of Cordatix PSX Horror Monsters are in <code>cordatix_monster</code> and have it. Call <code>make_noise(position, radius)</code> for other noises; <code>noise_made</code> tells your HUD or sound player.</li>
+</ol>
+<h2>What it needs</h2>
+<ul class="lines">
+<li>Godot 4.3 or newer (the Compatibility renderer is enough).</li>
+<li>A player that is a <code>CharacterBody3D</code>, and monsters with a <code>hear(position)</code> method.</li>
+</ul>
+<h2>Try it free</h2>
+<p>The Cordatix PSX Horror Free Sampler has Papered with all ten clips and the enemy script, whose <code>hear(position)</code> sends it to search where the noise was: the code works on it as it is.</p>
+<h2>How it was tested</h2>
+<p>In Godot 4.3 and 4.7.2, with Papered of the free sampler standing with its back to the player: sneaking two metres behind it makes no noise; walking is heard two metres away and not five; running is heard eight metres away; through a wall a run is not heard seven metres away and is heard four; landing from a 2 m drop is heard six metres away; a step comes every stride, a still frame now and then not losing it; the monster that hears goes to search towards the step without having seen the player.</p>
+<h2>The code</h2>
+<pre><code>extends Node
+## How to Make a Monster That Hears You Run in Godot 4
+## Cordatix Godot 4 PSX tutorials, MIT licensed: https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials
+## Written for: https://cordatix.itch.io/haunted-psx-monsters
+## Footsteps a monster can hear. Put this under the player (a CharacterBody3D): every step makes a noise that
+## carries further the faster the player moves, and every wall between the step and a monster muffles it.
+## A monster hears it through its hear(position) method: the monsters of Cordatix PSX Horror Monsters have one.
+
+signal noise_made(at: Vector3, radius: float)
+
+## Below this speed (m/s) the player makes no sound at all: sneaking.
+@export var sneak_speed := 1.6
+## Walking and running speeds (m/s) and how far each one&#x27;s steps carry (m).
+@export var walk_speed := 2.4
+@export var run_speed := 5.0
+@export var walk_radius := 3.0
+@export var run_radius := 10.0
+## A step every this many metres, walking and running.
+@export var stride := 0.7
+@export var run_stride := 1.2
+## Landing from a fall at least this fast (m/s) is one noise of land_radius.
+@export var land_speed := 4.0
+@export var land_radius := 8.0
+## Each wall between the step and a monster divides the noise&#x27;s reach by this.
+@export var wall_muffle := 2.0
+## The group of the nodes that listen; each needs a hear(position) method.
+@export var listener_group := &quot;cordatix_monster&quot;
+
+var _body: CharacterBody3D
+var _last := Vector3.ZERO
+var _walked := 0.0
+var _was_on_floor := true
+var _fall_speed := 0.0
+
+
+func _ready() -&gt; void:
+	_body = get_parent() as CharacterBody3D
+	if _body:
+		_last = _body.global_position
+
+
+func _physics_process(delta: float) -&gt; void:
+	if _body == null or delta &lt;= 0.0:
+		return
+	var pos := _body.global_position
+	var moved := Vector3(pos.x - _last.x, 0.0, pos.z - _last.z).length()
+	_last = pos
+	var on_floor := _body.is_on_floor()
+	if not on_floor:
+		# the fastest it fell, for the landing
+		_fall_speed = maxf(_fall_speed, -_body.velocity.y)
+	elif not _was_on_floor:
+		if _fall_speed &gt;= land_speed:
+			make_noise(pos, land_radius)
+		_fall_speed = 0.0
+	_was_on_floor = on_floor
+	if not on_floor:
+		return
+	var speed := moved / delta
+	if speed &lt; sneak_speed:
+		return      # sneaking or standing: silent, and the stride so far waits
+	_walked += moved
+	if _walked &gt;= (run_stride if speed &gt;= run_speed else stride):
+		_walked = 0.0
+		make_noise(pos, loudness(speed))
+
+
+## How far a step at this speed carries: nothing when sneaking, walk_radius at walking pace, up to run_radius.
+func loudness(speed: float) -&gt; float:
+	if speed &lt; sneak_speed:
+		return 0.0
+	var t := clampf((speed - walk_speed) / (run_speed - walk_speed), 0.0, 1.0)
+	return lerpf(walk_radius, run_radius, t)
+
+
+## A noise at `at`: every listener it reaches, walls counted, hears it. Call it for a door slam or a dropped can too.
+func make_noise(at: Vector3, radius: float) -&gt; void:
+	noise_made.emit(at, radius)
+	for m in get_tree().get_nodes_in_group(listener_group):
+		if m == _body or not m is Node3D or not m.has_method(&quot;hear&quot;):
+			continue
+		var reach := radius / pow(wall_muffle, _walls(at, m))
+		if at.distance_to(m.global_position) &lt;= reach:
+			m.hear(at)
+
+
+## How many walls stand between the step and the listener: one ray, each wall it meets left out of the next try.
+func _walls(at: Vector3, m: Node3D) -&gt; int:
+	var space := _body.get_world_3d().direct_space_state
+	var from := at + Vector3.UP * 0.3
+	var to := m.global_position + Vector3.UP
+	var skip: Array[RID] = [_body.get_rid()]
+	if m is CollisionObject3D:
+		skip.append(m.get_rid())
+	var n := 0
+	while n &lt; 4:
+		var q := PhysicsRayQueryParameters3D.create(from, to)
+		q.exclude = skip
+		var hit := space.intersect_ray(q)
+		if hit.is_empty():
+			break
+		n += 1
+		skip.append(hit[&quot;rid&quot;])
+	return n
+</code></pre>
+<h2>The devlog and the pack</h2>
+<p>The step-by-step walkthrough comes as a devlog on itch.io on 20 November 2026; this page is the tutorial until then. It is written for <a href="https://cordatix.itch.io/haunted-psx-monsters">Cordatix PSX Horror Monsters</a>, a PS1-style asset pack by <a href="https://cordatix.itch.io">Cordatix</a> for Godot 4, Unity, Unreal and Blender.</p>
+</main>
+<footer><p>Cordatix: PS1-style asset packs for Godot 4, Unity, Unreal and Blender, on <a href="https://cordatix.itch.io">itch.io</a>. The tutorials' code on <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials">GitHub</a>, MIT licensed; the pictures show Cordatix asset packs and are not covered by the MIT license.</p></footer>
+</body>
+</html>

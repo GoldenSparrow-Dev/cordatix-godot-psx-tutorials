@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cordatix: How to Call a Lift Between Floors in Godot 4</title>
+<meta name="description" content="Cordatix Godot 4 PSX tutorial: A lift car the player stands in and rides, sliding doors on every floor that shut before it moves and open when it stops, a…">
+<link rel="canonical" href="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/call-a-lift-between-floors/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Cordatix">
+<meta property="og:title" content="Cordatix: How to Call a Lift Between Floors in Godot 4">
+<meta property="og:description" content="Cordatix Godot 4 PSX tutorial: A lift car the player stands in and rides, sliding doors on every floor that shut before it moves and open when it stops, a…">
+<meta property="og:url" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/call-a-lift-between-floors/">
+<meta property="og:image" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/call-a-lift-between-floors/thumb.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../site.css">
+<link rel="icon" href="../favicon.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "author": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}, "description": "A lift car the player stands in and rides, sliding doors on every floor that shut before it moves and open when it stops, a call button on each floor and one in the car", "headline": "How to Call a Lift Between Floors in Godot 4", "image": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/call-a-lift-between-floors/thumb.png", "inLanguage": "en", "isAccessibleForFree": true, "license": "https://opensource.org/licenses/MIT", "mainEntityOfPage": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/call-a-lift-between-floors/", "programmingLanguage": "GDScript", "publisher": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}}</script>
+</head>
+<body>
+<header class="top"><a class="brand" href="../">CORDATIX</a><nav><a href="../">Tutorials</a> <a href="../samplers.html">Free samplers</a> <a href="../packs.html">Packs</a> <a href="https://cordatix.itch.io">Store on itch.io</a></nav></header>
+<main>
+<p class="crumbs"><a href="../">Tutorials</a> › Call a Lift Between Floors</p>
+<h1>How to Call a Lift Between Floors in Godot 4</h1>
+<p class="lede">A lift car the player stands in and rides, sliding doors on every floor that shut before it moves and open when it stops, a call button on each floor and one in the car.</p>
+<figure><img src="call_a_lift.gif" width="640" height="360" alt="The lift lobby of PSX Horror Spaces in Godot 4 with the PSX look: the steel lift doors in a pale green tiled hospital wall stand open on the lit car, slide shut, and slide open again when the lift is called, the call panel lit beside them"></figure>
+<p>A lift is the quickest way to put a second floor in a horror level, and the easiest to get wrong: a car that leaves with its doors open, or a player who falls through its floor. One script runs it: the car is an AnimatableBody3D, so a player stands in it and rides; each floor&#x27;s doors slide apart; a call button beside each floor&#x27;s doors and one in the car call it with E. The doors shut before the car moves and open when it stops. With no models of your own it builds a lift of boxes to try.</p>
+<p class="muted">Script: <a href="call_a_lift.gd">call_a_lift.gd</a> (MIT) · Godot 4.3 or newer · <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials/tree/main/call-a-lift-between-floors">its folder on GitHub</a></p>
+<h2>How to use it</h2>
+<ol>
+<li>Add a <code>Node3D</code> and attach <code>call_a_lift.gd</code>. Run the scene: with <code>car</code> empty it builds a two-floor lift of boxes, its car on the ground floor.</li>
+<li>For your own lift, set <code>car</code> to an <code>AnimatableBody3D</code> (its origin on its floor) and list each floor&#x27;s doors in <code>doors</code>, from the ground up: a <code>Node3D</code> with two leaves named <code>Left</code> and <code>Right</code>. Set <code>floor_height</code>, <code>slide</code>, <code>speed</code>, <code>door_seconds</code> and <code>stay_open</code>.</li>
+<li>The buttons are small <code>Area3D</code> nodes with <code>interact(player)</code>, added by the script beside each floor&#x27;s doors (<code>call_button_at</code>) and in the car (<code>car_button_at</code>). Your player&#x27;s interaction ray calls <code>interact</code> on what it hits when E is pressed: give its <code>RayCast3D</code> <code>collide_with_areas</code>. Or call <code>call_to(floor)</code> from your own code; <code>arrived</code> fires when the car stops.</li>
+</ol>
+<h2>What it needs</h2>
+<ul class="lines">
+<li>Godot 4.3 or newer (the Compatibility renderer is enough).</li>
+<li>A player that interacts by calling <code>interact(player)</code> on what its ray hits, and a <code>CharacterBody3D</code> (or any physics body) to ride the car.</li>
+</ul>
+<h2>Try it free</h2>
+<p>The code builds its own lift of boxes, so it runs in any project. The Cordatix PSX Horror Free Sampler has PSX Horror Spaces&#x27; 8 free room pieces to build a lobby round it; the lift&#x27;s doors, car and call panel are in PSX Horror Spaces.</p>
+<h2>How it was tested</h2>
+<p>In Godot 4.3 and 4.7.2, on its lift of boxes: the ground doors open at the start and shut by themselves; a call from the upper floor shuts the doors before the car moves, and no door opens while it moves; the car rides 4 m up and a CharacterBody3D standing in it rides with it; the upper doors open when it stops and the ground ones stay shut; the car&#x27;s own button takes it back down.</p>
+<h2>The code</h2>
+<pre><code>extends Node3D
+## How to Call a Lift Between Floors in Godot 4
+## Cordatix Godot 4 PSX tutorials, MIT licensed: https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials
+## Written for: https://cordatix.itch.io/haunted-psx-spaces
+## A lift between floors: a car the player stands in and rides, sliding doors on every floor, a call button beside
+## each floor&#x27;s doors and one inside the car. The doors shut before the car moves and open when it stops. The buttons
+## are small Area3D nodes with interact(player): your player&#x27;s ray calls it on what it hits when E is pressed. Leave
+## car empty and it builds a two-floor lift of boxes to try it with. From the tutorial &quot;How to Call a Lift Between
+## Floors in Godot 4&quot; (Cordatix). MIT licence.
+
+signal arrived(at: int)
+
+@export var car: AnimatableBody3D            ## what rides: its origin on its floor; empty: a lift of boxes is built
+@export var doors: Array[Node3D] = []        ## one per floor, from the ground up, each with two leaves: Left, Right
+@export var floor_height := 4.0              ## from one floor to the next
+@export var speed := 1.2                     ## metres a second
+@export var slide := 0.55                    ## how far each leaf slides aside
+@export var door_seconds := 1.0              ## to open or shut
+@export var stay_open := 4.0                 ## seconds the doors stay open once the car stops
+@export var call_button_at := Vector3(0.95, 1.2, 0.1)   ## beside each floor&#x27;s doors (from its doors node)
+@export var car_button_at := Vector3(0.85, 1.2, -0.3)   ## inside the car (from the car)
+
+var at_floor := 0
+var _target := 0
+var _ground := 0.0
+var _leaves: Array = []      # per floor: its Left and Right leaves and where they stand shut
+var _open := 0.0             # the doors of the floor the car is at: 0 shut .. 1 open
+var _want_open := true
+var _timer := 0.0
+var _moving := false
+
+
+## A button: E on it (your player&#x27;s ray calls interact) calls the lift.
+class LiftButton:
+	extends Area3D
+	var lift                 ## the lift script
+	var to_floor := 0        ## -1: the car&#x27;s own button, the next floor up (from the top, back to the ground)
+
+	func interact(_player: Node) -&gt; bool:
+		return lift.call_to(to_floor)
+
+
+func _ready() -&gt; void:
+	if car == null:
+		_build_boxes()
+	_ground = car.position.y
+	for k in doors.size():
+		var left := doors[k].get_node(&quot;Left&quot;) as Node3D
+		var right := doors[k].get_node(&quot;Right&quot;) as Node3D
+		_leaves.append([left, right, left.position.x, right.position.x])
+		_button(doors[k], k, call_button_at)
+	_button(car, -1, car_button_at)
+	_timer = stay_open
+
+
+func _button(host: Node3D, to_floor: int, at: Vector3) -&gt; void:
+	var b := LiftButton.new()
+	b.lift = self
+	b.to_floor = to_floor
+	b.position = at
+	b.add_child(_shape(Vector3(0.2, 0.3, 0.2), Vector3.ZERO))
+	_box(b, Vector3(0.12, 0.2, 0.04), Vector3.ZERO, Color(0.9, 0.2, 0.1))
+	host.add_child(b)
+
+
+## Brings the car to a floor (-1: the next one). At that floor already, its doors open again.
+func call_to(k: int) -&gt; bool:
+	if doors.is_empty():
+		return false
+	if k &lt; 0:
+		k = (at_floor + 1) % doors.size()
+	k = clampi(k, 0, doors.size() - 1)
+	if k == at_floor and not _moving:
+		_want_open = true
+		_timer = stay_open
+	else:
+		_target = k
+		_want_open = false
+	return true
+
+
+## The motion: the doors of the floor the car is at follow _open; the car moves only once they are shut, and when it
+## stops the doors of its new floor open and stay open for a while.
+func _physics_process(delta: float) -&gt; void:
+	var goal := 1.0 if _want_open and not _moving else 0.0
+	_open = move_toward(_open, goal, delta / door_seconds)
+	for k in _leaves.size():
+		var o := _open if k == at_floor else 0.0
+		o = o * o * (3.0 - 2.0 * o)             # ease in and out
+		_leaves[k][0].position.x = _leaves[k][2] - slide * o
+		_leaves[k][1].position.x = _leaves[k][3] + slide * o
+	if _want_open and _open &gt;= 1.0:
+		_timer -= delta
+		if _timer &lt;= 0.0:
+			_want_open = false
+	if _target == at_floor and not _moving:
+		return
+	if _open &gt; 0.0:
+		return                                   # the doors shut first
+	_moving = true
+	var y := _ground + _target * floor_height
+	car.position.y = move_toward(car.position.y, y, speed * delta)   # an AnimatableBody3D carries what stands on it
+	if is_equal_approx(car.position.y, y):
+		_moving = false
+		at_floor = _target
+		_want_open = true
+		_timer = stay_open
+		arrived.emit(at_floor)
+
+
+## A lift of boxes to try it with: a lit car 2 m square and two floors of doors in front of it, facing +Z.
+func _build_boxes() -&gt; void:
+	car = AnimatableBody3D.new()
+	car.name = &quot;Car&quot;
+	add_child(car)
+	for part in [[Vector3(2, 0.1, 2), Vector3(0, -0.05, 0)], [Vector3(2, 2.4, 0.1), Vector3(0, 1.2, -1)],
+			[Vector3(0.1, 2.4, 2), Vector3(-1, 1.2, 0)], [Vector3(0.1, 2.4, 2), Vector3(1, 1.2, 0)]]:
+		_box(car, part[0], part[1], Color(0.55, 0.57, 0.6))
+		car.add_child(_shape(part[0], part[1]))
+	var lamp := OmniLight3D.new()
+	lamp.position = Vector3(0, 2.2, 0)
+	car.add_child(lamp)
+	for k in 2:
+		var d := Node3D.new()
+		d.name = &quot;Doors%d&quot; % k
+		d.position = Vector3(0, k * floor_height, 1.1)
+		add_child(d)
+		for side in [[&quot;Left&quot;, -0.3], [&quot;Right&quot;, 0.3]]:
+			var leaf := _box(d, Vector3(0.6, 2.2, 0.06), Vector3(side[1], 1.1, 0), Color(0.35, 0.4, 0.42))
+			leaf.name = side[0]
+		doors.append(d)
+
+
+func _shape(size: Vector3, at: Vector3) -&gt; CollisionShape3D:
+	var box := BoxShape3D.new()
+	box.size = size
+	var s := CollisionShape3D.new()
+	s.shape = box
+	s.position = at
+	return s
+
+
+func _box(parent: Node3D, size: Vector3, at: Vector3, colour: Color) -&gt; MeshInstance3D:
+	var mesh := BoxMesh.new()
+	mesh.size = size
+	var m := MeshInstance3D.new()
+	m.mesh = mesh
+	var mat := StandardMaterial3D.new()
+	mat.albedo_color = colour
+	m.material_override = mat
+	m.position = at
+	parent.add_child(m)
+	return m
+</code></pre>
+<h2>The devlog and the pack</h2>
+<p>The step-by-step walkthrough comes as a devlog on itch.io on 4 December 2026; this page is the tutorial until then. It is written for <a href="https://cordatix.itch.io/haunted-psx-spaces">PSX Horror Spaces</a>, a PS1-style asset pack by <a href="https://cordatix.itch.io">Cordatix</a> for Godot 4, Unity, Unreal and Blender.</p>
+</main>
+<footer><p>Cordatix: PS1-style asset packs for Godot 4, Unity, Unreal and Blender, on <a href="https://cordatix.itch.io">itch.io</a>. The tutorials' code on <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials">GitHub</a>, MIT licensed; the pictures show Cordatix asset packs and are not covered by the MIT license.</p></footer>
+</body>
+</html>

@@ -15,7 +15,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="../site.css">
 <link rel="icon" href="../favicon.png">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "author": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}, "description": "People who see a monster close by run, the ones further off back away, and the panic spreads from runner to runner", "headline": "How to Make a Crowd Flee from a Monster in Godot 4", "image": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/crowd-flees-a-monster/thumb.png", "inLanguage": "en", "isAccessibleForFree": true, "license": "https://opensource.org/licenses/MIT", "mainEntityOfPage": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/crowd-flees-a-monster/", "programmingLanguage": "GDScript", "publisher": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "author": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}, "description": "People who see a monster close by run, the ones further off back away, and the panic spreads from runner to runner", "headline": "How to Make a Crowd Flee from a Monster in Godot 4", "image": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/crowd-flees-a-monster/thumb.png", "inLanguage": "en", "isAccessibleForFree": true, "isBasedOn": "https://cordatix.itch.io/psx-bystanders-npc-pack/devlog/1781731/how-to-make-a-crowd-flee-from-a-monster-in-godot-4", "license": "https://opensource.org/licenses/MIT", "mainEntityOfPage": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/crowd-flees-a-monster/", "programmingLanguage": "GDScript", "publisher": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}}</script>
 </head>
 <body>
 <header class="top"><a class="brand" href="../">CORDATIX</a><nav><a href="../">Tutorials</a> <a href="../samplers.html">Free samplers</a> <a href="../packs.html">Packs</a> <a href="https://cordatix.itch.io">Store on itch.io</a></nav></header>
@@ -45,7 +45,7 @@
 <pre><code>extends Node
 ## How to Make a Crowd Flee from a Monster in Godot 4
 ## Cordatix Godot 4 PSX tutorials, MIT licensed: https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials
-## Written for: https://cordatix.itch.io/psx-bystanders-npc-pack
+## The devlog: https://cordatix.itch.io/psx-bystanders-npc-pack/devlog/1781731/how-to-make-a-crowd-flee-from-a-monster-in-godot-4
 ## Put it under the monster (any Node3D that moves, or set `monster`). The people who can see it within `flee_radius`
 ## run; those within `notice_radius` start or back away; and whoever runs spreads the panic to the people near them, a
 ## moment later, whether those can see the monster or not. Once the monster is gone, the people who ran calm down.
@@ -141,7 +141,7 @@ func _sees(person: Node3D) -&gt; bool:
 	return monster.get_world_3d().direct_space_state.intersect_ray(q).is_empty()
 </code></pre>
 <h2>The devlog and the pack</h2>
-<p>The step-by-step walkthrough comes as a devlog on itch.io on 16 November 2026; this page is the tutorial until then. It is written for <a href="https://cordatix.itch.io/psx-bystanders-npc-pack">PSX Bystanders NPC Pack</a>, a PS1-style asset pack by <a href="https://cordatix.itch.io">Cordatix</a> for Godot 4, Unity, Unreal and Blender.</p>
+<p>The step-by-step walkthrough is the devlog <a href="https://cordatix.itch.io/psx-bystanders-npc-pack/devlog/1781731/how-to-make-a-crowd-flee-from-a-monster-in-godot-4">How to Make a Crowd Flee from a Monster in Godot 4 (PSX Bystanders NPC Pack)</a> on itch.io, written for <a href="https://cordatix.itch.io/psx-bystanders-npc-pack">PSX Bystanders NPC Pack</a>, a PS1-style asset pack by <a href="https://cordatix.itch.io">Cordatix</a> for Godot 4, Unity, Unreal and Blender.</p>
 </main>
 <footer><p>Cordatix: PS1-style asset packs for Godot 4, Unity, Unreal and Blender, on <a href="https://cordatix.itch.io">itch.io</a>. The tutorials' code on <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials">GitHub</a>, MIT licensed; the pictures show Cordatix asset packs and are not covered by the MIT license.</p></footer>
 </body>

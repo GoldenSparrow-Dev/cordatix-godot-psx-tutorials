@@ -2,7 +2,7 @@ class_name NightTurn
 extends Node3D
 ## How to Turn an NPC into an Enemy at Nightfall in Godot 4
 ## Cordatix Godot 4 PSX tutorials, MIT licensed: https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials
-## The devlog: https://cordatix.itch.io/psx-horror-villagers/devlog/1754522/how-to-turn-an-npc-into-an-enemy-at-nightfall-in-godot-4-psx-horror-villagers
+## Written for: https://cordatix.itch.io/psx-bystanders-npc-pack
 ## Turn a villager at nightfall in Godot 4.3+: by day one body, by night another, handed over in the same pose.
 ## Give this node two children, "Day" and "Night": two instances of one villager's model, each with its own
 ## AnimationPlayer (a PSX Horror Villagers GLB carries both bodies' clips: the day's as Day_<name>, the night's, and

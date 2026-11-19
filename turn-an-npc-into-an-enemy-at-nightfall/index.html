@@ -15,7 +15,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="../site.css">
 <link rel="icon" href="../favicon.png">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "author": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}, "description": "Two bodies of one person, a clip that hands one to the other with no jump, and a darkness value", "headline": "How to Turn an NPC into an Enemy at Nightfall in Godot 4", "image": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/turn-an-npc-into-an-enemy-at-nightfall/thumb.png", "inLanguage": "en", "isAccessibleForFree": true, "isBasedOn": "https://cordatix.itch.io/psx-horror-villagers/devlog/1754522/how-to-turn-an-npc-into-an-enemy-at-nightfall-in-godot-4-psx-horror-villagers", "license": "https://opensource.org/licenses/MIT", "mainEntityOfPage": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/turn-an-npc-into-an-enemy-at-nightfall/", "programmingLanguage": "GDScript", "publisher": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "author": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}, "description": "Two bodies of one person, a clip that hands one to the other with no jump, and a darkness value", "headline": "How to Turn an NPC into an Enemy at Nightfall in Godot 4", "image": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/turn-an-npc-into-an-enemy-at-nightfall/thumb.png", "inLanguage": "en", "isAccessibleForFree": true, "license": "https://opensource.org/licenses/MIT", "mainEntityOfPage": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/turn-an-npc-into-an-enemy-at-nightfall/", "programmingLanguage": "GDScript", "publisher": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}}</script>
 </head>
 <body>
 <header class="top"><a class="brand" href="../">CORDATIX</a><nav><a href="../">Tutorials</a> <a href="../samplers.html">Free samplers</a> <a href="../packs.html">Packs</a> <a href="https://cordatix.itch.io">Store on itch.io</a></nav></header>
@@ -39,15 +39,15 @@
 <li>A rigged character with day clips, a Turn clip and night clips on one skeleton.</li>
 </ul>
 <h2>Try it free</h2>
-<p>The free demo on PSX Horror Villagers&#x27; page (Download demo) has the ploughman with every clip, day and night, the lean tan dog, both of the pack&#x27;s scripts and a corner of the village: try the script on the ploughman right away.</p>
+<p>The <a href="https://cordatix.itch.io/psx-bystanders-npc-pack-free">PSX Bystanders NPC Pack Free Sampler</a> has the NPC layer the day body runs on; the villagers themselves, with their day clips, Turn and the night&#x27;s, are the Villagers bonus in PSX Bystanders NPC Pack. The script works on any rigged character with a day Idle, a Turn and a night Idle on one skeleton.</p>
 <h2>How it was tested</h2>
-<p>In Godot 4.3 and 4.7.2, with the ploughman from the free demo: by day the day body shows; in the dark it plays Turn and the night body takes over in the same pose; at dawn the day body is back; the signal fires both ways.</p>
+<p>In Godot 4.3 and 4.7.2, with the ploughman of the Villagers bonus: by day the day body shows; in the dark it plays Turn and the night body takes over in the same pose; at dawn the day body is back; the signal fires both ways.</p>
 <h2>The code</h2>
 <pre><code>class_name NightTurn
 extends Node3D
 ## How to Turn an NPC into an Enemy at Nightfall in Godot 4
 ## Cordatix Godot 4 PSX tutorials, MIT licensed: https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials
-## The devlog: https://cordatix.itch.io/psx-horror-villagers/devlog/1754522/how-to-turn-an-npc-into-an-enemy-at-nightfall-in-godot-4-psx-horror-villagers
+## Written for: https://cordatix.itch.io/psx-bystanders-npc-pack
 ## Turn a villager at nightfall in Godot 4.3+: by day one body, by night another, handed over in the same pose.
 ## Give this node two children, &quot;Day&quot; and &quot;Night&quot;: two instances of one villager&#x27;s model, each with its own
 ## AnimationPlayer (a PSX Horror Villagers GLB carries both bodies&#x27; clips: the day&#x27;s as Day_&lt;name&gt;, the night&#x27;s, and
@@ -124,7 +124,7 @@ func _anim(body: Node3D) -&gt; AnimationPlayer:
 	return body.find_child(&quot;AnimationPlayer&quot;, true, false) as AnimationPlayer
 </code></pre>
 <h2>The devlog and the pack</h2>
-<p>The step-by-step walkthrough is the devlog <a href="https://cordatix.itch.io/psx-horror-villagers/devlog/1754522/how-to-turn-an-npc-into-an-enemy-at-nightfall-in-godot-4-psx-horror-villagers">How to Turn an NPC into an Enemy at Nightfall in Godot 4 (PSX Horror Villagers)</a> on itch.io, written for <a href="https://cordatix.itch.io/psx-horror-villagers">PSX Horror Villagers</a>, a PS1-style asset pack by <a href="https://cordatix.itch.io">Cordatix</a> for Godot 4, Unity, Unreal and Blender.</p>
+<p>The step-by-step walkthrough comes as a devlog on itch.io on 1 December 2026; this page is the tutorial until then. It is written for <a href="https://cordatix.itch.io/psx-bystanders-npc-pack">PSX Bystanders NPC Pack</a>, a PS1-style asset pack by <a href="https://cordatix.itch.io">Cordatix</a> for Godot 4, Unity, Unreal and Blender.</p>
 </main>
 <footer><p>Cordatix: PS1-style asset packs for Godot 4, Unity, Unreal and Blender, on <a href="https://cordatix.itch.io">itch.io</a>. The tutorials' code on <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials">GitHub</a>, MIT licensed; the pictures show Cordatix asset packs and are not covered by the MIT license.</p></footer>
 </body>

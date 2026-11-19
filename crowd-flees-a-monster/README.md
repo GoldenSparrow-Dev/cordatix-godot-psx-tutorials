@@ -27,6 +27,6 @@ In Godot 4.3 and 4.7.2, with the free sampler's two people round a stand-in mons
 
 ## The devlog and the pack
 
-The step-by-step walkthrough comes as a devlog on itch.io on 16 November 2026; this README is the tutorial until then. It is written for [PSX Bystanders NPC Pack](https://cordatix.itch.io/psx-bystanders-npc-pack), a PS1-style asset pack by [Cordatix](https://cordatix.itch.io) for Godot 4, Unity, Unreal and Blender.
+The step-by-step walkthrough is the devlog [How to Make a Crowd Flee from a Monster in Godot 4 (PSX Bystanders NPC Pack)](https://cordatix.itch.io/psx-bystanders-npc-pack/devlog/1781731/how-to-make-a-crowd-flee-from-a-monster-in-godot-4) on itch.io, written for [PSX Bystanders NPC Pack](https://cordatix.itch.io/psx-bystanders-npc-pack), a PS1-style asset pack by [Cordatix](https://cordatix.itch.io) for Godot 4, Unity, Unreal and Blender.
 
 The code is MIT licensed ([LICENSE](../LICENSE)). The pictures show Cordatix asset packs and are not covered by the MIT license.

@@ -1,7 +1,7 @@
 extends Node
 ## How to Make a Crowd Flee from a Monster in Godot 4
 ## Cordatix Godot 4 PSX tutorials, MIT licensed: https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials
-## Written for: https://cordatix.itch.io/psx-bystanders-npc-pack
+## The devlog: https://cordatix.itch.io/psx-bystanders-npc-pack/devlog/1781731/how-to-make-a-crowd-flee-from-a-monster-in-godot-4
 ## Put it under the monster (any Node3D that moves, or set `monster`). The people who can see it within `flee_radius`
 ## run; those within `notice_radius` start or back away; and whoever runs spreads the panic to the people near them, a
 ## moment later, whether those can see the monster or not. Once the monster is gone, the people who ran calm down.

@@ -20,14 +20,14 @@ The scariest enemy is the one the player walked past an hour ago. A villager is 
 
 ## Try it free
 
-The free demo on PSX Horror Villagers' page (Download demo) has the ploughman with every clip, day and night, the lean tan dog, both of the pack's scripts and a corner of the village: try the script on the ploughman right away.
+The [PSX Bystanders NPC Pack Free Sampler](https://cordatix.itch.io/psx-bystanders-npc-pack-free) has the NPC layer the day body runs on; the villagers themselves, with their day clips, Turn and the night's, are the Villagers bonus in PSX Bystanders NPC Pack. The script works on any rigged character with a day Idle, a Turn and a night Idle on one skeleton.
 
 ## Tested
 
-In Godot 4.3 and 4.7.2, with the ploughman from the free demo: by day the day body shows; in the dark it plays Turn and the night body takes over in the same pose; at dawn the day body is back; the signal fires both ways.
+In Godot 4.3 and 4.7.2, with the ploughman of the Villagers bonus: by day the day body shows; in the dark it plays Turn and the night body takes over in the same pose; at dawn the day body is back; the signal fires both ways.
 
 ## The devlog and the pack
 
-The step-by-step walkthrough is the devlog [How to Turn an NPC into an Enemy at Nightfall in Godot 4 (PSX Horror Villagers)](https://cordatix.itch.io/psx-horror-villagers/devlog/1754522/how-to-turn-an-npc-into-an-enemy-at-nightfall-in-godot-4-psx-horror-villagers) on itch.io, written for [PSX Horror Villagers](https://cordatix.itch.io/psx-horror-villagers), a PS1-style asset pack by [Cordatix](https://cordatix.itch.io) for Godot 4, Unity, Unreal and Blender.
+The step-by-step walkthrough comes as a devlog on itch.io on 1 December 2026; this README is the tutorial until then. It is written for [PSX Bystanders NPC Pack](https://cordatix.itch.io/psx-bystanders-npc-pack), a PS1-style asset pack by [Cordatix](https://cordatix.itch.io) for Godot 4, Unity, Unreal and Blender.
 
 The code is MIT licensed ([LICENSE](../LICENSE)). The pictures show Cordatix asset packs and are not covered by the MIT license.

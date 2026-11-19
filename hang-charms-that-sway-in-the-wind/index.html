@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cordatix: How to Hang Charms from a Tree That Sway in the Wind in Godot 4</title>
+<meta name="description" content="Cordatix Godot 4 PSX tutorial: Charms on cords under a tree&#x27;s limbs, swinging in the stepped wind of PS1 games, a longer cord slower, the same tree hung the…">
+<link rel="canonical" href="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/hang-charms-that-sway-in-the-wind/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Cordatix">
+<meta property="og:title" content="Cordatix: How to Hang Charms from a Tree That Sway in the Wind in Godot 4">
+<meta property="og:description" content="Cordatix Godot 4 PSX tutorial: Charms on cords under a tree&#x27;s limbs, swinging in the stepped wind of PS1 games, a longer cord slower, the same tree hung the…">
+<meta property="og:url" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/hang-charms-that-sway-in-the-wind/">
+<meta property="og:image" content="https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/hang-charms-that-sway-in-the-wind/thumb.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../site.css">
+<link rel="icon" href="../favicon.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "author": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}, "description": "Charms on cords under a tree's limbs, swinging in the stepped wind of PS1 games, a longer cord slower, the same tree hung the same by a seed", "headline": "How to Hang Charms from a Tree That Sway in the Wind in Godot 4", "image": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/hang-charms-that-sway-in-the-wind/thumb.png", "inLanguage": "en", "isAccessibleForFree": true, "license": "https://opensource.org/licenses/MIT", "mainEntityOfPage": "https://goldensparrow-dev.github.io/cordatix-godot-psx-tutorials/hang-charms-that-sway-in-the-wind/", "programmingLanguage": "GDScript", "publisher": {"@type": "Organization", "name": "Cordatix", "sameAs": ["https://cordatix.itch.io", "https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials"], "url": "https://cordatix.itch.io"}}</script>
+</head>
+<body>
+<header class="top"><a class="brand" href="../">CORDATIX</a><nav><a href="../">Tutorials</a> <a href="../samplers.html">Free samplers</a> <a href="../packs.html">Packs</a> <a href="https://cordatix.itch.io">Store on itch.io</a></nav></header>
+<main>
+<p class="crumbs"><a href="../">Tutorials</a> › Hang Charms from a Tree That Sway in the Wind</p>
+<h1>How to Hang Charms from a Tree That Sway in the Wind in Godot 4</h1>
+<p class="lede">Charms on cords under a tree&#x27;s limbs, swinging in the stepped wind of PS1 games, a longer cord slower, the same tree hung the same by a seed.</p>
+<figure><img src="hanging_charms.gif" width="640" height="360" alt="Under the offering tree of PSX Horror Forest in Godot 4 with the PSX look at dusk: a jar lantern glowing, red and cream cloth strips, a bone chime, keys and a birdcage hanging on long cords from its low limbs, swaying in small steps in the wind"></figure>
+<p>Things hung from a tree are half of a horror forest&#x27;s mood, and they should move. One script on the tree hangs a charm on a cord at each of its Hang markers and sways them in the stepped wind of PS1 games: every pivot holds still and then jumps, six times a second; a longer cord swings slower and less, and each charm has its own phase, so no two move together. A seed picks the cords, so the same tree hangs the same way every time, and hang() ties one more on at runtime.</p>
+<p class="muted">Script: <a href="hanging_charms.gd">hanging_charms.gd</a> (MIT) · Godot 4.3 or newer · <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials/tree/main/hang-charms-that-sway-in-the-wind">its folder on GitHub</a></p>
+<h2>How to use it</h2>
+<ol>
+<li>Attach <code>hanging_charms.gd</code> to your tree&#x27;s root (a <code>Node3D</code>) and add <code>Marker3D</code> children named <code>Hang...</code> wherever a cord can be tied: under a limb, at a fork. Any other child is left alone.</li>
+<li>Fill <code>charms</code> with the scenes to hang, one a marker in order: each scene&#x27;s origin is where the cord ties on, at its top.</li>
+<li>Set <code>cord_min</code> and <code>cord_max</code> (metres of cord), <code>sway_deg</code>, <code>wind_speed</code>, <code>steps</code> (poses a second) and <code>seed</code>. Call <code>hang(scene)</code> or <code>hang(scene, length)</code> at runtime for one more; it returns null when every point is taken.</li>
+</ol>
+<h2>What it needs</h2>
+<ul class="lines">
+<li>Godot 4.3 or newer (the Compatibility renderer is enough).</li>
+<li>A tree mesh of any kind, and charm scenes whose origin is at their top.</li>
+</ul>
+<h2>Try it free</h2>
+<p>The code works on any tree and any charms of yours; the Cordatix PSX Horror Free Sampler has seven pieces of the forest but no charms (the offering tree, hung with its twelve kinds of charm, is in PSX Horror Forest).</p>
+<h2>How it was tested</h2>
+<p>In Godot 4.3 and 4.7.2, with stand-in charms on four markers in any project: every Hang point takes one charm and no other child does; each charm hangs its cord&#x27;s length under its point; the swing changes six times a second and stays within its degrees, less on a long cord; hang() at runtime takes the free point and then returns null; a length given is used; the same seed hangs the same.</p>
+<h2>The code</h2>
+<pre><code>extends Node3D
+## How to Hang Charms from a Tree That Sway in the Wind in Godot 4
+## Cordatix Godot 4 PSX tutorials, MIT licensed: https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials
+## Written for: https://cordatix.itch.io/cordatix-psx-horror-forest
+## Hangs charms from a tree on cords and sways them in a PS1-style stepped wind (Godot 4.3+).
+## Put Marker3D children named &quot;Hang...&quot; on the tree&#x27;s limbs where a cord can be tied.
+
+signal hung(charm: Node3D)
+
+@export var charms: Array[PackedScene] = []
+@export var cord_min := 1.5          # metres of cord, picked per charm
+@export var cord_max := 3.0
+@export var sway_deg := 4.0          # how far a charm swings either way
+@export var wind_speed := 1.3        # swings a second, roughly
+@export var steps := 6.0             # the wind moves in steps: six a second
+@export var seed := 1
+
+var _rng := RandomNumberGenerator.new()
+var _free: Array[Marker3D] = []
+var _hung: Array[Node3D] = []        # the pivots, one a hung charm
+var _time := 0.0
+
+
+func _ready() -&gt; void:
+	_rng.seed = seed
+	for c in get_children():
+		if c is Marker3D and c.name.begins_with(&quot;Hang&quot;):
+			_free.append(c)
+	for scene in charms:
+		hang(scene)
+
+
+## Ties one more charm at the next free point; null when no point is free.
+func hang(scene: PackedScene, length := -1.0) -&gt; Node3D:
+	if _free.is_empty() or scene == null:
+		return null
+	var point: Marker3D = _free.pop_front()
+	var cord := length if length &gt; 0.0 else _rng.randf_range(cord_min, cord_max)
+	var pivot := Node3D.new()                      # turns at the knot: the whole cord swings
+	pivot.position = point.position
+	pivot.set_meta(&quot;phase&quot;, _rng.randf() * TAU)
+	pivot.set_meta(&quot;cord&quot;, cord)
+	add_child(pivot)
+	var line := MeshInstance3D.new()               # the cord: a thin box from the knot down
+	var box := BoxMesh.new()
+	box.size = Vector3(0.015, cord, 0.015)
+	line.mesh = box
+	line.position = Vector3(0, -cord / 2.0, 0)
+	pivot.add_child(line)
+	var charm := scene.instantiate() as Node3D     # its own origin at the top: it hangs from there
+	charm.position = Vector3(0, -cord, 0)
+	charm.rotation.y = _rng.randf() * TAU
+	pivot.add_child(charm)
+	_hung.append(pivot)
+	hung.emit(charm)
+	return charm
+
+
+func free_points() -&gt; int:
+	return _free.size()
+
+
+## The wind: time moves in steps, so the swing jumps a little six times a second, never smoothly.
+func _process(delta: float) -&gt; void:
+	_time += delta
+	var t := floorf(_time * steps) / steps
+	for pivot in _hung:
+		var phase: float = pivot.get_meta(&quot;phase&quot;)
+		var cord: float = pivot.get_meta(&quot;cord&quot;)
+		var amp := deg_to_rad(sway_deg) / sqrt(1.0 + cord)   # a long cord swings slower and less
+		var w := TAU * wind_speed / sqrt(1.0 + cord)
+		pivot.rotation.x = amp * sin(w * t + phase)
+		pivot.rotation.z = amp * 0.6 * sin(w * 0.7 * t + phase * 1.7)
+</code></pre>
+<h2>The devlog and the pack</h2>
+<p>The step-by-step walkthrough comes as a devlog on itch.io on 26 November 2026; this page is the tutorial until then. It is written for <a href="https://cordatix.itch.io/cordatix-psx-horror-forest">PSX Horror Forest</a>, a PS1-style asset pack by <a href="https://cordatix.itch.io">Cordatix</a> for Godot 4, Unity, Unreal and Blender.</p>
+</main>
+<footer><p>Cordatix: PS1-style asset packs for Godot 4, Unity, Unreal and Blender, on <a href="https://cordatix.itch.io">itch.io</a>. The tutorials' code on <a href="https://github.com/GoldenSparrow-Dev/cordatix-godot-psx-tutorials">GitHub</a>, MIT licensed; the pictures show Cordatix asset packs and are not covered by the MIT license.</p></footer>
+</body>
+</html>
